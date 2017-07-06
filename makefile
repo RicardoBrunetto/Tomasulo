@@ -2,7 +2,7 @@ CC=gcc
 CFLAGS=-w
 LDFLAGS=
 SRC= gsim.c
-SOURCES= gsim.c processador.c Memoria/memoria.c Tradutor/flexbison/parser.tab.c lib/DQueue.c lib/util.c Registrador/registrador.c EstacoesReserva/estacoesReserva.c
+SOURCES= gsim.c processador.c Memoria/memoria.c lib/DQueue.c lib/util.c lib/definitions.h Registrador/registrador.c EstacoesReserva/estacoesReserva.c
 HEADERS=$(SOURCES:.c=.h)
 OBJECTS=$(SOURCES:.c=.o)
 EXECUTABLE= gsim

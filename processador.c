@@ -52,7 +52,7 @@ void PIPELINE_execute(){
 /*Função que simula a estágio de Decodificação do Pipeline
   Recebe como parâmetro um conjunto de instruções [em bytes]
   Gera na saída as instruções decodificadas [tipo Instrucao]*/
-void PIPELINE_write(Instrucao instr){
+void PIPELINE_write(){
   //get_tipo_instrucao();
 }
 
