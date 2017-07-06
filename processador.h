@@ -10,7 +10,7 @@
 /*Definições das Dimensões dos componentes do Processador*/
 
 /*Program Counter e Instruction Register*/
-Registrador PC, IR, ALUOutput;
+Registrador PC, IR;
 /*Fila de Instruções a serem processadas*/
 Fila fila_Instrucoes;
 

@@ -10,7 +10,8 @@ typedef enum { ADD_UF, MUL_UF, LOAD_UF, STORE_UF } Tipo_ER_UF;
 
 /*Estruturas que o Processador Manipulará*/
 typedef struct{
-  Tipo_ER_UF type;
+  Tipo_ER_UF type; //Tipo de Unidade Funcional
+  int ALUOutput; //Buffer que segura a saída da Unidade Funcional
 }UnidadeFuncional;
 
 typedef struct{
