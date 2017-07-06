@@ -25,22 +25,27 @@ void PIPELINE_decode(){
   Colocar-se-á a instrução para executar
   Caso a instrução já esteja ocupada, diminui-se a quantidade de ciclos restantes*/
 void PIPELINE_execute(){
-  int i;
+  int i, estacoes_ocupadas = 0;
   for(i = 0; i<QUANTIDADE_ESTACOES_RESERVA; i++){
     if(estacoes_Reserva[i].BusyBit > 0){  // Se a ER estiver ocupada
       estacoes_Reserva[i].BusyBit = estacoes_Reserva[i].BusyBit - 1; // decrementa a quantidade de ciclos restantes
+      estacoes_ocupadas++; // controla a quantidade de ER's ocupadas
     }else{ // Estação de Reserva Disponível
       Instrucao * instr = get_topo_fila(&fila_Instrucoes); // Pega uma instrução da fila (mas não a remove de lá)
       // Antes da emissão, de fato, ocorre a verificação, se aquela ER possui uma Unidade Funcional capaz de processá-la
-      if(instr == NULL) break; // Não há mais instruções na fila
+      if(instr == NULL) continue; // Não há mais instruções na fila, passa para a próxima ER
       if(tipo_compativel(instr->type, estacoes_Reserva[i].uf.type)){ // Se aquela Unidade Funcional puder processar a instrução
         instr = remover_fila(&fila_Instrucoes); // Não altera instr, apenas a remove da fila de fato, emitindo-a
-        //if()
-      }else{
+
+        estacoes_ocupadas++;
+      }else{  // Se não puder, analisa a próxima ER
         continue;
       } // Analisa a próxima estação de Reserva
     //  estacoes_Reserva[i].BusyBit =
     }
+  }
+  if(!estacoes_ocupadas && (get_topo_fila(&fila_Instrucoes) == NULL)){ //Se nenhuma Estacao estiver ocupada e não houver mais instruções na fila
+    printf("\nFim de execução\n");
   }
 }
 
