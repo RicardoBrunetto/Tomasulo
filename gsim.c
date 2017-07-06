@@ -18,7 +18,7 @@ void printHelpMenu(){
 
 }
 
-void call_tradutor(char* file_path){
+/*void call_tradutor(char* file_path){
   FILE * f = fopen(file_path, "r");
   yyrestart(f);
 
@@ -30,7 +30,7 @@ void call_tradutor(char* file_path){
   yyparse();
 
   exibirLinkedList(lista);
-}
+}*/
 
 void waiting(){
   char * input;
