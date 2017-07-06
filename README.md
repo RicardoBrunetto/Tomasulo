@@ -1,5 +1,5 @@
 # Tomasulo
 Trabalho Arquitetura II
 
-[X] Iniciar Processador 
-[ ] Começar cache
+- [x] Iniciar Processador
+- [ ] Começar cache
