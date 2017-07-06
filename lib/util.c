@@ -25,7 +25,7 @@ Instrucao * decodificar(int instr){
       Instrucao->instruction_R->func = func;
       break;
     case TYPE_J:
-      
+
     case TYPE_I:
       break;
   }
