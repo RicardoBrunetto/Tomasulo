@@ -10,7 +10,6 @@ void inicializar_estacoes_reserva(){
   //TODO: Definir quais UFs cada uma das ERs possui
 }
 
-
 void er_print(){
   int indice_ER;
   printf("\n\tESTAÇÕES DE RESERVA\n");

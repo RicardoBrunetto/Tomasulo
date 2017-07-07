@@ -2,7 +2,15 @@
 
 /*Retorna se é do tipo R, J ou I*/
 int getTipo_instrucao(int opcode){
-  return 0;
+  Def * d;
+  while((d = (Def *)getProximoLinkedList(&lista_definicoes)) != NULL){
+    if(d->opcode == opcode){
+      resetProximoLinkedList(&lista_definicoes);
+      return d->formato;
+    }
+  }
+  printf("\nERRO GRAVISSIMO - UTIL.c\n");
+  resetProximoLinkedList(&lista_definicoes);
 }
 
 /*Função que realiza a decodificação de uma instrução (em inteiro)*/
@@ -45,14 +53,21 @@ Instrucao * decodificar(int instr){
   return instrucao;
 }
 
+//TODO:
 int isInconditionalJump(Instrucao * i){
   return 1;
 }
 
 /*Verifica se aquela unidade funcional é capaz de processar aquela instrução*/
-int tipo_compativel(int tipo_instrucao, int tipo_uf){
-  return 1;
+int tipo_compativel(int opcode, int tipo_uf){
+  Def * d;
+  while((d = (Def *)getProximoLinkedList(&lista_definicoes)) != NULL){
+    if(d->opcode == opcode){
+      resetProximoLinkedList(&lista_definicoes);
+      if(d->tipo_uf == tipo_uf) return 1;
+      return 0;
+    }
+  }
+  printf("\nERRO GRAVISSIMO - UTIL.c\n");
+  resetProximoLinkedList(&lista_definicoes);
 }
-
-
-/*Procedimento que lê o arquivo de definições e os carrega*/

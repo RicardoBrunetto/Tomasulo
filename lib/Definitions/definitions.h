@@ -5,7 +5,10 @@
 
 /*Estrutura de definição*/
 typedef struct{
-  int opcode, ciclos, tipo_uf;
+  char * mnemonic;
+  int opcode, ciclos;
+  Tipo_Instrucao formato;
+  Tipo_ER_UF tipo_uf;
 }Def;
 
 /*Lista de definições*/
@@ -13,7 +16,7 @@ LinkedList lista_definicoes;
 
 /*Definições de enum para controle das instruções*/
 typedef enum { TYPE_R, TYPE_J, TYPE_I } Tipo_Instrucao;
-
+typedef enum { ADD_UF, MUL_UF, LOAD_UF, STORE_UF } Tipo_ER_UF;
 /*Union de Instruções.
  Serve para representar os três tipos de instruções simultaneamente
  O tipo de instrução está na variável type*/

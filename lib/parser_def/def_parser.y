@@ -19,12 +19,12 @@
 general: definitions
 
 definitions: |
-            definitions ABRE_PAR LBL DOISPONTOS VAL VIRG VAL VIRG VAL FECHA_PAR pl {
-              printf("\n\t%d\t%d\t%d\n", $6, $8, $10);
+            definitions ABRE_PAR LBL DOISPONTOS VAL VIRG VAL VIRG VAL VIRG VAL FECHA_PAR pl {
              Def * d = (Def *)malloc(sizeof(Def));
              d->opcode = $6;
              d->ciclos = $8;
-             d->tipo_uf = $10;
+             d->formato = $10;
+             d->tipo_uf = $12;
              insertLinkedList(&lista_definicoes, d);
            }
 
@@ -39,7 +39,7 @@ int main(){
   printf("\n%d", getSizeofLinkedList(lista_definicoes));
   Def * d;
   while((d = (Def *)getProximoLinkedList(&lista_definicoes)) != NULL)
-    printf("\n\t%d\t%d\t%d\n", d->opcode, d->ciclos, d->tipo_uf);
+    printf("\n\t%d\t%d\t%d\t%d\n", d->opcode, d->ciclos, d->formato, d->tipo_uf);
   resetProximoLinkedList(&lista_definicoes);
 }
 

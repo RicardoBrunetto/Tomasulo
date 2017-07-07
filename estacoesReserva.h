@@ -1,12 +1,11 @@
-#include <stdio.h>
-#include <stdlib.h>
-
 #ifndef ESTACOES_RESERVA_H
 #define ESTACOES_RESERVA_H
 
-#define QUANTIDADE_ESTACOES_RESERVA 5
+#include <stdio.h>
+#include <stdlib.h>
+#include "definitions.h"
 
-typedef enum { ADD_UF, MUL_UF, LOAD_UF, STORE_UF } Tipo_ER_UF;
+#define QUANTIDADE_ESTACOES_RESERVA 5
 
 /*Estruturas que o Processador Manipulará*/
 typedef struct{
