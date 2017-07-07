@@ -5,6 +5,7 @@ int getTipo_instrucao(int opcode){
   return 0;
 }
 
+/*Função que realiza a decodificação de uma instrução (em inteiro)*/
 Instrucao * decodificar(int instr){
   int opcode = instr >> 26; opcode = opcode & 63;
   int tipo = getTipo_instrucao(opcode);
@@ -18,19 +19,30 @@ Instrucao * decodificar(int instr){
       int func = instr & 63;
       Instrucao->type = TYPE_R;
       Instrucao->instruction_R->opcode = opcode;
-      Instrucao->instruction_R->rd = rd;
       Instrucao->instruction_R->rs = rs;
       Instrucao->instruction_R->rt = rt;
+      Instrucao->instruction_R->rd = rd;
       Instrucao->instruction_R->shift = sh;
       Instrucao->instruction_R->func = func;
       break;
     case TYPE_J:
-
+      int target = target << 6; target = target >> 6;
+      Instrucao->type = TYPE_J;
+      Instrucao->instruction_J->opcode = opcode;
+      Instrucao->instruction_J->target = target;
+      break;
     case TYPE_I:
+      int rs = instr >> 21; rs = rs & 31;
+      int rt = instr >> 16; rt = rt & 31;
+      int imm = instr << 16; imm = imm >> 16;
+      Instrucao->type = TYPE_I;
+      Instrucao->instruction_I->opcode = opcode;
+      Instrucao->instruction_I->rs= rs;
+      Instrucao->instruction_I->rt = rt;
+      Instrucao->instruction_I->imm = imm;
       break;
   }
-  // mágica
-  return 0;
+  return instrucao;
 }
 
 int isInconditionalJump(Instrucao * i){

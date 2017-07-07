@@ -1,10 +1,15 @@
 #ifndef DEFINITIONS_H
 #define DEFINITIONS_H
 
+#include "LinkedList.h"
+
 /*Estrutura de definição*/
 typedef struct{
   int opcode, ciclos, tipo_uf;
 }Def;
+
+/*Lista de definições*/
+LinkedList lista_definicoes;
 
 /*Definições de enum para controle das instruções*/
 typedef enum { TYPE_R, TYPE_J, TYPE_I } Tipo_Instrucao;

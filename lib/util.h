@@ -1,9 +1,9 @@
+#ifndef PROC_UTIL_H
+#define PROC_UTIL_H
+
 #include <stdio.h>
 #include <string.h>
 #include "definitions.h"
-
-#ifndef PROC_UTIL_H
-#define PROC_UTIL_H
 
 int getTipo_instrucao(int opcode);
 Instrucao * decodificar(int instr);
