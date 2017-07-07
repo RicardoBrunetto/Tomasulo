@@ -1,4 +1,5 @@
 #!/bin/sh
-git add *
+git add -u
+git status
 git commit -m \'$1\'
 git push upstream
