@@ -3,6 +3,10 @@
 
 #include "LinkedList.h"
 
+/*Definições de enum para controle das instruções*/
+typedef enum { TYPE_R, TYPE_J, TYPE_I } Tipo_Instrucao;
+typedef enum { ADD_UF, MUL_UF, LOAD_UF, STORE_UF } Tipo_ER_UF;
+
 /*Estrutura de definição*/
 typedef struct{
   char * mnemonic;
@@ -14,9 +18,6 @@ typedef struct{
 /*Lista de definições*/
 LinkedList lista_definicoes;
 
-/*Definições de enum para controle das instruções*/
-typedef enum { TYPE_R, TYPE_J, TYPE_I } Tipo_Instrucao;
-typedef enum { ADD_UF, MUL_UF, LOAD_UF, STORE_UF } Tipo_ER_UF;
 /*Union de Instruções.
  Serve para representar os três tipos de instruções simultaneamente
  O tipo de instrução está na variável type*/
