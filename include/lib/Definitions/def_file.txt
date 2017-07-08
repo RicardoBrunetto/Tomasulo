@@ -1,0 +1,5 @@
+# (INSTRUCTION CYCLES FORMATO TYPE_UF)
+# typedef enum { TYPE_R, TYPE_J, TYPE_I } Tipo_Instrucao;
+# typedef enum { ADD_UF, MUL_UF, LOAD_UF, STORE_UF } Tipo_ER_UF;
+(add: 20, 5, TYPE_R, ADD_UF)
+(imul: 21, 9, TYPE_I, MUL_UF)

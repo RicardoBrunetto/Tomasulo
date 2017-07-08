@@ -1,0 +1,5 @@
+bison -d parser.y
+flex scanner.l
+cc -w -o @$ parser.tab.c lex.yy.c -lfl
+mv @$ tradutor
+echo 'Sucesso - Tradutor!'

@@ -1,0 +1,225 @@
+Terminais sem uso na gramática
+
+   INTLIT
+   STRINGLIT
+   COMMA
+
+
+Gramática
+
+    0 $accept: program $end
+
+    1 program: dataSection textSection
+
+    2 dataSection: %empty
+
+    3 textSection: %empty
+    4            | instSeq
+
+    5 instSeq: inst
+    6        | instSeq inst
+
+    7 inst: alInst
+    8     | cmInst
+    9     | cInst
+
+   10 alInst: ADD identifier
+
+   11 cmInst: LUI identifier
+
+   12 cInst: SLT identifier
+
+   13 identifier: IDENT
+
+
+Terminais, com as regras onde eles aparecem
+
+$end (0) 0
+error (256)
+IDENT (258) 13
+INTLIT (259)
+STRINGLIT (260)
+ADD (261) 10
+LUI (262) 11
+SLT (263) 12
+COMMA (264)
+
+
+Não terminais com as regras onde eles aparecem
+
+$accept (10)
+    à esquerda: 0
+program (11)
+    à esquerda: 1, à direita: 0
+dataSection (12)
+    à esquerda: 2, à direita: 1
+textSection (13)
+    à esquerda: 3 4, à direita: 1
+instSeq (14)
+    à esquerda: 5 6, à direita: 4 6
+inst (15)
+    à esquerda: 7 8 9, à direita: 5 6
+alInst (16)
+    à esquerda: 10, à direita: 7
+cmInst (17)
+    à esquerda: 11, à direita: 8
+cInst (18)
+    à esquerda: 12, à direita: 9
+identifier (19)
+    à esquerda: 13, à direita: 10 11 12
+
+
+Estado 0
+
+    0 $accept: . program $end
+
+    $padrão  reduzir usando a regra 2 (dataSection)
+
+    program      ir ao estado 1
+    dataSection  ir ao estado 2
+
+
+Estado 1
+
+    0 $accept: program . $end
+
+    $end  deslocar, e ir ao estado 3
+
+
+Estado 2
+
+    1 program: dataSection . textSection
+
+    ADD  deslocar, e ir ao estado 4
+    LUI  deslocar, e ir ao estado 5
+    SLT  deslocar, e ir ao estado 6
+
+    $padrão  reduzir usando a regra 3 (textSection)
+
+    textSection  ir ao estado 7
+    instSeq      ir ao estado 8
+    inst         ir ao estado 9
+    alInst       ir ao estado 10
+    cmInst       ir ao estado 11
+    cInst        ir ao estado 12
+
+
+Estado 3
+
+    0 $accept: program $end .
+
+    $padrão  aceitar
+
+
+Estado 4
+
+   10 alInst: ADD . identifier
+
+    IDENT  deslocar, e ir ao estado 13
+
+    identifier  ir ao estado 14
+
+
+Estado 5
+
+   11 cmInst: LUI . identifier
+
+    IDENT  deslocar, e ir ao estado 13
+
+    identifier  ir ao estado 15
+
+
+Estado 6
+
+   12 cInst: SLT . identifier
+
+    IDENT  deslocar, e ir ao estado 13
+
+    identifier  ir ao estado 16
+
+
+Estado 7
+
+    1 program: dataSection textSection .
+
+    $padrão  reduzir usando a regra 1 (program)
+
+
+Estado 8
+
+    4 textSection: instSeq .
+    6 instSeq: instSeq . inst
+
+    ADD  deslocar, e ir ao estado 4
+    LUI  deslocar, e ir ao estado 5
+    SLT  deslocar, e ir ao estado 6
+
+    $padrão  reduzir usando a regra 4 (textSection)
+
+    inst    ir ao estado 17
+    alInst  ir ao estado 10
+    cmInst  ir ao estado 11
+    cInst   ir ao estado 12
+
+
+Estado 9
+
+    5 instSeq: inst .
+
+    $padrão  reduzir usando a regra 5 (instSeq)
+
+
+Estado 10
+
+    7 inst: alInst .
+
+    $padrão  reduzir usando a regra 7 (inst)
+
+
+Estado 11
+
+    8 inst: cmInst .
+
+    $padrão  reduzir usando a regra 8 (inst)
+
+
+Estado 12
+
+    9 inst: cInst .
+
+    $padrão  reduzir usando a regra 9 (inst)
+
+
+Estado 13
+
+   13 identifier: IDENT .
+
+    $padrão  reduzir usando a regra 13 (identifier)
+
+
+Estado 14
+
+   10 alInst: ADD identifier .
+
+    $padrão  reduzir usando a regra 10 (alInst)
+
+
+Estado 15
+
+   11 cmInst: LUI identifier .
+
+    $padrão  reduzir usando a regra 11 (cmInst)
+
+
+Estado 16
+
+   12 cInst: SLT identifier .
+
+    $padrão  reduzir usando a regra 12 (cInst)
+
+
+Estado 17
+
+    6 instSeq: instSeq inst .
+
+    $padrão  reduzir usando a regra 6 (instSeq)
