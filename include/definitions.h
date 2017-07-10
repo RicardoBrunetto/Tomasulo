@@ -16,7 +16,7 @@ int QUANTIDADE_ESTACOES_RESERVA;
 /*Estrutura de definição*/
 typedef struct{
   char * mnemonic;
-  int opcode, ciclos;
+  int opcode, function, ciclos, abstract_opcode;
   Tipo_Instrucao formato;
   Tipo_ER_UF tipo_uf;
 }Def;
@@ -29,13 +29,14 @@ typedef struct{
 
 /*Estrutura da Estação de Reserva*/
 typedef struct{
-  int BusyBit, Qj, Vj, Qk, Vk, a, Op;
+  int BusyBit, Qj, Vj, Qk, Vk, A, Op;
   UnidadeFuncional uf;
 }EstacaoReserva;
 
 /*Estrutura de Barramento*/
 typedef struct{
     int dado, endereco;
+    //TODO: Inserir uma fila?
 }Barramento;
 
 /*Estrutura de Registrador*/
@@ -46,16 +47,17 @@ typedef struct{
 /*Union de Instruções.*/
 typedef struct{
    Tipo_Instrucao type;
+   int opcode;
 
    union union_instr{
      struct R_t{
-       int opcode, rd, rs, rt, func, shift;
+       int rd, rs, rt, func, shift;
      }instruction_R;
      struct J_t{
-       int opcode, target;
+       int target;
      }instruction_J;
      struct I_t{
-       int opcode, rs, rt, imm;
+       int rs, rt, imm;
      }instruction_I;
    }instruction;
 }Instrucao;

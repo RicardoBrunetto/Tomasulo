@@ -40,6 +40,19 @@ definitions: |
              d->ciclos = $7;
              d->formato = get_formato_based($9);;
              d->tipo_uf = get_uf_based($11);
+             d->function = -1; /*Não possuem Function*/
+             d->abstract_opcode = $5; /*Não possuem Abstract Opcode*/
+             insertLinkedList(&lista_definicoes, d);
+           } |
+           definitions ABRE_PAR LBL DOISPONTOS VAL VIRG VAL VIRG LBL VIRG LBL VIRG VAL VIRG VAL FECHA_PAR pl {
+             Def * d = (Def *)malloc(sizeof(Def));
+             d->mnemonic = $3;
+             d->opcode = $5;
+             d->ciclos = $7;
+             d->formato = get_formato_based($9);;
+             d->tipo_uf = get_uf_based($11);
+             d->function = $13;
+             d->abstract_opcode = $15;
              insertLinkedList(&lista_definicoes, d);
            }
 
@@ -78,7 +91,7 @@ int main(){
   printf("\nInstruções Reconhecidas: %d\n", getSizeofLinkedList(lista_definicoes));
   Def * d;
   while((d = (Def *)getProximoLinkedList(&lista_definicoes)) != NULL)
-    printf("\t%s\t%d\t%d\t%d\t%d\n", d->mnemonic, d->opcode, d->ciclos, d->formato, d->tipo_uf);
+    printf("\t%s\t%d\t%d\t%d\t%d\t%d\t%d\n", d->mnemonic, d->opcode, d->ciclos, d->formato, d->tipo_uf, d->function, d->abstract_opcode);
   resetProximoLinkedList(&lista_definicoes);
   printf("\n\nQuantidades de Estações de Reserva:\nADD:\t%d\nMUL:\t%d\nLOAD:\t%d\nSTORE:\t%d\nTOTAL:\t%d\n", QUANTIDADE_ESTACOES_RESERVA_ADD, QUANTIDADE_ESTACOES_RESERVA_MUL, QUANTIDADE_ESTACOES_RESERVA_LOAD, QUANTIDADE_ESTACOES_RESERVA_STORE, QUANTIDADE_ESTACOES_RESERVA);
 }

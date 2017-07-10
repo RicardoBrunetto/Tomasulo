@@ -9,6 +9,7 @@ void start(){
 }
 
 void clock_next(){
+  /*Ao receber uma syscall para exit, o processador enviará um sinal para cessar os clocks*/
   while(Processador_Clock.dado == FLAG_VAZIO){
     Processador_next();
   }
