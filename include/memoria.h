@@ -4,6 +4,8 @@
 #ifndef MEMORIA_H
 #define MEMORIA_H
 
+#include "barramentos.h"
+
 #define MEM_SIZE 20
 
 typedef unsigned char Byte;

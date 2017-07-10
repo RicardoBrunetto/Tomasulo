@@ -62,27 +62,27 @@ void PIPELINE_decode(){
   Colocar-se-á a instrução para executar
   Caso a instrução já esteja ocupada, diminui-se a quantidade de ciclos restantes*/
 void PIPELINE_execute(){
-  int i, estacoes_ocupadas = 0;
+  int i;
   for(i = 0; i<QUANTIDADE_ESTACOES_RESERVA; i++){
-    if(estacoes_Reserva[i].BusyBit > 0){  // Se a ER estiver ocupada
-      estacoes_Reserva[i].BusyBit = estacoes_Reserva[i].BusyBit - 1; // decrementa a quantidade de ciclos restantes
-      estacoes_ocupadas++; // controla a quantidade de ER's ocupadas
-    }else{ // Estação de Reserva Disponível
-      Instrucao * instr = get_topo_fila(&fila_Instrucoes); // Pega uma instrução da fila (mas não a remove de lá)
-      // Antes da emissão, de fato, ocorre a verificação, se aquela ER possui uma Unidade Funcional capaz de processá-la
-      if(instr == NULL) continue; // Não há mais instruções na fila, passa para a próxima ER
-      if(tipo_compativel(instr->type, estacoes_Reserva[i].uf.type)){ // Se aquela Unidade Funcional puder processar a instrução
-        instr = remover_fila(&fila_Instrucoes); // Não altera instr, apenas a remove da fila de fato, emitindo-a
+    if(estacoes_Reserva[i].BusyBit > 0){  /*Se a ER estiver ocupada*/
+      estacoes_Reserva[i].BusyBit = estacoes_Reserva[i].BusyBit - 1; /*decrementa a quantidade de ciclos restantes*/
+    }else{ /*Estação de Reserva Disponível*/
+      Instrucao * instr = get_topo_fila(&fila_Instrucoes); /*Pega uma instrução da fila (mas não a remove de lá)*/
+      /*Antes da emissão, de fato, ocorre a verificação, se aquela ER possui uma Unidade Funcional capaz de processá-la*/
+      if(instr == NULL) continue; /*Não há mais instruções na fila, passa para a próxima ER*/
+      if(tipo_compativel(instr->opcode, estacoes_Reserva[i].uf.type)){ /*Se aquela Unidade Funcional puder processar a instrução*/
+        instr = remover_fila(&fila_Instrucoes); /*Não altera instr, apenas a remove da fila de fato, emitindo-a de fato*/
+        /*EMISSÃO*/
 
-        estacoes_ocupadas++;
-      }else{  // Se não puder, analisa a próxima ER
+        //TODO: /*verificar se os operandos estão disponíveis*/
+
+        er_despachar(i); /* Despacha a instrução para a estação de Reserva*/
+
+      }else{  /*Se não puder, analisa a próxima ER*/
         continue;
       } // Analisa a próxima estação de Reserva
     //  estacoes_Reserva[i].BusyBit =
     }
-  }
-  if(!estacoes_ocupadas && (get_topo_fila(&fila_Instrucoes) == NULL)){ //Se nenhuma Estacao estiver ocupada e não houver mais instruções na fila
-    printf("\nFim de execução\n");
   }
 }
 
@@ -90,7 +90,25 @@ void PIPELINE_execute(){
   Obtém o resultado que está no CDB
   Atualiza as ER's e o Banco de Registradores*/
 void PIPELINE_write(){
-
+   /*CDB.endereco contém o índice da Estação de Reserva que gerou o dado*/
+  if(CDB.endereco == FLAG_VAZIO) return; /*Indica que nada foi escrito no CDB ainda (nada foi executado)*/
+  int i;
+  for(i=0; i<QUANTIDADE_ESTACOES_RESERVA; i++){ /*Verifica as Estações de Reserva que estão agurdando o dado*/
+    if(estacoes_Reserva[i].Qj == CDB.endereco){
+      estacoes_Reserva[i].Qj = OPERANDO_DISPONIVEL;
+      estacoes_Reserva[i].Vj = CDB.dado;
+    }
+    if(estacoes_Reserva[i].Qk == CDB.endereco){
+      estacoes_Reserva[i].Qk = OPERANDO_DISPONIVEL;
+      estacoes_Reserva[i].Vk = CDB.dado;
+    }
+  }
+  for(i=1; i<(sizeof(banco_Registradores)/sizeof(Registrador)); i++){ /*Ignora o registrador ZERO*/
+    if(reg_get_status(i) == CDB.endereco){ /*Caso Qi do registrador seja igual ao índice da Estação de Reserva*/
+      reg_change_status(i, REGISTRADOR_DISPONIVEL); /*Muda o Qi do registrador para indicar que está disponível*/
+      reg_write(i, CDB.dado); /*Escreve o dado no registrador*/
+    }
+  }
 }
 
 
@@ -100,10 +118,10 @@ void processador_print(){
   er_print();
 }
 
-
 /*Procedimento que inicializa os componentes do processador*/
 void processador_start(){
   inicializar_fila(&fila_Instrucoes);
+  inicializar_barramentos();
   inicializar_registradores();
   inicializar_estacoes_reserva();
   PC.valor = 0;

@@ -5,6 +5,8 @@
 #include <stdlib.h>
 #include "definitions.h"
 
+#define OPERANDO_DISPONIVEL -1
+
 /*Estações de Reserva*/
 EstacaoReserva * estacoes_Reserva;
 

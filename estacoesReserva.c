@@ -22,6 +22,11 @@ void inicializar_estacoes_reserva(){
   }
 }
 
+/*Procedimento que envia a instrução para a Unidade Funcional*/
+void er_despachar(){
+
+}
+
 void er_print(){
   int indice_ER;
   printf("\n\tESTAÇÕES DE RESERVA\n");

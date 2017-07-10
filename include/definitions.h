@@ -3,9 +3,13 @@
 
 #include "LinkedList.h"
 
+#define FLAG_VAZIO -1
+
 /*Definições de enum para controle das instruções*/
 typedef enum { TYPE_R, TYPE_J, TYPE_I } Tipo_Instrucao;
 typedef enum { ADD_UF, MUL_UF, LOAD_UF, STORE_UF } Tipo_ER_UF;
+
+/*Definições das quantidades de Estações de Reserva*/
 int QUANTIDADE_ESTACOES_RESERVA_ADD, QUANTIDADE_ESTACOES_RESERVA_MUL, QUANTIDADE_ESTACOES_RESERVA_LOAD, QUANTIDADE_ESTACOES_RESERVA_STORE;
 int QUANTIDADE_ESTACOES_RESERVA;
 

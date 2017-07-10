@@ -4,7 +4,7 @@ void inicializar_registradores(){
   int i;
   for(i=0; i<(sizeof(banco_Registradores)/sizeof(Registrador)); i++){
     banco_Registradores[i].valor = 0;
-    banco_Registradores[i].Qi = REGISTRADOR_LIVRE;
+    banco_Registradores[i].Qi = REGISTRADOR_DISPONIVEL;
   }
   banco_Registradores[0].valor = 0; //Registrador ZERO tem sempre o valor 0
 }

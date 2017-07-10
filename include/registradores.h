@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include "definitions.h"
 
-#define REGISTRADOR_LIVRE -1
+#define REGISTRADOR_DISPONIVEL -1
 
 void inicializar_registradores();
 int reg_write(int w, int registrador);
