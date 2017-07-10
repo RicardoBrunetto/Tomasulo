@@ -6,6 +6,8 @@
 /*Definições de enum para controle das instruções*/
 typedef enum { TYPE_R, TYPE_J, TYPE_I } Tipo_Instrucao;
 typedef enum { ADD_UF, MUL_UF, LOAD_UF, STORE_UF } Tipo_ER_UF;
+int QUANTIDADE_ESTACOES_RESERVA_ADD, QUANTIDADE_ESTACOES_RESERVA_MUL, QUANTIDADE_ESTACOES_RESERVA_LOAD, QUANTIDADE_ESTACOES_RESERVA_STORE;
+int QUANTIDADE_ESTACOES_RESERVA;
 
 /*Estrutura de definição*/
 typedef struct{
@@ -15,12 +17,29 @@ typedef struct{
   Tipo_ER_UF tipo_uf;
 }Def;
 
-/*Lista de definições*/
-LinkedList lista_definicoes;
+/*Estruturas da Unidade Funcional*/
+typedef struct{
+  Tipo_ER_UF type; //Tipo de Unidade Funcional
+  int ALUOutput; //Buffer que segura a saída da Unidade Funcional
+}UnidadeFuncional;
 
-/*Union de Instruções.
- Serve para representar os três tipos de instruções simultaneamente
- O tipo de instrução está na variável type*/
+/*Estrutura da Estação de Reserva*/
+typedef struct{
+  int BusyBit, Qj, Vj, Qk, Vk, a, Op;
+  UnidadeFuncional uf;
+}EstacaoReserva;
+
+/*Estrutura de Barramento*/
+typedef struct{
+    int dado, endereco;
+}Barramento;
+
+/*Estrutura de Registrador*/
+typedef struct{
+  int Qi, valor;
+}Registrador;
+
+/*Union de Instruções.*/
 typedef struct{
    Tipo_Instrucao type;
 
@@ -36,5 +55,8 @@ typedef struct{
      }instruction_I;
    }instruction;
 }Instrucao;
+
+/*Lista de definições*/
+LinkedList lista_definicoes;
 
 #endif

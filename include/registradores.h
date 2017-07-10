@@ -3,15 +3,9 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include "definitions.h"
 
 #define REGISTRADOR_LIVRE -1
-
-typedef struct reg{
-  int Qi, valor;
-}Registrador;
-
-/*Banco com os 32 registradores*/
-Registrador banco_Registradores[32];
 
 void inicializar_registradores();
 int reg_write(int w, int registrador);

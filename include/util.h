@@ -6,7 +6,6 @@
 #include "definitions.h"
 
 int getTipo_instrucao(int opcode);
-Instrucao * decodificar(int instr);
 int isInconditionalJump(Instrucao * i);
 int tipo_compativel(int tipo_instrucao, int tipo_uf);
 #endif

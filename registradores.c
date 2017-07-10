@@ -16,11 +16,7 @@ int reg_write(int w, int registrador){
 }
 
 int reg_read(int registrador){
-  if(banco_Registradores[registrador].Qi == REGISTRADOR_LIVRE){ //Se nenhuma ER estiver manipulando o registrador
-    return banco_Registradores[registrador].valor;
-  }else{
-    return banco_Registradores[registrador].Qi;
-  }
+  return banco_Registradores[registrador].valor;
 }
 
 int reg_get_status(int registrador){

@@ -1,4 +1,8 @@
-# (INSTRUCTION CYCLES FORMATO TYPE_UF)
+&add: 3
+&mul: 2
+&load: 5
+&store: 5
+# (INSTRUCTION: OPCODE, CYCLES, Tipo_Instrucao, Tipo_ER_UF)
 # typedef enum { TYPE_R, TYPE_J, TYPE_I } Tipo_Instrucao;
 # typedef enum { ADD_UF, MUL_UF, LOAD_UF, STORE_UF } Tipo_ER_UF;
 (add: 20, 5, TYPE_R, ADD_UF)

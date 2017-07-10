@@ -51,7 +51,8 @@ extern int yydebug;
     LBL = 261,
     VAL = 262,
     VIRG = 263,
-    PL = 264
+    PL = 264,
+    ECOM = 265
   };
 #endif
 
@@ -65,7 +66,7 @@ union YYSTYPE
   int integer_value;
   char * string_value;
 
-#line 69 "def_parser.tab.h" /* yacc.c:1909  */
+#line 70 "def_parser.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

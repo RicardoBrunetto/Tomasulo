@@ -3,16 +3,17 @@
 
 #include "lib/util.h"
 #include "Memoria/memoria.h"
-#include "lib/DQueue.h"
-#include "Registrador/registrador.h"
+#include "Registradores/registradores.h"
 #include "EstacoesReserva/estacoesReserva.h"
 
-/*Definições das Dimensões dos componentes do Processador*/
-
+/*Barramento CDB*/
+Barramento CDB;
 /*Program Counter e Instruction Register*/
 Registrador PC, IR;
 /*Fila de Instruções a serem processadas*/
 Fila fila_Instrucoes;
+/*Banco com os 32 registradores*/
+Registrador banco_Registradores[32];
 
 /*Protótipos*/
 int main();

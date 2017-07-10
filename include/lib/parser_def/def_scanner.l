@@ -9,6 +9,7 @@ extern YYSTYPE yylval;
 
 "#".*.[\n]
 
+"&" { return ECOM; }
 "," { return VIRG; }
 ":" { return DOISPONTOS; }
 "(" { return ABRE_PAR; }

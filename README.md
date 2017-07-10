@@ -5,13 +5,12 @@ Trabalho Arquitetura II
   - [x] Função de Decodificação
 - [ ] MakeFile
   - [ ] Integrar Tradutor
-
-
-- [ ] Começar cache
+- [ ] Alterações do Tradutor
+  - [ ] Não permitir escrever no registrador ZERO
+  - [ ] Inserir nop para desvios
+- [ ] Implementar cache
 - [ ] Implementar clock
 
 # Dúvidas
 ## Registradores
-    - Flag de Registrador Livre (0 é um índice válido para ER)
     - Função de leitura
-    - Não permitir escrever no registrador ZERO

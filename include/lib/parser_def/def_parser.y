@@ -19,9 +19,18 @@
 %token <integer_value> VAL
 %token VIRG
 %token PL
+%token ECOM
 
 %%
-general: definitions
+general: spec pl definitions
+
+spec: ECOM LBL DOISPONTOS VAL pl ECOM LBL DOISPONTOS VAL pl ECOM LBL DOISPONTOS VAL pl ECOM LBL DOISPONTOS VAL{
+        QUANTIDADE_ESTACOES_RESERVA_ADD = $4;
+        QUANTIDADE_ESTACOES_RESERVA_MUL = $9;
+        QUANTIDADE_ESTACOES_RESERVA_LOAD = $14;
+        QUANTIDADE_ESTACOES_RESERVA_STORE = $19;
+        QUANTIDADE_ESTACOES_RESERVA = $4 + $9 + $14 + $19;
+      }
 
 definitions: |
             definitions ABRE_PAR LBL DOISPONTOS VAL VIRG VAL VIRG LBL VIRG LBL FECHA_PAR pl {
@@ -66,11 +75,12 @@ int get_formato_based(char * formato){
 int main(){
   inicializarLista(&lista_definicoes);
   yyparse();
-  printf("Itens: \n%d", getSizeofLinkedList(lista_definicoes));
+  printf("\nInstruções Reconhecidas: %d\n", getSizeofLinkedList(lista_definicoes));
   Def * d;
   while((d = (Def *)getProximoLinkedList(&lista_definicoes)) != NULL)
-    printf("\n\t%s\t%d\t%d\t%d\t%d\n", d->mnemonic, d->opcode, d->ciclos, d->formato, d->tipo_uf);
+    printf("\t%s\t%d\t%d\t%d\t%d\n", d->mnemonic, d->opcode, d->ciclos, d->formato, d->tipo_uf);
   resetProximoLinkedList(&lista_definicoes);
+  printf("\n\nQuantidades de Estações de Reserva:\nADD:\t%d\nMUL:\t%d\nLOAD:\t%d\nSTORE:\t%d\nTOTAL:\t%d\n", QUANTIDADE_ESTACOES_RESERVA_ADD, QUANTIDADE_ESTACOES_RESERVA_MUL, QUANTIDADE_ESTACOES_RESERVA_LOAD, QUANTIDADE_ESTACOES_RESERVA_STORE, QUANTIDADE_ESTACOES_RESERVA);
 }
 
 int yyerror(char *s) {
