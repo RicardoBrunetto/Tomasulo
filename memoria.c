@@ -1,6 +1,10 @@
 #include <stdlib.h>
 #include "memoria.h"
 
+/*A memória*/
+/*A definição é interna pois nenhum componente tem acesso direto*/
+Memoria m;
+
 int mem_write(Word w, int address){
   unsigned char * ptr = (unsigned char *) &w;
   int k;

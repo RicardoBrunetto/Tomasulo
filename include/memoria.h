@@ -15,9 +15,6 @@ typedef struct{
     Byte vetor[MEM_SIZE];
 }Memoria;
 
-/*A memória*/
-Memoria m;
-
 Word mem_read(int address);
 int mem_write(Word w, int address);
 void mem_print();

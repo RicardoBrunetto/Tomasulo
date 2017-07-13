@@ -10,6 +10,8 @@ Trabalho Arquitetura II
   - [ ] Inserir nop para desvios
 - [ ] Implementar cache
 - [ ] Implementar clock
+- [ ] Implementar barramentos
+- [ ] Implementar ULA
 
 # Dúvidas
 ## Registradores

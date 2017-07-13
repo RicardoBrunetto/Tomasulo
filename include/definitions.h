@@ -5,6 +5,12 @@
 
 #define FLAG_VAZIO -1
 
+#define FLAG_READ   0
+#define FLAG_WRITE  1
+#define FLAG_BUSY   2
+#define FLAG_READY  3
+
+
 /*Definições de enum para controle das instruções*/
 typedef enum { TYPE_R, TYPE_J, TYPE_I } Tipo_Instrucao;
 typedef enum { ADD_UF, MUL_UF, LOAD_UF, STORE_UF } Tipo_ER_UF;
@@ -35,7 +41,7 @@ typedef struct{
 
 /*Estrutura de Barramento*/
 typedef struct{
-    int dado, endereco;
+    int dados, controle;
     //TODO: Inserir uma fila?
 }Barramento;
 
