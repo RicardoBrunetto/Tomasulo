@@ -1,26 +1,21 @@
-#include "clock.h"
-#include "processador.h"
-#include "barramentos.h"
 #include "cache.h"
+#include "include/processador.h"
 
 int total_ciclos;
 
-void start(){
-  total_ciclos = 0;
-  processador_start();
-
-  clock_next();
-}
-
-void clock_next(){
+void clock(){
   /*Ao receber uma syscall para exit, o processador enviará um sinal para cessar os clocks*/
-  while(Processador_Clock.dado == FLAG_VAZIO){
+  while(PCB.dados == FLAG_READY){
     total_ciclos++;
     processador_next();
     cache_next();
   }
 }
 
-int main(){
+void clock_start(){
+  total_ciclos = 0;
+  inicializar_cache();
+  processador_start();
 
+  clock();
 }

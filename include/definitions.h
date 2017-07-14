@@ -3,13 +3,13 @@
 
 #include "LinkedList.h"
 
-#define FLAG_VAZIO -1
+#define WORD_SIZE 4 /*Tamanho de uma palavra (em bytes)*/
 
+#define FLAG_VAZIO -1
 #define FLAG_READ   0
 #define FLAG_WRITE  1
 #define FLAG_BUSY   2
 #define FLAG_READY  3
-
 
 /*Definições de enum para controle das instruções*/
 typedef enum { TYPE_R, TYPE_J, TYPE_I } Tipo_Instrucao;
@@ -41,7 +41,7 @@ typedef struct{
 
 /*Estrutura de Barramento*/
 typedef struct{
-    int dados, controle;
+    int dados, endereco, controle;
     //TODO: Inserir uma fila?
 }Barramento;
 
@@ -58,13 +58,13 @@ typedef struct{
    union union_instr{
      struct R_t{
        int rd, rs, rt, func, shift;
-     }instruction_R;
+     } instruction_R;
      struct J_t{
        int target;
-     }instruction_J;
+     } instruction_J;
      struct I_t{
        int rs, rt, imm;
-     }instruction_I;
+     } instruction_I;
    }instruction;
 }Instrucao;
 

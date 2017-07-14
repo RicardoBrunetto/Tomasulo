@@ -3,9 +3,11 @@
 
 #include "definitions.h"
 
-Barramento CDB;
-Barramento Cache_Memoria;
-Barramento Processador_Cache;
-Barramento Processador_Clock;
+Barramento CDB; /*Common Data Bus*/
+Barramento CMB; /*Cache <-> Memory Bus*/
+Barramento PCB; /*Processor <-> Cache Bus*/
+Barramento PCLB; /*Processor <-> Clock Bus*/
+
+void inicializar_barramentos();
 
 #endif

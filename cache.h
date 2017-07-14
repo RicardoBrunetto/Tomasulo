@@ -1,15 +1,22 @@
 #ifndef CACHE_H
 #define CACHE_H
 
-#include "definitions.h"
-#include "memoria.h"
-#include "barramentos.h"
+#include "include/memoria.h"
 
-#define CACHE_LINES 2048 /*São 2K linhas*/
-#define CACHE_WORDS 4    /*Cada linha com 4 palavras*/
+#define CACHE_LINE_COUNT 2048 /*São 2K linhas*/
+#define CACHE_LINE_SIZE  4    /*Cada linha com 4 palavras*/
 
 typedef struct{
-  Word cache[CACHE_LINES][CACHE_WORDS];
+  Byte campos[CACHE_LINE_SIZE][WORD_SIZE];
+  short int tag;
+  Byte update; /*Poderia ser um bit*/
+}Linha;
+
+typedef struct{
+  Linha linhas[CACHE_LINE_COUNT];
 }Cache;
+
+void inicializar_cache();
+void cache_next();
 
 #endif

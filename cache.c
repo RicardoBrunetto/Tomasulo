@@ -8,26 +8,35 @@ Cache cache_dados;
 Cache cache_instrucoes;
 
 int cache_read(int address){
-  
-  Processador_Cache.controle = FLAG_READY;
+
+  CMB.controle = FLAG_READ;
+  CMB.endereco = address;
+  //PCB.controle = FLAG_READY;
 }
 
-int cache_write(){
+int cache_write(int address, int dado){
 
-  Processador_Cache.controle = FLAG_VAZIO;
+  PCB.controle = FLAG_READY;
 }
 
 void cache_controller_next(){
-  if(Processador_Cache.controle == FLAG_READ){
-    Processador_Cache.controle = FLAG_BUSY; /*Define o barramento como ocupado*/
-    Processador_Cache.dado = cache_read(Processador_Cache.dado); /*Escreve o dado lido da cache no endereço*/
-  }else if(Processador_Cache.controle == FLAG_WRITE){
-    Processador_Cache.controle = FLAG_BUSY; /*Define o barramento como ocupado*/
-    Processador_Cache.dado = cache_write(Processador_Cache.dado); /*Escreve o dado lido da cache no endereço*/
+  if(PCB.controle == FLAG_READ){
+    PCB.controle = FLAG_BUSY; /*Define o barramento como ocupado*/
+    PCB.dados = cache_read(PCB.endereco); /*Escreve o dado lido da cache no endereço*/
+  }else if(PCB.controle == FLAG_WRITE){
+    PCB.controle = FLAG_BUSY; /*Define o barramento como ocupado*/
+    cache_write(PCB.endereco, PCB.dados); /*Escreve o dado lido da cache no endereço*/
+  }
+}
+
+void inicializar_cache(){
+  int i;
+  for(i=0; i<CACHE_LINE_COUNT; i++){
+    cache_dados.linhas[i].update = 0;
+    cache_instrucoes.linhas[i].update = 0;
   }
 }
 
 void cache_next(){
-  cache_read();
-  cache_write();
+  cache_controller_next();
 }

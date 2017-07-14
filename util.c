@@ -1,4 +1,4 @@
-#include "util.h"
+#include "include/util.h"
 
 /*Retorna a quanidade de ciclos da operação*/
 int get_ciclos(int opcode){

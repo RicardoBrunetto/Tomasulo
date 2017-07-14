@@ -1,4 +1,4 @@
-#include "registrador.h"
+#include "include/registradores.h"
 
 void inicializar_registradores(){
   int i;

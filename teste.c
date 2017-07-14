@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-
+/*
 int main(){
   unsigned int x = 2773842605;
   // 41
@@ -12,7 +12,7 @@ int main(){
   tgt = tgt >> 16;
   printf("\n%d\tImm: %d\n", opcode, tgt);
 }
-
+*/
 //'10100101010101010111101010101101
 // 00000011111000000000000000000000
 /*

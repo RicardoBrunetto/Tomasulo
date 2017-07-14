@@ -5,7 +5,7 @@
 #include <stdlib.h>
 
 //#include "Tradutor/flexbison/parser.tab.c"
-#include "Memoria/memoria.h"
+#include "memoria.h"
 #include "processador.h"
 
 #endif

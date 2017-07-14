@@ -6,7 +6,7 @@
 
 #include "barramentos.h"
 
-#define MEM_SIZE 20
+#define MEM_SIZE 536870912 /*512M*/
 
 typedef unsigned char Byte;
 typedef unsigned int Word;

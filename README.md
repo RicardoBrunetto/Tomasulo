@@ -14,5 +14,5 @@ Trabalho Arquitetura II
 - [ ] Implementar ULA
 
 # Dúvidas
-## Registradores
-    - Função de leitura
+## Estações de Reserva
+    -

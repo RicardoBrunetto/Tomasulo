@@ -7,6 +7,9 @@
 
 #define REGISTRADOR_DISPONIVEL -1
 
+/*Banco com os 32 registradores*/
+Registrador banco_Registradores[32];
+
 void inicializar_registradores();
 
 int reg_write(int w, int registrador);

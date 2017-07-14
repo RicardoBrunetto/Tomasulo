@@ -2,7 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-#include "gsim.h"
+#include "include/gsim.h"
 
 void loadToMemory(FILE *f){
   int address = 0;
