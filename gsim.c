@@ -52,7 +52,7 @@ int main(int argc, char **argv){
       if(!strcmp(argv[1], "load")){
         FILE *f;
         f = fopen(argv[2], "r");
-        call_tradutor(f);
+        //call_tradutor(f);
       }else if(!strcmp(argv[1], "load-b")){
         FILE *f;
         f = fopen(argv[2], "r");

@@ -476,10 +476,7 @@ char *yytext;
 #line 2 "def_scanner.l"
 #include "def_parser.tab.h"
 
-#ifndef yylval
-extern YYSTYPE yylval;
-#endif
-#line 483 "lex.yy.c"
+#line 480 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -697,10 +694,10 @@ YY_DECL
 		}
 
 	{
-#line 8 "def_scanner.l"
+#line 5 "def_scanner.l"
 
 
-#line 704 "lex.yy.c"
+#line 701 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -760,66 +757,66 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 /* rule 1 can match eol */
 YY_RULE_SETUP
-#line 10 "def_scanner.l"
+#line 7 "def_scanner.l"
 
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 12 "def_scanner.l"
+#line 9 "def_scanner.l"
 { return ECOM; }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 13 "def_scanner.l"
+#line 10 "def_scanner.l"
 { return VIRG; }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 14 "def_scanner.l"
+#line 11 "def_scanner.l"
 { return DOISPONTOS; }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 15 "def_scanner.l"
+#line 12 "def_scanner.l"
 { return ABRE_PAR; }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 16 "def_scanner.l"
+#line 13 "def_scanner.l"
 { return FECHA_PAR; }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 18 "def_scanner.l"
+#line 15 "def_scanner.l"
 { yylval.integer_value = atoi(yytext); return VAL; }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 19 "def_scanner.l"
+#line 16 "def_scanner.l"
 { yylval.string_value = strdup(yytext); return LBL; }
 	YY_BREAK
 case 9:
 /* rule 9 can match eol */
 YY_RULE_SETUP
-#line 20 "def_scanner.l"
+#line 17 "def_scanner.l"
 {return PL;}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 21 "def_scanner.l"
+#line 18 "def_scanner.l"
 
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 23 "def_scanner.l"
+#line 20 "def_scanner.l"
 { /*printf("Mystery character %c\n", *yytext); */}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 24 "def_scanner.l"
+#line 21 "def_scanner.l"
 ECHO;
 	YY_BREAK
-#line 823 "lex.yy.c"
+#line 820 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1820,7 +1817,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 24 "def_scanner.l"
+#line 21 "def_scanner.l"
 
 
 

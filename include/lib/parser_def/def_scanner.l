@@ -1,9 +1,6 @@
 %{
 #include "def_parser.tab.h"
 
-#ifndef yylval
-extern YYSTYPE yylval;
-#endif
 %}
 %%
 

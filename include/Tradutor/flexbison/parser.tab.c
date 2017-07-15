@@ -1788,7 +1788,7 @@ yyreturn:
 
 void call_tradutor(char* file_path){
   printf("\nParsing!\n");
-  
+
   FILE * f;
   f = fopen(file_path, "r");
   yyrestart(f);

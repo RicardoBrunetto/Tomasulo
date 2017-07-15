@@ -1528,7 +1528,7 @@ int get_formato_based(char * formato){
       yyerror("TIPO INVALIDO DE INSTRUÇÃO");
 }
 
-int main(){
+int run_definitions(FILE *f){
   inicializarLista(&lista_definicoes);
   yyparse();
   printf("\nInstruções Reconhecidas: %d\n", getSizeofLinkedList(lista_definicoes));

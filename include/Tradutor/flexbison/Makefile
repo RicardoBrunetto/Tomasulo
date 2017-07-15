@@ -1,7 +1,7 @@
 all: comp
 	@rm -f *.o
 	@rm -f */*.o
-	@echo "Sucesso - Tradutor!\n"
+	@echo "\nSucesso - Assembler!\n"
 
 bison_part:
 	@bison -d parser.y
