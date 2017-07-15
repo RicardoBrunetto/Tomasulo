@@ -69,15 +69,20 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "lib/util.c"
-#include "lib/linkedlist.h"
+#include "lib/assembler.util.h"
 
 LinkedList lista;
 
 int address = 0, passada = 0, dados_offset = START_ADDRESS_DATA;
 char * string;
 
-#line 81 "parser.tab.c" /* yacc.c:339  */
+typedef struct{
+  char * lbl_identificador;
+  int lbl_offset;
+}SLabel;
+
+
+#line 86 "parser.tab.c" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -225,7 +230,7 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 16 "parser.y" /* yacc.c:355  */
+#line 21 "parser.y" /* yacc.c:355  */
 
   struct R_type{
     char *opcode, *rd, *rs, *rt, *func, *shift;
@@ -243,7 +248,7 @@ union YYSTYPE
   int valor;
   char *str;
 
-#line 247 "parser.tab.c" /* yacc.c:355  */
+#line 252 "parser.tab.c" /* yacc.c:355  */
 };
 
 typedef union YYSTYPE YYSTYPE;
@@ -260,7 +265,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 264 "parser.tab.c" /* yacc.c:358  */
+#line 269 "parser.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -568,10 +573,10 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    50,    50,    52,    53,    55,    56,    58,    59,    61,
-      63,    64,    66,    67,    69,    70,    72,    73,    75,    76,
-      78,    79,    80,    82,    84,    86,    88,    89,    90,    91,
-      92,    93,    94,    95,    96,    97,    98
+       0,    55,    55,    57,    58,    60,    61,    63,    64,    66,
+      75,    76,    78,    79,    81,    82,    84,    85,    94,    95,
+      97,    98,    99,   101,   103,   105,   107,   108,   109,   110,
+     111,   112,   113,   114,   115,   116,   117
 };
 #endif
 
@@ -1404,139 +1409,153 @@ yyreduce:
   switch (yyn)
     {
         case 6:
-#line 56 "parser.y" /* yacc.c:1646  */
+#line 61 "parser.y" /* yacc.c:1646  */
     {}
-#line 1410 "parser.tab.c" /* yacc.c:1646  */
+#line 1415 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 9:
-#line 61 "parser.y" /* yacc.c:1646  */
-    {if(passada == 0) insertLinkedList(&lista, (yyvsp[-4].str), dados_offset++); else setData(getOffset(lista, (yyvsp[-4].str)), (yyvsp[-1].num).numeros, (yyvsp[-1].num).qtdNum);}
-#line 1416 "parser.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 10:
-#line 63 "parser.y" /* yacc.c:1646  */
-    {(yyval.num).numeros[(yyval.num).qtdNum] = strdup((yyvsp[0].str)); (yyval.num).qtdNum = (yyval.num).qtdNum +1;}
-#line 1422 "parser.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 11:
-#line 64 "parser.y" /* yacc.c:1646  */
-    {(yyval.num).numeros[(yyval.num).qtdNum] = strdup((yyvsp[-2].str)); (yyval.num).qtdNum = (yyval.num).qtdNum +1;}
+#line 66 "parser.y" /* yacc.c:1646  */
+    {if(passada == 0){
+                                                SLabel * var = malloc(sizeof(SLabel));
+                                                var->lbl_identificador = (yyvsp[-4].str);
+                                                var->lbl_offset = dados_offset++;
+                                                insertLinkedList(&lista, var);
+                                              }else{
+                                                setData(getOffset(&lista, (yyvsp[-4].str)), (yyvsp[-1].num).numeros, (yyvsp[-1].num).qtdNum);
+                                              }}
 #line 1428 "parser.tab.c" /* yacc.c:1646  */
     break;
 
-  case 17:
-#line 73 "parser.y" /* yacc.c:1646  */
-    {if(passada == 0) insertLinkedList(&lista, (yyvsp[-2].str), address);}
+  case 10:
+#line 75 "parser.y" /* yacc.c:1646  */
+    {(yyval.num).numeros[(yyval.num).qtdNum] = strdup((yyvsp[0].str)); (yyval.num).qtdNum = (yyval.num).qtdNum +1;}
 #line 1434 "parser.tab.c" /* yacc.c:1646  */
     break;
 
-  case 20:
-#line 78 "parser.y" /* yacc.c:1646  */
-    {if(passada == 1) setInstruction_R((yyvsp[0].instruction_R).opcode, (yyvsp[0].instruction_R).rs, (yyvsp[0].instruction_R).rt, (yyvsp[0].instruction_R).rd, (yyvsp[0].instruction_R).shift, (yyvsp[0].instruction_R).func); address++;}
+  case 11:
+#line 76 "parser.y" /* yacc.c:1646  */
+    {(yyval.num).numeros[(yyval.num).qtdNum] = strdup((yyvsp[-2].str)); (yyval.num).qtdNum = (yyval.num).qtdNum +1;}
 #line 1440 "parser.tab.c" /* yacc.c:1646  */
     break;
 
+  case 17:
+#line 85 "parser.y" /* yacc.c:1646  */
+    {if(passada == 0){
+                                      SLabel * label_found = malloc(sizeof(SLabel));
+                                      label_found->lbl_identificador = (yyvsp[-2].str);
+                                      label_found->lbl_offset = dados_offset++;
+                                      insertLinkedList(&lista, label_found);
+                                    }else{
+                                      //TODO: colocar o endereço
+                                    }}
+#line 1453 "parser.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 20:
+#line 97 "parser.y" /* yacc.c:1646  */
+    {if(passada == 1) setInstruction_R((yyvsp[0].instruction_R).opcode, (yyvsp[0].instruction_R).rs, (yyvsp[0].instruction_R).rt, (yyvsp[0].instruction_R).rd, (yyvsp[0].instruction_R).shift, (yyvsp[0].instruction_R).func); address++;}
+#line 1459 "parser.tab.c" /* yacc.c:1646  */
+    break;
+
   case 21:
-#line 79 "parser.y" /* yacc.c:1646  */
+#line 98 "parser.y" /* yacc.c:1646  */
     {if(passada == 1) setInstruction_I((yyvsp[0].instruction_I).opcode, (yyvsp[0].instruction_I).rs, (yyvsp[0].instruction_I).rt, (yyvsp[0].instruction_I).imm); address++;}
-#line 1446 "parser.tab.c" /* yacc.c:1646  */
+#line 1465 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 22:
-#line 80 "parser.y" /* yacc.c:1646  */
+#line 99 "parser.y" /* yacc.c:1646  */
     {if(passada == 1) setInstruction_J((yyvsp[0].instruction_J).opcode, (yyvsp[0].instruction_J).target); address++;}
-#line 1452 "parser.tab.c" /* yacc.c:1646  */
+#line 1471 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 23:
-#line 82 "parser.y" /* yacc.c:1646  */
+#line 101 "parser.y" /* yacc.c:1646  */
     { (yyval.instruction_R).opcode = "000000"; (yyval.instruction_R).rd = (yyvsp[-4].str); (yyval.instruction_R).rs = (yyvsp[-2].str); (yyval.instruction_R).rt = (yyvsp[0].str); (yyval.instruction_R).shift = "00000"; (yyval.instruction_R).func = "100101";}
-#line 1458 "parser.tab.c" /* yacc.c:1646  */
+#line 1477 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 24:
-#line 84 "parser.y" /* yacc.c:1646  */
-    {(yyval.instruction_J).opcode = "000010"; (yyval.instruction_J).target = integerToBinary(getOffset(lista, (yyvsp[0].str)), 26, string);}
-#line 1464 "parser.tab.c" /* yacc.c:1646  */
+#line 103 "parser.y" /* yacc.c:1646  */
+    {(yyval.instruction_J).opcode = "000010"; (yyval.instruction_J).target = integerToBinary(getOffset(&lista, (yyvsp[0].str)), 26, string);}
+#line 1483 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 25:
-#line 86 "parser.y" /* yacc.c:1646  */
+#line 105 "parser.y" /* yacc.c:1646  */
     { (yyval.instruction_I).opcode = "001000"; (yyval.instruction_I).imm = (yyvsp[0].str); (yyval.instruction_I).rs = (yyvsp[-4].str); (yyval.instruction_I).rt = (yyvsp[-2].str);}
-#line 1470 "parser.tab.c" /* yacc.c:1646  */
+#line 1489 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 26:
-#line 88 "parser.y" /* yacc.c:1646  */
+#line 107 "parser.y" /* yacc.c:1646  */
     {(yyval.str) = integerToBinary(getNumber((yyvsp[0].str)), 5, string);}
-#line 1476 "parser.tab.c" /* yacc.c:1646  */
+#line 1495 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 27:
-#line 89 "parser.y" /* yacc.c:1646  */
+#line 108 "parser.y" /* yacc.c:1646  */
     {(yyval.str) = (yyvsp[0].str);}
-#line 1482 "parser.tab.c" /* yacc.c:1646  */
+#line 1501 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 28:
-#line 90 "parser.y" /* yacc.c:1646  */
+#line 109 "parser.y" /* yacc.c:1646  */
     {(yyval.str) = (yyvsp[0].str);}
-#line 1488 "parser.tab.c" /* yacc.c:1646  */
+#line 1507 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 29:
-#line 91 "parser.y" /* yacc.c:1646  */
+#line 110 "parser.y" /* yacc.c:1646  */
     {(yyval.str) = (yyvsp[0].str);}
-#line 1494 "parser.tab.c" /* yacc.c:1646  */
+#line 1513 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 30:
-#line 92 "parser.y" /* yacc.c:1646  */
+#line 111 "parser.y" /* yacc.c:1646  */
     {(yyval.str) = (yyvsp[0].str);}
-#line 1500 "parser.tab.c" /* yacc.c:1646  */
+#line 1519 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 31:
-#line 93 "parser.y" /* yacc.c:1646  */
+#line 112 "parser.y" /* yacc.c:1646  */
     {(yyval.str) = (yyvsp[0].str);}
-#line 1506 "parser.tab.c" /* yacc.c:1646  */
+#line 1525 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 32:
-#line 94 "parser.y" /* yacc.c:1646  */
+#line 113 "parser.y" /* yacc.c:1646  */
     {(yyval.str) = (yyvsp[0].str);}
-#line 1512 "parser.tab.c" /* yacc.c:1646  */
+#line 1531 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 33:
-#line 95 "parser.y" /* yacc.c:1646  */
+#line 114 "parser.y" /* yacc.c:1646  */
     {(yyval.str) = (yyvsp[0].str);}
-#line 1518 "parser.tab.c" /* yacc.c:1646  */
+#line 1537 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 34:
-#line 96 "parser.y" /* yacc.c:1646  */
+#line 115 "parser.y" /* yacc.c:1646  */
     {(yyval.str) = (yyvsp[0].str);}
-#line 1524 "parser.tab.c" /* yacc.c:1646  */
+#line 1543 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 35:
-#line 97 "parser.y" /* yacc.c:1646  */
+#line 116 "parser.y" /* yacc.c:1646  */
     {(yyval.str) = (yyvsp[0].str);}
-#line 1530 "parser.tab.c" /* yacc.c:1646  */
+#line 1549 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 36:
-#line 98 "parser.y" /* yacc.c:1646  */
+#line 117 "parser.y" /* yacc.c:1646  */
     {(yyval.str) = (yyvsp[0].str);}
-#line 1536 "parser.tab.c" /* yacc.c:1646  */
+#line 1555 "parser.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1540 "parser.tab.c" /* yacc.c:1646  */
+#line 1559 "parser.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1764,10 +1783,31 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 100 "parser.y" /* yacc.c:1906  */
+#line 119 "parser.y" /* yacc.c:1906  */
 
+
+void call_tradutor(char* file_path){
+  printf("\nParsing!\n");
+  
+  FILE * f;
+  f = fopen(file_path, "r");
+  yyrestart(f);
+
+  inicializarLista(&lista);
+  passada = 0;
+  yyparse();
+  // passada = 1;
+  // rewind(f);
+  // yyparse();
+
+  printf("\nParsed!\n");
+
+}
 
 int yyerror(char *s) {
   fprintf(stderr, "error: %s\n", s);
   return 0;
+}
+
+int yywrap() {
 }

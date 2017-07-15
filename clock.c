@@ -1,5 +1,4 @@
-#include "cache.h"
-#include "include/processador.h"
+#include "include/clock.h"
 
 int total_ciclos;
 

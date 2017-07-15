@@ -158,7 +158,7 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 16 "parser.y" /* yacc.c:1909  */
+#line 21 "parser.y" /* yacc.c:1909  */
 
   struct R_type{
     char *opcode, *rd, *rs, *rt, *func, *shift;

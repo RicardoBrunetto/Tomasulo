@@ -1,8 +1,8 @@
-#include <stdio.h>
-#include <string.h>
-
 #ifndef MEMORIA_H
 #define MEMORIA_H
+
+#include <stdio.h>
+#include <string.h>
 
 #include "barramentos.h"
 

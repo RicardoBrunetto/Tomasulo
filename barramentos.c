@@ -1,5 +1,4 @@
-#include "barramentos.h"
-#include "definitions.h"
+#include "include/barramentos.h"
 
 void inicializar_barramentos(){
   CDB.dados = FLAG_VAZIO;

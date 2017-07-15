@@ -1,7 +1,7 @@
 #ifndef CACHE_H
 #define CACHE_H
 
-#include "include/memoria.h"
+#include "memoria.h"
 
 #define CACHE_LINE_COUNT 2048 /*São 2K linhas*/
 #define CACHE_LINE_SIZE  4    /*Cada linha com 4 palavras*/

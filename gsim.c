@@ -11,26 +11,12 @@ void loadToMemory(FILE *f){
     mem_write(*val, address);
     address = address + sizeof(int);
   }
-  mem_print();
+  //mem_print();
 }
 
 void printHelpMenu(){
 
 }
-
-/*void call_tradutor(char* file_path){
-  FILE * f = fopen(file_path, "r");
-  yyrestart(f);
-
-  inicializarLista(&lista);
-  passada = 0;
-  yyparse();
-  passada = 1;
-  rewind(f);
-  yyparse();
-
-  exibirLinkedList(lista);
-}*/
 
 void waiting(){
   char * input;
@@ -48,6 +34,8 @@ void waiting(){
     }else if(!strcmp(input, "run")){
       processador_start();
       //clock_start();
+    }else if(!strcmp(input, "clear")){
+      system("clear");
     }
   }while(strcmp(input, "quit"));
 }
@@ -62,9 +50,9 @@ int main(int argc, char **argv){
       break;
     case 3:
       if(!strcmp(argv[1], "load")){
-        /*FILE *f;
+        FILE *f;
         f = fopen(argv[2], "r");
-        call_tradutor(f);*/
+        call_tradutor(f);
       }else if(!strcmp(argv[1], "load-b")){
         FILE *f;
         f = fopen(argv[2], "r");

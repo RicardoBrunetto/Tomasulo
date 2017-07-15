@@ -1,22 +1,27 @@
 CC=gcc
+DIR=./include/
+TRAD=$(DIR)Tradutor/flexbison/
 CFLAGS=-w
 LDFLAGS=
 SRC= gsim.c
-SOURCES= gsim.c processador.c Memoria/memoria.c lib/DQueue.c lib/util.c lib/definitions.h Registrador/registrador.c EstacoesReserva/estacoesReserva.c
-HEADERS=$(SOURCES:.c=.h)
+SOURCES= *.c $(DIR)lib/DQueue.c $(DIR)lib/LinkedList.c $(TRAD)parser.tab.c $(TRAD)lex.yy.c $(TRAD)lib/assembler.util.c
+# HEADERS=$(SOURCES:.c=.h)
+HEADERS=$(DIR)*.h
 OBJECTS=$(SOURCES:.c=.o)
 EXECUTABLE= gsim
 
 all: Clear
 
-main:	Montar $(OBJECTS)
-	$(CC) $(CFLAGS) $(SOURCES) -o $(EXECUTABLE)
-	@rm *.o
-	@echo 'SUCESSO!'
+main: Montar $(OBJECTS)
+	@$(CC) $(CFLAGS) $(SOURCES) -o $(EXECUTABLE)
+	@echo "\nCompilado!\n"
 
 Montar:
-	+$(MAKE) -C Tradutor/flexbison
+	+$(MAKE) -C $(DIR)Tradutor/flexbison
 
 Clear: main
-	@rm */*.o
-	@rm */*/*.o
+	@rm -f *.o
+	@rm -f */*.o
+	@rm -f */*/*.o
+	@rm -f */*/*/*.o
+	@rm -f */*/*/*/*.o

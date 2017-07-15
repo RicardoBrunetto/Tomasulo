@@ -4,13 +4,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "lib/util.c"
-#include "lib/linkedlist.h"
+#include "lib/assembler.util.h"
 
 LinkedList lista;
 
 int address = 0, passada = 0, dados_offset = START_ADDRESS_DATA;
 char * string;
+
+typedef struct{
+  char * lbl_identificador;
+  int lbl_offset;
+}SLabel;
+
 %}
 
 %union{
@@ -58,7 +63,14 @@ text_section:
 variaveis:
          | variaveis variavel eol
 
-variavel: IDENTIFICADOR DPTS INT numeros eol {if(passada == 0) insertLinkedList(&lista, $1, dados_offset++); else setData(getOffset(lista, $1), $4.numeros, $4.qtdNum);}
+variavel: IDENTIFICADOR DPTS INT numeros eol {if(passada == 0){
+                                                SLabel * var = malloc(sizeof(SLabel));
+                                                var->lbl_identificador = $1;
+                                                var->lbl_offset = dados_offset++;
+                                                insertLinkedList(&lista, var);
+                                              }else{
+                                                setData(getOffset(&lista, $1), $4.numeros, $4.qtdNum);
+                                              }}
 
 numeros: NUMBER {$$.numeros[$$.qtdNum] = strdup($1); $$.qtdNum = $$.qtdNum +1;}
        | NUMBER comma numeros {$$.numeros[$$.qtdNum] = strdup($1); $$.qtdNum = $$.qtdNum +1;}
@@ -70,7 +82,14 @@ lista_instrucoes:
                 | lista_instrucoes label_decl instrucao eol
 
 label_decl:
-          | IDENTIFICADOR DPTS eol {if(passada == 0) insertLinkedList(&lista, $1, address);}
+          | IDENTIFICADOR DPTS eol {if(passada == 0){
+                                      SLabel * label_found = malloc(sizeof(SLabel));
+                                      label_found->lbl_identificador = $1;
+                                      label_found->lbl_offset = dados_offset++;
+                                      insertLinkedList(&lista, label_found);
+                                    }else{
+                                      //TODO: colocar o endereço
+                                    }}
 
 eol:
    | eol EOL
@@ -81,7 +100,7 @@ instrucao: instrucao_R {if(passada == 1) setInstruction_R($1.opcode, $1.rs, $1.r
 
 instrucao_R: ADD reg comma reg comma reg { $$.opcode = "000000"; $$.rd = $2; $$.rs = $4; $$.rt = $6; $$.shift = "00000"; $$.func = "100101";}
 
-instrucao_J: J IDENTIFICADOR {$$.opcode = "000010"; $$.target = integerToBinary(getOffset(lista, $2), 26, string);}
+instrucao_J: J IDENTIFICADOR {$$.opcode = "000010"; $$.target = integerToBinary(getOffset(&lista, $2), 26, string);}
 
 instrucao_I: ADDI reg comma reg comma NUMBER { $$.opcode = "001000"; $$.imm = $6; $$.rs = $2; $$.rt = $4;}
 
@@ -99,7 +118,28 @@ reg: REG_S {$$ = integerToBinary(getNumber($1), 5, string);}
 
 %%
 
+void call_tradutor(char* file_path){
+  printf("\nParsing!\n");
+  
+  FILE * f;
+  f = fopen(file_path, "r");
+  yyrestart(f);
+
+  inicializarLista(&lista);
+  passada = 0;
+  yyparse();
+  // passada = 1;
+  // rewind(f);
+  // yyparse();
+
+  printf("\nParsed!\n");
+
+}
+
 int yyerror(char *s) {
   fprintf(stderr, "error: %s\n", s);
   return 0;
+}
+
+int yywrap() {
 }
