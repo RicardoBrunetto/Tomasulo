@@ -69,8 +69,9 @@
 #include <string.h>
 #include "../../definitions.h"
 
+extern FILE *yyin;
 
-#line 74 "def_parser.tab.c" /* yacc.c:339  */
+#line 75 "def_parser.tab.c" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -121,12 +122,12 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 9 "def_parser.y" /* yacc.c:355  */
+#line 10 "def_parser.y" /* yacc.c:355  */
 
   int integer_value;
   char * string_value;
 
-#line 130 "def_parser.tab.c" /* yacc.c:355  */
+#line 131 "def_parser.tab.c" /* yacc.c:355  */
 };
 
 typedef union YYSTYPE YYSTYPE;
@@ -143,7 +144,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 147 "def_parser.tab.c" /* yacc.c:358  */
+#line 148 "def_parser.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -441,7 +442,7 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    25,    25,    27,    35,    36,    47,    59,    60
+       0,    26,    26,    28,    36,    37,    48,    60,    61
 };
 #endif
 
@@ -1229,7 +1230,7 @@ yyreduce:
   switch (yyn)
     {
         case 3:
-#line 27 "def_parser.y" /* yacc.c:1646  */
+#line 28 "def_parser.y" /* yacc.c:1646  */
     {
         QUANTIDADE_ESTACOES_RESERVA_ADD = (yyvsp[-15].integer_value);
         QUANTIDADE_ESTACOES_RESERVA_MUL = (yyvsp[-10].integer_value);
@@ -1237,11 +1238,11 @@ yyreduce:
         QUANTIDADE_ESTACOES_RESERVA_STORE = (yyvsp[0].integer_value);
         QUANTIDADE_ESTACOES_RESERVA = (yyvsp[-15].integer_value) + (yyvsp[-10].integer_value) + (yyvsp[-5].integer_value) + (yyvsp[0].integer_value);
       }
-#line 1241 "def_parser.tab.c" /* yacc.c:1646  */
+#line 1242 "def_parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 5:
-#line 36 "def_parser.y" /* yacc.c:1646  */
+#line 37 "def_parser.y" /* yacc.c:1646  */
     {
              Def * d = (Def *)malloc(sizeof(Def));
              d->mnemonic = (yyvsp[-10].string_value);
@@ -1253,11 +1254,11 @@ yyreduce:
              d->abstract_opcode = (yyvsp[-8].integer_value); /*Não possuem Abstract Opcode*/
              insertLinkedList(&lista_definicoes, d);
            }
-#line 1257 "def_parser.tab.c" /* yacc.c:1646  */
+#line 1258 "def_parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 6:
-#line 47 "def_parser.y" /* yacc.c:1646  */
+#line 48 "def_parser.y" /* yacc.c:1646  */
     {
              Def * d = (Def *)malloc(sizeof(Def));
              d->mnemonic = (yyvsp[-14].string_value);
@@ -1269,11 +1270,11 @@ yyreduce:
              d->abstract_opcode = (yyvsp[-2].integer_value);
              insertLinkedList(&lista_definicoes, d);
            }
-#line 1273 "def_parser.tab.c" /* yacc.c:1646  */
+#line 1274 "def_parser.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1277 "def_parser.tab.c" /* yacc.c:1646  */
+#line 1278 "def_parser.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1501,7 +1502,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 62 "def_parser.y" /* yacc.c:1906  */
+#line 63 "def_parser.y" /* yacc.c:1906  */
 
 
 int get_uf_based(char * uf){
@@ -1528,9 +1529,12 @@ int get_formato_based(char * formato){
       yyerror("TIPO INVALIDO DE INSTRUÇÃO");
 }
 
-int run_definitions(FILE *f){
+int run_definitions(){
   inicializarLista(&lista_definicoes);
-  yyparse();
+  yyin = fopen("include/lib/parser_def/def_file.txt", "r");
+  do {
+		yyparse();
+	} while (!feof(yyin));
   printf("\nInstruções Reconhecidas: %d\n", getSizeofLinkedList(lista_definicoes));
   Def * d;
   while((d = (Def *)getProximoLinkedList(&lista_definicoes)) != NULL)

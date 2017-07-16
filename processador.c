@@ -141,9 +141,13 @@ void processador_print(){
 
 /*Procedimento que inicializa os componentes do processador*/
 void processador_start(){
+  printf("\nInicalizando fila\n");
   inicializar_fila(&fila_Instrucoes);
+  printf("\nInicalizando barramentos\n");
   inicializar_barramentos();
+  printf("\nInicalizando registradores\n");
   inicializar_registradores();
+  printf("\nInicalizando ER's\n");
   inicializar_estacoes_reserva();
   PC.valor = 0;
 }

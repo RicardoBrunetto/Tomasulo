@@ -4,6 +4,7 @@
 #include <string.h>
 #include "../../definitions.h"
 
+extern FILE *yyin;
 %}
 
 %union{
@@ -85,9 +86,12 @@ int get_formato_based(char * formato){
       yyerror("TIPO INVALIDO DE INSTRUÇÃO");
 }
 
-int run_definitions(FILE *f){
+int run_definitions(){
   inicializarLista(&lista_definicoes);
-  yyparse();
+  yyin = fopen("include/lib/parser_def/def_file.txt", "r");
+  do {
+		yyparse();
+	} while (!feof(yyin));
   printf("\nInstruções Reconhecidas: %d\n", getSizeofLinkedList(lista_definicoes));
   Def * d;
   while((d = (Def *)getProximoLinkedList(&lista_definicoes)) != NULL)
