@@ -8,15 +8,30 @@
 # typedef enum { ADD_UF, MUL_UF, LOAD_UF, STORE_UF } Tipo_ER_UF;
 # (INSTRUCTION: OPCODE, CYCLES, Tipo_Instrucao, Tipo_ER_UF, FUNCTION (caso haja), ABSTRACT_OPCODE (caso haja function))
 
-# ADDs
+# ADDs e SUBs
 (add: 0, 2, TYPE_R, ADD_UF, 32, 252)
 (addu: 0, 2, TYPE_R, ADD_UF, 33, 253)
 (addi: 8, 2, TYPE_I, ADD_UF)
 (addiu: 9, 2, TYPE_I, ADD_UF)
+(sub: 0, 2, TYPE_R, ADD_UF, 34, 274)
+(subu: 0, 2, TYPE_R, ADD_UF, 35, 275)
 
-# ANDs
+# LOGICAS
 (and: 0, 1, TYPE_R, ADD_UF, 36, 254)
 (andi: 12, 1, TYPE_I, ADD_UF)
+(nor: 0, 1, TYPE_R, ADD_UF, 39, 266)
+(or: 0, 1, TYPE_R, ADD_UF, 37, 267)
+(ori: 13, 1, TYPE_I, ADD_UF)
+(xor: 0, 1, TYPE_R, ADD_UF, 38, 276)
+(xori: 14, 1, TYPE_I, ADD_UF)
+
+# BIT-SHIFT
+(sll: 0, 1, TYPE_R, ADD_UF, 0, 268)
+(sllv: 0, 1, TYPE_R, ADD_UF, 4, 269)
+(sra: 0, 1, TYPE_R, ADD_UF, 3, 270)
+(srav: 0, 1, TYPE_R, ADD_UF, 7, 271)
+(srl: 0, 1, TYPE_R, ADD_UF, 2, 272)
+(srlv: 0, 1, TYPE_R, ADD_UF, 6, 273)
 
 # CLOs
 (clo: 28, 2, TYPE_R, ADD_UF, 33, 255)
@@ -28,8 +43,37 @@
 
 # MULs
 (mult: 0, 5, TYPE_R, MUL_UF, 24, 259)
-(multu: 0, 5, TYPE_R, MUL_UF, 25, 230)
-(mul: 28, 5, TYPE_R, MUL_UF, 2, 231)
-(mulo)
+(multu: 0, 5, TYPE_R, MUL_UF, 25, 260)
+(mul: 28, 5, TYPE_R, MUL_UF, 2, 261)
+(madd: 28, 5, TYPE_R, MUL_UF, 0, 262)
+(maddu: 28, 5, TYPE_R, MUL_UF, 1, 263)
+(msub: 28, 5, TYPE_R, MUL_UF, 4, 264)
+(msubu: 28, 5, TYPE_R, MUL_UF, 5, 265)
+
 
 (imul: 21, 9, TYPE_I, MUL_UF)
+
+# Consts
+(lui: 15, 2, TYPE_I, ADD_UF)
+
+# Conditional
+(slt: 0, 2, TYPE_R, ADD_UF, 42, 277)
+(sltu: 0, 2, TYPE_R, ADD_UF, 43, 278)
+(slti: 10, 2, TYPE_I, ADD_UF)
+(sltiu: 11, 2, TYPE_I, ADD_UF)
+
+# Branches
+(beq: 4, 2, TYPE_I, ADD_UF)
+(bgez: 1, 2, TYPE_I, ADD_UF, 1, 278)
+(bgezal: 1, 2, TYPE_I, ADD_UF, 17, 279)
+(bgtz: 7, 2, TYPE_I, ADD_UF)
+(blez: 6, 2, TYPE_I, ADD_UF)
+(bltzal: 1, 2, TYPE_I, ADD_UF, 16, 280)
+(bltz: 1, 2, TYPE_I, ADD_UF, 0, 281)
+(bne: 5, 2, TYPE_I, ADD_UF)
+
+# Jumps
+(j: 2, 2, TYPE_J, ADD_UF)
+(jal: 3, 2, TYPE_J, ADD_UF)
+(jalr: 0, 2, TYPE_R, ADD_UF, 9, 282)
+(jr: 0, 2, TYPE_R, ADD_UF, 8, 283)

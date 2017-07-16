@@ -9,7 +9,7 @@ SEH
 SUB
 SUBU
 
-Shift and Logical
+Shift and Logical (1 cycle)
 ROTR
 ROTRV
 SLL
@@ -31,7 +31,7 @@ WSBH
 XOR
 XORI
 
-Condition Testing and Conditional Move
+Condition Test and Conditional Move (2 cycles)
 MOVN
 MOVZ
 SLT
@@ -39,7 +39,7 @@ SLTI
 SLTIU
 SLTU
 
-Multiply and Divide
+Multiply and Divide (5 cycles)
 DIV
 DIVU
 MADD
@@ -50,13 +50,13 @@ MUL
 MULT
 MULTU
 
-Acumulator Acess
+Acumulator Acess (1 cycle)
 MFHI
 MFLO
 MTHI
 MTLO
 
-Jumps and Branches
+Jumps and Branches (2 cycles)
 B
 BAL
 BEQ
@@ -74,7 +74,7 @@ JAL
 JALR
 JR
 
-Load and Store
+Load and Store (4 cycles)
 LB
 LBU
 LH
@@ -89,7 +89,3 @@ SWL
 SWR
 ULW
 USW
-
-Atomic
-LL
-SC
