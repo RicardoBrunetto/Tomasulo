@@ -4,21 +4,17 @@ void inicializar_estacoes_reserva(){
   //QUANTIDADE_ESTACOES_RESERVA = QUANTIDADE_ESTACOES_RESERVA_ADD + QUANTIDADE_ESTACOES_RESERVA_MUL + QUANTIDADE_ESTACOES_RESERVA_LOAD + QUANTIDADE_ESTACOES_RESERVA_STORE;
   estacoes_Reserva = (EstacaoReserva *) malloc(sizeof(EstacaoReserva)*QUANTIDADE_ESTACOES_RESERVA);
   int i;
-  for(i=0; i<QUANTIDADE_ESTACOES_RESERVA_ADD; i++){
+  for(i=0; i<QUANTIDADE_ESTACOES_RESERVA; i++){
     estacoes_Reserva[i].BusyBit = 0;
-    estacoes_Reserva[i].uf.type = ADD_UF;
-  }
-  for(; i<QUANTIDADE_ESTACOES_RESERVA_MUL; i++){
-    estacoes_Reserva[i].BusyBit = 0;
-    estacoes_Reserva[i].uf.type = MUL_UF;
-  }
-  for(; i<QUANTIDADE_ESTACOES_RESERVA_LOAD; i++){
-    estacoes_Reserva[i].BusyBit = 0;
-    estacoes_Reserva[i].uf.type = LOAD_UF;
-  }
-  for(; i<QUANTIDADE_ESTACOES_RESERVA_STORE; i++){
-    estacoes_Reserva[i].BusyBit = 0;
-    estacoes_Reserva[i].uf.type = STORE_UF;
+    if(QUANTIDADE_ESTACOES_RESERVA_ADD > i){
+      estacoes_Reserva[i].uf.type = ADD_UF;
+    }else if(QUANTIDADE_ESTACOES_RESERVA_ADD + QUANTIDADE_ESTACOES_RESERVA_MUL > i){
+      estacoes_Reserva[i].uf.type = MUL_UF;
+    }else if(QUANTIDADE_ESTACOES_RESERVA_ADD + QUANTIDADE_ESTACOES_RESERVA_MUL + QUANTIDADE_ESTACOES_RESERVA_LOAD > i){
+      estacoes_Reserva[i].uf.type = LOAD_UF;
+    }else{
+      estacoes_Reserva[i].uf.type = STORE_UF;
+    }
   }
 }
 

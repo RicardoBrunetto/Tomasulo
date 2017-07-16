@@ -3,16 +3,14 @@ Trabalho Arquitetura II
 
 - [x] Iniciar Processador
   - [x] Função de Decodificação
-- [ ] MakeFile
-  - [ ] Integrar Tradutor
+- [x] MakeFile
+  - [x] Integrar Tradutor
 - [ ] Alterações do Tradutor
   - [ ] Não permitir escrever no registrador ZERO
   - [ ] Inserir nop para desvios
 - [ ] Implementar cache
 - [ ] Implementar clock
-- [ ] Implementar barramentos
+- [x] Implementar barramentos
 - [ ] Implementar ULA
 
 # Dúvidas
-## Estações de Reserva
-    -
