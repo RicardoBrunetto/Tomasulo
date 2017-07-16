@@ -11,23 +11,24 @@ void loadToMemory(FILE *f){
     mem_write(*val, address);
     address = address + sizeof(int);
   }
-  //mem_print();
+  mem_print();
 }
 
 void printHelpMenu(){
-
+  printf("");
 }
 
 call_tradutor(char * path){
   char dir[1024];
-  sprintf(dir, "include/Tradutor/flexbison/tradutor < %s", path);
+  sprintf(dir, "include/Tradutor/tradutor < %s", path);
   system(dir);
+
 }
 
 void waiting(){
   char * input = (char *)malloc(sizeof(char)*200);
   do{
-    printf("(gsim) ");
+    printf("\n(gsim) ");
     gets(input);
     if(!strcmp(input, "lol")){
       printf("IXTA ERRADO\n");
@@ -35,6 +36,8 @@ void waiting(){
       processador_print();
     }else if(!strcmp(input, "print memory")){
       mem_print();
+    }else if(!strcmp(input, "print cache")){
+      cache_print();
     }else if(!strcmp(input, "help")){
       printHelpMenu();
     }else if(!strcmp(input, "run")){
@@ -42,6 +45,17 @@ void waiting(){
       //clock_start();
     }else if(!strcmp(input, "clear")){
       system("clear");
+    }else if(!strcmp(input, "show config")){
+      show_config();
+    }else if(!strcmp(input, "instr help")){
+      printf("-> Instruction mnemonic: ");
+      gets(input);
+      show_instruction_details(input);
+    }else if(!strcmp(input, "")){
+      //next_step();
+      printf("\nenter\n");
+    }else if(!strcmp(input, "--continue")){
+
     }
   }while(strcmp(input, "quit"));
   free(input);
@@ -49,7 +63,6 @@ void waiting(){
 
 int main(int argc, char **argv){
   run_definitions();
-  waiting();
   switch (argc){
     case 2:
       if(!strcmp(argv[1], "-h") || !strcmp(argv[1], "-help")){

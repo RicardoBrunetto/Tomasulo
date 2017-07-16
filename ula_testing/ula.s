@@ -1,6 +1,5 @@
 .section .data
 
-operation: .asciz  "\nOperation: %d\n"
 controle:    .int    0
 op1:         .int    0
 op2:         .int    0
@@ -21,21 +20,57 @@ ula:
   movl 16(%ebp), %eax
   movl %eax, op2
 
-  pushl opcode
-  pushl $operation
-  call printf
-  add $8, %esp
-
-  cmpl $12, opcode
+  cmpl $0, controle
   je and_logico
+  cmpl $1, controle
+  je or_logico
+  cmpl $2, controle
+  je nor_logico
+  cmpl $3, controle
+  je xor_logico
+  cmpl $4, controle
+  je somador
+  cmpl $5, controle
+  je subtrator
 
+
+# Funções da ULA
   and_logico:
-    movl rs, %eax
-    and rt, %eax
+    movl op1, %eax
+    and op2, %eax
     movl %eax, result
     jmp fim
 
+  or_logico:
+    movl op1, %eax
+    or op2, %eax
+    movl %eax, result
+    jmp fim
 
+  nor_logico:
+    movl op1, %eax
+    or op2, %eax
+    not %eax
+    movl %eax, result
+    jmp fim
+
+  xor_logico:
+    movl op1, %eax
+    xor op2, %eax
+    mov %eax, result
+    jmp fim
+
+  somador:
+    movl op1, %eax
+    add op2, %eax
+    movl %eax, result
+    jmp fim
+
+  subtrator:
+    movl op1, %eax
+    sub op2, %eax
+    movl %eax, result
+    jmp fim
 
   fim:
     movl result, %eax

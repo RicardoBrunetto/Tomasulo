@@ -8,4 +8,4 @@ arqc:
 	@gcc -c -w -m32 ula.main.c -o ula.main.o
 
 assembly:
-	@gcc -c -w -m32 -dM ula.s uladefs.h -o ula.o
+	@gcc -c -w -m32 ula.s -o ula.o

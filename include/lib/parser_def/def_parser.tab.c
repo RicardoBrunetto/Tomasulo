@@ -1535,12 +1535,6 @@ int run_definitions(){
   do {
 		yyparse();
 	} while (!feof(yyin));
-  printf("\nInstruções Reconhecidas: %d\n", getSizeofLinkedList(lista_definicoes));
-  Def * d;
-  while((d = (Def *)getProximoLinkedList(&lista_definicoes)) != NULL)
-    printf("\t%s\t%d\t%d\t%d\t%d\t%d\t%d\n", d->mnemonic, d->opcode, d->ciclos, d->formato, d->tipo_uf, d->function, d->abstract_opcode);
-  resetProximoLinkedList(&lista_definicoes);
-  printf("\n\nQuantidades de Estações de Reserva:\nADD:\t%d\nMUL:\t%d\nLOAD:\t%d\nSTORE:\t%d\nTOTAL:\t%d\n", QUANTIDADE_ESTACOES_RESERVA_ADD, QUANTIDADE_ESTACOES_RESERVA_MUL, QUANTIDADE_ESTACOES_RESERVA_LOAD, QUANTIDADE_ESTACOES_RESERVA_STORE, QUANTIDADE_ESTACOES_RESERVA);
 }
 
 int yyerror(char *s) {

@@ -37,6 +37,10 @@ void inicializar_cache(){
   }
 }
 
+void cache_print(){
+  
+}
+
 void cache_next(){
   cache_controller_next();
 }

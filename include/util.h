@@ -12,5 +12,7 @@ int get_abstract_opcode(int opcode, int funct);
 int isLoad(int opcode);
 int isStore(int opcode);
 int isInconditionalJump(Instrucao * i);
+void show_config();
+void show_instruction_details(char * mnemonic);
 
 #endif

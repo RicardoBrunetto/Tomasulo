@@ -21,11 +21,11 @@ void inicializar_estacoes_reserva(){
 /*Procedimento que envia a instrução para a Unidade Funcional*/
 void er_despachar(int indice_ER){
   /*Verifica o que fazer com a instrução de acordo com o mnemonico dela*/
-  char * mnemonico = get_mnemonico(estacoes_Reserva[i].Op);
+  char * mnemonico = get_mnemonico(estacoes_Reserva[indice_ER].Op);
   /*Verifica o que fazer com a instrução de acordo com o opcode*/
-  swtich(estacoes_Reserva[i].Op){
-    
-  }
+  /*swtich(estacoes_Reserva[indice_ER].Op){
+
+  }*/
 }
 
 void er_print(){

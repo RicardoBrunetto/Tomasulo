@@ -17,6 +17,7 @@ typedef struct{
 }Cache;
 
 void inicializar_cache();
+void cache_print();
 void cache_next();
 
 #endif

@@ -18,7 +18,7 @@ main: Montar $(OBJECTS)
 
 Montar:
 	+$(MAKE) -C $(TRAD)
-	+$(MAKE) -C $(DIR)Tradutor/flexbison
+	+$(MAKE) -C $(DIR)Tradutor
 
 Clear: main
 	@rm -f *.o
