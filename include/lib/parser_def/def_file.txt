@@ -1,9 +1,35 @@
+# Definição das quantidades de Estações de Reserva
 &add: 3
 &mul: 2
 &load: 5
 &store: 5
-# (INSTRUCTION: OPCODE, CYCLES, Tipo_Instrucao, Tipo_ER_UF, FUNCTION (caso haja), ABSTRACT_OPCODE (caso haja function))
+
 # typedef enum { TYPE_R, TYPE_J, TYPE_I } Tipo_Instrucao;
 # typedef enum { ADD_UF, MUL_UF, LOAD_UF, STORE_UF } Tipo_ER_UF;
-(add: 20, 5, TYPE_R, ADD_UF, 0, 19)
+# (INSTRUCTION: OPCODE, CYCLES, Tipo_Instrucao, Tipo_ER_UF, FUNCTION (caso haja), ABSTRACT_OPCODE (caso haja function))
+
+# ADDs
+(add: 0, 2, TYPE_R, ADD_UF, 32, 252)
+(addu: 0, 2, TYPE_R, ADD_UF, 33, 253)
+(addi: 8, 2, TYPE_I, ADD_UF)
+(addiu: 9, 2, TYPE_I, ADD_UF)
+
+# ANDs
+(and: 0, 1, TYPE_R, ADD_UF, 36, 254)
+(andi: 12, 1, TYPE_I, ADD_UF)
+
+# CLOs
+(clo: 28, 2, TYPE_R, ADD_UF, 33, 255)
+(clz: 28, 2, TYPE_R, ADD_UF, 32, 256)
+
+# DIVs
+(div: 0, 5, TYPE_R, MUL_UF, 26, 257)
+(divu: 0, 5, TYPE_R, MUL_UF, 27, 258)
+
+# MULs
+(mult: 0, 5, TYPE_R, MUL_UF, 24, 259)
+(multu: 0, 5, TYPE_R, MUL_UF, 25, 230)
+(mul: 28, 5, TYPE_R, MUL_UF, 2, 231)
+(mulo)
+
 (imul: 21, 9, TYPE_I, MUL_UF)

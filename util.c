@@ -60,11 +60,26 @@ int get_abstract_opcode(int opcode, int funct){
   return NULL;
 }
 
+/*Retorna o mnemonico da operação*/
+char * get_mnemonico(int absopcode){
+  Def * d;
+  while((d = (Def *)getProximoLinkedList(&lista_definicoes)) != NULL){
+    if(d->abstract_opcode == absopcode){
+      resetProximoLinkedList(&lista_definicoes);
+      return d->mnemonic;
+    }
+  }
+  printf("\nInstrução não definida no arquivo def_file.txt\n");
+  resetProximoLinkedList(&lista_definicoes);
+  return NULL;
+}
+
 /*Função que retorna verdadeiro (1) se a instrução puder ser processada por uma UF de Load*/
 int isLoad(int opcode){
   Def * d;
   while((d = (Def *)getProximoLinkedList(&lista_definicoes)) != NULL){
     if(d->opcode == opcode){
+      resetProximoLinkedList(&lista_definicoes);
       if(d->tipo_uf == LOAD_UF) return 1;
       return 0;
     }
@@ -79,6 +94,7 @@ int isStore(int opcode){
   Def * d;
   while((d = (Def *)getProximoLinkedList(&lista_definicoes)) != NULL){
     if(d->opcode == opcode){
+      resetProximoLinkedList(&lista_definicoes);
       if(d->tipo_uf == STORE_UF) return 1;
       return 0;
     }

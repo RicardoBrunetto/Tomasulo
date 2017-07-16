@@ -12,5 +12,6 @@ Trabalho Arquitetura II
 - [ ] Implementar clock
 - [x] Implementar barramentos
 - [ ] Implementar ULA
+- [ ] Implementar despacho de instruções
 
 # Dúvidas
