@@ -53,14 +53,14 @@
 
 (imul: 21, 9, TYPE_I, MUL_UF)
 
-# Consts
-(lui: 15, 2, TYPE_I, ADD_UF)
-
 # Conditional
 (slt: 0, 2, TYPE_R, ADD_UF, 42, 277)
 (sltu: 0, 2, TYPE_R, ADD_UF, 43, 278)
 (slti: 10, 2, TYPE_I, ADD_UF)
 (sltiu: 11, 2, TYPE_I, ADD_UF)
+(movn: 0, 2, TYPE_R, ADD_UF, 11, 288)
+(movz: 0, 2, TYPE_R, ADD_UF, 10, 289)
+
 
 # Branches
 (beq: 4, 2, TYPE_I, ADD_UF)
@@ -77,3 +77,29 @@
 (jal: 3, 2, TYPE_J, ADD_UF)
 (jalr: 0, 2, TYPE_R, ADD_UF, 9, 282)
 (jr: 0, 2, TYPE_R, ADD_UF, 8, 283)
+
+# Loads
+(lui: 15, 2, TYPE_I, LOAD_UF)
+(lb: 32, 4, TYPE_I, LOAD_UF)
+(lbu: 36, 4, TYPE_I, LOAD_UF)
+(lh: 33, 4, TYPE_I, LOAD_UF)
+(lhu: 37, 4, TYPE_I, LOAD_UF)
+(lw: 35, 4, TYPE_I, LOAD_UF)
+(lwl: 34, 4, TYPE_I, LOAD_UF)
+(lwr: 38, 4, TYPE_I, LOAD_UF)
+
+# Store
+(sb: 40, 4, TYPE_I, STORE_UF)
+(sh: 41, 4, TYPE_I, STORE_UF)
+(swl: 42, 4, TYPE_I, STORE_UF)
+(swr: 26, 4, TYPE_I, STORE_UF)
+
+# Moves
+(mfhi: 0, 1, TYPE_R, ADD_UF, 16, 284)
+(mflo: 0, 1, TYPE_R, ADD_UF, 18, 285)
+(mthi: 0, 1, TYPE_R, ADD_UF, 17, 286)
+(mtlo: 0, 1, TYPE_R, ADD_UF, 19, 287)
+
+# Others
+(syscall: 0, 1, TYPE_R, ADD_UF, 12, 290)
+(nop: 0, 1, TYPE_R, ADD_UF, 0, 291)
