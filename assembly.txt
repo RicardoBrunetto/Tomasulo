@@ -1,5 +1,5 @@
 .data
-x: .int 500, 100
+x: .int 500, 100, 0xe
 .text
 
 LABEL:
@@ -11,6 +11,7 @@ LABEL2:
 add $s0, $s0, $s0
 j LABEL2
 j LABEL
-# addiu $s0, $s0, 128
+addi $s0, $s0, 128
 
 j LABEL2
+lb $s0, 4($t7)

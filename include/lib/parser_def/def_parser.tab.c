@@ -1252,7 +1252,7 @@ yyreduce:
              d->tipo_uf = get_uf_based((yyvsp[-2].string_value));
              d->function = -1; /*Não possuem Function*/
              d->abstract_opcode = (yyvsp[-8].integer_value); /*Não possuem Abstract Opcode*/
-             insertLinkedList(&lista_definicoes, d);
+            insertLinkedList(&lista_definicoes, d);
            }
 #line 1258 "def_parser.tab.c" /* yacc.c:1646  */
     break;
@@ -1268,7 +1268,7 @@ yyreduce:
              d->tipo_uf = get_uf_based((yyvsp[-6].string_value));
              d->function = (yyvsp[-4].integer_value);
              d->abstract_opcode = (yyvsp[-2].integer_value);
-             insertLinkedList(&lista_definicoes, d);
+            insertLinkedList(&lista_definicoes, d);
            }
 #line 1274 "def_parser.tab.c" /* yacc.c:1646  */
     break;
@@ -1530,7 +1530,8 @@ int get_formato_based(char * formato){
 }
 
 int run_definitions(){
-  inicializarLista(&lista_definicoes);
+  lista_definicoes = (LinkedList *)malloc(sizeof(LinkedList));
+  inicializarLista(lista_definicoes);
   yyin = fopen("include/lib/parser_def/def_file.txt", "r");
   do {
 		yyparse();

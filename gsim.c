@@ -18,13 +18,6 @@ void printHelpMenu(){
   printf("");
 }
 
-call_tradutor(char * path){
-  char dir[1024];
-  sprintf(dir, "include/Tradutor/tradutor < %s", path);
-  system(dir);
-
-}
-
 void waiting(){
   char * input = (char *)malloc(sizeof(char)*200);
   do{
@@ -63,6 +56,7 @@ void waiting(){
 
 int main(int argc, char **argv){
   run_definitions();
+  show_config();
   switch (argc){
     case 2:
       if(!strcmp(argv[1], "-h") || !strcmp(argv[1], "-help")){
@@ -71,7 +65,8 @@ int main(int argc, char **argv){
       break;
     case 3:
       if(!strcmp(argv[1], "load")){
-        call_tradutor(argv[2]);
+        FILE *f = fopen(argv[2], "r");
+        call_tradutor(f);
       }else if(!strcmp(argv[1], "load-b")){
         FILE *f;
         f = fopen(argv[2], "r");

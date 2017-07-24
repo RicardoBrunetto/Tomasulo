@@ -9,7 +9,7 @@
 typedef struct{
   Byte campos[CACHE_LINE_SIZE][WORD_SIZE];
   short int tag;
-  Byte update; /*Poderia ser um bit*/
+  short int update; /*Poderia ser um bit*/
 }Linha;
 
 typedef struct{

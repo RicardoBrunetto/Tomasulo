@@ -2,9 +2,9 @@ CC=gcc
 DIR=./include/
 TRAD=$(DIR)lib/parser_def
 CFLAGS=-w
-LDFLAGS=
+LDFLAGS= $(TRAD)/def_parser.tab.c $(TRAD)/lex.yy.c +$(MAKE) -C $(TRAD)
 SRC= gsim.c
-SOURCES= *.c $(DIR)lib/DQueue.c $(DIR)lib/LinkedList.c $(TRAD)/def_parser.tab.c $(TRAD)/lex.yy.c
+SOURCES= *.c $(DIR)lib/DQueue.c $(DIR)lib/LinkedList.c $(DIR)Tradutor/parser.tab.c $(DIR)Tradutor/lex.yy.c $(DIR)/Tradutor/lib/assembler.util.c
 # HEADERS=$(SOURCES:.c=.h)
 HEADERS=$(DIR)*.h
 OBJECTS=$(SOURCES:.c=.o)
@@ -17,7 +17,6 @@ main: Montar $(OBJECTS)
 	@echo "\nSucesso - Simulador!\n"
 
 Montar:
-	+$(MAKE) -C $(TRAD)
 	+$(MAKE) -C $(DIR)Tradutor
 
 Clear: main

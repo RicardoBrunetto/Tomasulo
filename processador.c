@@ -112,6 +112,7 @@ void PIPELINE_execute(){
   Atualiza as ER's e o Banco de Registradores*/
 void PIPELINE_write(){
    /*CDB.endereco contém o índice da Estação de Reserva que gerou o dado*/
+   
   if(CDB.endereco == FLAG_VAZIO) return; /*Indica que nada foi escrito no CDB ainda (nada foi executado)*/
   int i;
   for(i=0; i<QUANTIDADE_ESTACOES_RESERVA; i++){ /*Verifica as Estações de Reserva que estão agurdando o dado*/

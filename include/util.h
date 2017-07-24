@@ -14,5 +14,6 @@ int isStore(int opcode);
 int isInconditionalJump(Instrucao * i);
 void show_config();
 void show_instruction_details(char * mnemonic);
+int get_def_mnemonico(char * mnemonico);
 
 #endif

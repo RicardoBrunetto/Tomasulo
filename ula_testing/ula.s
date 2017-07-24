@@ -35,6 +35,9 @@ ula:
 
 
 # Funções da ULA
+  add_com_overflow:
+
+
   and_logico:
     movl op1, %eax
     and op2, %eax
@@ -71,6 +74,7 @@ ula:
     sub op2, %eax
     movl %eax, result
     jmp fim
+
 
   fim:
     movl result, %eax

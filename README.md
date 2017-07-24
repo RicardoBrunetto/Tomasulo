@@ -13,6 +13,7 @@ Trabalho Arquitetura II
 - [ ] Implementar cache
 - [x] Implementar clock
 - [x] Implementar barramentos
+  - [ ] Implementar fila para o CDB
 - [ ] Implementar ULA
 - [ ] Implementar despacho de instruções
 

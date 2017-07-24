@@ -38,40 +38,61 @@ void insertNop(int quantidade){
   printf("\n00000000000000000000000000000000\n");
 }
 
-void setInstruction_R(char* opcode, char* rs, char* rt, char* rd, char* shift, char* func){
-  char instr[32] = "";
-  strcat(instr, opcode);
-  strcat(instr, rs);
-  strcat(instr, rt);
-  strcat(instr, rd);
-  strcat(instr, shift);
-  strcat(instr, func);
-  printf("\nInstrução tipo R: %s\tInteiro: %i\n", instr, binaryToInteger(instr));
+void setInstruction_R(int opcode, int rs, int rt, int rd, int shift, int func){
+  int instr = opcode; instr = instr << 26;
+  rs = rs << 21; instr = instr | rs;
+  rt = rt << 16; instr = instr | rt;
+  rd = rd << 11; instr = instr | rd;
+  shift = shift << 6; instr = instr | shift;
+  instr = instr | func;
+  printf("\nInstrução tipo R:\tInteiro: %i\n", instr);
 }
 
-void setInstruction_I(char* opcode, char* rs, char* rt, char* imm){
-  char instr[32] = "";
-  strcat(instr, opcode);
-  strcat(instr, rs);
-  strcat(instr, rt);
-  strcat(instr, imm);
-  printf("\nInstrução tipo I: %s\tInteiro: %i\n", instr, binaryToInteger(instr));
+void setInstruction_I(int opcode, int rs, int rt, int imm){
+  printf("\nop: %d\trs: %d\trt: %d\timm: %d\n", opcode, rs, rt, imm);
+  int instr = opcode; instr = instr << 26;
+  rs = rs << 21; instr = instr | rs;
+  rt = rt << 16; instr = instr | rt;
+  imm = imm << 16; imm = imm >> 16; instr = instr | imm;
+  printf("\nInstrução tipo I:\tInteiro: %i\n", instr);
 }
 
-void setInstruction_J(char* opcode, char* targetAddress){
-  char instr[32] = "";
-  strcat(instr, opcode);
-  strcat(instr, targetAddress);
-  printf("\nInstrução tipo J: %s\tInteiro: %i\n", instr, binaryToInteger(instr));
+void setInstruction_J(int opcode, int targetAddress){
+  int instr = opcode; instr = instr << 26;
+  targetAddress = targetAddress  << 6; targetAddress = targetAddress >> 6;
+  instr = instr | targetAddress;
+  printf("\nInstrução tipo J:\tInteiro: %i\n", instr);
 }
 
-void setData(int offset, char ** numeros, int qtdNum){
+int hex_to_dec(char * hexstring){
+  return ((int)strtol(hexstring, NULL, 16));
+}
+
+
+void setData(int offset, int * numeros, int qtdNum){
   int i;
   for(i=0; i<qtdNum; i++){
-    printf("\n%i, %i, %s\n", offset, qtdNum, numeros[i]);
+    printf("\n%d, %d, %d\n", offset, qtdNum, numeros[i]);
   }
 }
 
 int getOffset(LinkedList * lista, char * lbl){
+  SLabel * d;
+  while((d = (SLabel *)getProximoLinkedList(lista)) != NULL){
+    if(!strcasecmp(d->lbl_identificador, lbl)){
+      resetProximoLinkedList(lista);
+      return d->lbl_offset;
+    }
+  }
+  resetProximoLinkedList(lista);
+}
 
+
+/*Exibe a lista de Labels*/
+void print_lista_labels(LinkedList * lista){
+  show_config();
+  SLabel * d;
+  while((d = (SLabel *)getProximoLinkedList(lista)) != NULL)
+    printf("Identificador: %s\tOffset: %d\n", d->lbl_identificador, d->lbl_offset);
+  resetProximoLinkedList(lista);
 }

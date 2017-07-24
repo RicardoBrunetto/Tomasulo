@@ -1,6 +1,7 @@
 #ifndef DEFINITIONS_H
 #define DEFINITIONS_H
 
+#include "DQueue.h"
 #include "LinkedList.h"
 
 #define WORD_SIZE 4 /*Tamanho de uma palavra (em bytes)*/
@@ -16,8 +17,8 @@ typedef enum { TYPE_R, TYPE_J, TYPE_I } Tipo_Instrucao;
 typedef enum { ADD_UF, MUL_UF, LOAD_UF, STORE_UF } Tipo_ER_UF;
 
 /*Definições das quantidades de Estações de Reserva*/
-int QUANTIDADE_ESTACOES_RESERVA_ADD, QUANTIDADE_ESTACOES_RESERVA_MUL, QUANTIDADE_ESTACOES_RESERVA_LOAD, QUANTIDADE_ESTACOES_RESERVA_STORE;
-int QUANTIDADE_ESTACOES_RESERVA;
+extern int QUANTIDADE_ESTACOES_RESERVA_ADD, QUANTIDADE_ESTACOES_RESERVA_MUL, QUANTIDADE_ESTACOES_RESERVA_LOAD, QUANTIDADE_ESTACOES_RESERVA_STORE;
+extern int QUANTIDADE_ESTACOES_RESERVA;
 
 /*Estrutura de definição*/
 typedef struct{
@@ -42,7 +43,7 @@ typedef struct{
 /*Estrutura de Barramento*/
 typedef struct{
     int dados, endereco, controle;
-    //TODO: Inserir uma fila?
+    Fila * fila_barramento;
 }Barramento;
 
 /*Estrutura de Registrador*/
@@ -69,6 +70,7 @@ typedef struct{
 }Instrucao;
 
 /*Lista de definições*/
-LinkedList lista_definicoes;
+extern LinkedList lista_definicoes;
+
 
 #endif

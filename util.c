@@ -111,6 +111,18 @@ int isInconditionalJump(Instrucao * i){
   return 1;
 }
 
+/*Retorna a especificação da instrução com aquele mnemônico*/
+int get_def_mnemonico(char * mnemonico){
+  Def * d;
+  while((d = (Def *)getProximoLinkedList(&lista_definicoes)) != NULL){
+    if(!strcasecmp(d->mnemonic, mnemonico)) break;
+  }
+  resetProximoLinkedList(&lista_definicoes);
+  if(d == NULL)
+    printf("\nInstrução não definida no arquivo def_file.txt\n");
+  return d;
+}
+
 /*Procedimento que exibe as configurações carregadas do simulador*/
 void show_config(){
   printf("\nInstruções Reconhecidas: %d\n", getSizeofLinkedList(lista_definicoes));
@@ -155,15 +167,8 @@ void show_config(){
 }
 
 void show_instruction_details(char * mnemonic){
-  Def * d;
-  while((d = (Def *)getProximoLinkedList(&lista_definicoes)) != NULL){
-    if(!strcasecmp(d->mnemonic, mnemonic)) break;
-  }
-  resetProximoLinkedList(&lista_definicoes);
-  if(d == NULL){
-    printf("\nInstrução não definida no arquivo def_file.txt\n");
-    return;
-  }
+  Def * d = get_def_mnemonico(mnemonic);
+  if(d == NULL) return;
   printf("*---------------------------------------------------------------------------------------------------------------*\n");
   printf("*\tMnm\t|\tOp\t|\tCycle\t|\tType\t|\tUF\t|\tFunc\t|\tAbsOp\t*\n");
   printf("*---------------------------------------------------------------------------------------------------------------*\n");

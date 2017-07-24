@@ -43,7 +43,7 @@ definitions: |
              d->tipo_uf = get_uf_based($11);
              d->function = -1; /*Não possuem Function*/
              d->abstract_opcode = $5; /*Não possuem Abstract Opcode*/
-             insertLinkedList(&lista_definicoes, d);
+            insertLinkedList(&lista_definicoes, d);
            } |
            definitions ABRE_PAR LBL DOISPONTOS VAL VIRG VAL VIRG LBL VIRG LBL VIRG VAL VIRG VAL FECHA_PAR pl {
              Def * d = (Def *)malloc(sizeof(Def));
@@ -54,7 +54,7 @@ definitions: |
              d->tipo_uf = get_uf_based($11);
              d->function = $13;
              d->abstract_opcode = $15;
-             insertLinkedList(&lista_definicoes, d);
+            insertLinkedList(&lista_definicoes, d);
            }
 
 pl:
