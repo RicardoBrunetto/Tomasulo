@@ -53,9 +53,9 @@ NumStruct nstruct;
 %token <instruction_I> ADDI ADDIU ANDI ORI XORI LUI SLTI SLTIU BEQ BGEZ BGEZAL BGTZ BLEZ BLTZAL BLTZ BNE TEQI TNEQ TGEI TGEIU TLTI TLTIU LB LBU LH LHU LW LWL LWR LL SB SH SW SWR SWL SC
 %token <instruction_J> J JAL JALR JR
 %token DATA TEXT SECTION DPTS INT EOL COMMA
-
 %token <str> HEX_VAL
 
+%type <valor> nrorlabel
 %type <str> reg
 %type <instruction_R> instrucao_R
 %type <instruction_I> instrucao_I
@@ -135,6 +135,8 @@ numeros: nro {nstruct.numeros[nstruct.qtdNum] = $1; nstruct.qtdNum = nstruct.qtd
 
 nro: NUMBER | HEX_VAL {$$ = hex_to_dec($1);}
 
+nrorlabel: NUMBER | HEX_VAL {$$ = hex_to_dec($1);} | IDENTIFICADOR {$$ = getOffset(&lista, $1);}
+
 comma:
      | COMMA
 
@@ -150,8 +152,6 @@ label_decl:
                                       printf("Defined lbl %s \n", $1);
                                       insertLinkedList(&lista, label_found);
                                       printf("inserted\n");
-                                    }else{
-                                      //TODO: colocar o endereço
                                     }}
 
 instrucao: instrucao_R {if(passada == 1){ setInstruction_R($1.opcode, $1.rs, $1.rt, $1.rd, $1.shift, $1.func); }else{ address += BYTE_SIZE; }}
@@ -159,11 +159,74 @@ instrucao: instrucao_R {if(passada == 1){ setInstruction_R($1.opcode, $1.rs, $1.
          | instrucao_J {if(passada == 1){ setInstruction_J($1.opcode, $1.target); }else{ address += BYTE_SIZE; }}
 
 instrucao_R: ADD reg comma reg comma reg {if(passada == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rd = $2; $$.rs = $4; $$.rt = $6; $$.shift = 0; $$.func = d->function;}}
+           | ADDU reg comma reg comma reg {if(passada == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rd = $2; $$.rs = $4; $$.rt = $6; $$.shift = 0; $$.func = d->function;}}
+           | AND reg comma reg comma reg {if(passada == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rd = $2; $$.rs = $4; $$.rt = $6; $$.shift = 0; $$.func = d->function;}}
+           | CLO reg comma reg {if(passada == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rd = $2; $$.rs = $4; $$.rt = 0; $$.shift = 0; $$.func = d->function;}}
+           | CLZ reg comma reg {if(passada == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rd = $2; $$.rs = $4; $$.rt = 0; $$.shift = 0; $$.func = d->function;}}
+           | DIV reg comma reg {if(passada == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rd = 0; $$.rs = $2; $$.rt = $4; $$.shift = 0; $$.func = d->function;}}
+           | DIVU reg comma reg {if(passada == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rd = 0; $$.rs = $2; $$.rt = $4; $$.shift = 0; $$.func = d->function;}}
+           | MULT reg comma reg {if(passada == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rd = 0; $$.rs = $2; $$.rt = $4; $$.shift = 0; $$.func = d->function;}}
+           | MULTU reg comma reg {if(passada == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rd = 0; $$.rs = $2; $$.rt = $4; $$.shift = 0; $$.func = d->function;}}
+           | MUL reg comma reg comma reg {if(passada == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rd = $2; $$.rs = $4; $$.rt = $6; $$.shift = 0; $$.func = d->function;}}
+           | MSUB reg comma reg {if(passada == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rd = 0; $$.rs = $2; $$.rt = $4; $$.shift = 0; $$.func = d->function;}}
+           | MSUBU reg comma reg {if(passada == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rd = 0; $$.rs = $2; $$.rt = $4; $$.shift = 0; $$.func = d->function;}}
+           | NOR reg comma reg comma reg {if(passada == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rd = $2; $$.rs = $4; $$.rt = $6; $$.shift = 0; $$.func = d->function;}}
+           | OR reg comma reg comma reg {if(passada == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rd = $2; $$.rs = $4; $$.rt = $6; $$.shift = 0; $$.func = d->function;}}
+           | SLL reg comma reg comma nro {if(passada == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rd = $2; $$.rs = 0; $$.rt = $4; $$.shift = $6; $$.func = d->function;}}
+           | SLLV reg comma reg comma reg {if(passada == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rd = $2; $$.rs = $6; $$.rt = $4; $$.shift = 0; $$.func = d->function;}}
+           | SRA reg comma reg comma nro {if(passada == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rd = $2; $$.rs = 0; $$.rt = $4; $$.shift = $6; $$.func = d->function;}}
+           | SRAV reg comma reg comma reg {if(passada == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rd = $2; $$.rs = $6; $$.rt = $4; $$.shift = 0; $$.func = d->function;}}
+           | SRL reg comma reg comma nro {if(passada == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rd = $2; $$.rs = 0; $$.rt = $4; $$.shift = $6; $$.func = d->function;}}
+           | SRLV reg comma reg comma reg {if(passada == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rd = $2; $$.rs = $6; $$.rt = $4; $$.shift = 0; $$.func = d->function;}}
+           | SUB reg comma reg comma reg {if(passada == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rd = $2; $$.rs = $4; $$.rt = $6; $$.shift = 0; $$.func = d->function;}}
+           | SUBU reg comma reg comma reg {if(passada == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rd = $2; $$.rs = $4; $$.rt = $6; $$.shift = 0; $$.func = d->function;}}
+           | XOR reg comma reg comma reg {if(passada == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rd = $2; $$.rs = $4; $$.rt = $6; $$.shift = 0; $$.func = d->function;}}
+           | SLT reg comma reg comma reg {if(passada == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rd = $2; $$.rs = $4; $$.rt = $6; $$.shift = 0; $$.func = d->function;}}
+           | SLTU reg comma reg comma reg {if(passada == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rd = $2; $$.rs = $4; $$.rt = $6; $$.shift = 0; $$.func = d->function;}}
+           | JALR reg comma reg {if(passada == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rd = $2; $$.rs = $4; $$.rt = 0; $$.shift = 0; $$.func = d->function;}}
+           | JALR reg {if(passada == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rd = 31; $$.rs = $2; $$.rt = 0; $$.shift = 0; $$.func = d->function;}}
+           | JR reg {if(passada == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rd = 0; $$.rs = $2; $$.rt = 0; $$.shift = 0; $$.func = d->function;}}
+           | MFHI reg {if(passada == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rd = $2; $$.rs = 0; $$.rt = 0; $$.shift = 0; $$.func = d->function;}}
+           | MFLO reg {if(passada == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rd = $2; $$.rs = 0; $$.rt = 0; $$.shift = 0; $$.func = d->function;}}
+           | MTHI reg {if(passada == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rd = 0; $$.rs = $2; $$.rt = 0; $$.shift = 0; $$.func = d->function;}}
+           | MTLO reg {if(passada == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rd = 0; $$.rs = $2; $$.rt = 0; $$.shift = 0; $$.func = d->function;}}
+           | MOVN reg comma reg comma reg {if(passada == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rd = $2; $$.rs = $4; $$.rt = $6; $$.shift = 0; $$.func = d->function;}}
+           | MOVZ reg comma reg comma reg {if(passada == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rd = $2; $$.rs = $4; $$.rt = $6; $$.shift = 0; $$.func = d->function;}}
+           | SYSCALL {if(passada == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rd = 0; $$.rs = 0; $$.rt = 0; $$.shift = 0; $$.func = d->function;}}
+           | NOP {if(passada == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rd = 0; $$.rs = 0; $$.rt = 0; $$.shift = 0; $$.func = d->function;}}
+
 
 instrucao_J: J IDENTIFICADOR {if(passada == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.target = getOffset(&lista, $2);}}
+           | JAL IDENTIFICADOR {if(passada == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.target = getOffset(&lista, $2);}}
 
-instrucao_I: ADDI reg comma reg comma NUMBER {if(passada == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rt = $2; $$.rs = $4; $$.imm = $6;}}
+instrucao_I: ADDI reg comma reg comma nrorlabel {if(passada == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rt = $2; $$.rs = $4; $$.imm = $6;}}
+           | ADDIU reg comma reg comma nrorlabel {if(passada == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rt = $2; $$.rs = $4; $$.imm = $6;}}
+           | ANDI reg comma reg comma nrorlabel {if(passada == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rt = $2; $$.rs = $4; $$.imm = $6;}}
+           | ORI reg comma reg comma nrorlabel {if(passada == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rt = $2; $$.rs = $4; $$.imm = $6;}}
+           | XORI reg comma reg comma nrorlabel {if(passada == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rt = $2; $$.rs = $4; $$.imm = $6;}}
+           | LUI reg comma nrorlabel {if(passada == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rt = $2; $$.rs = 0; $$.imm = $4;}}
+           | SLTI reg comma reg comma nrorlabel {if(passada == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rt = $2; $$.rs = $4; $$.imm = $6;}}
+           | SLTIU reg comma reg comma nrorlabel {if(passada == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rt = $2; $$.rs = $4; $$.imm = $6;}}
+           | BEQ reg comma reg comma nrorlabel {if(passada == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rt = $4; $$.rs = $2; $$.imm = $6;}}
+           | BGEZ reg comma nrorlabel {if(passada == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rt = 1; $$.rs = $2; $$.imm = $4;}}
+           | BGEZAL reg comma nrorlabel {if(passada == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rt = 17; $$.rs = $2; $$.imm = $4;}}
+           | BGTZ reg comma nrorlabel {if(passada == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rt = 0; $$.rs = $2; $$.imm = $4;}}
+           | BLEZ reg comma nrorlabel {if(passada == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rt = 0; $$.rs = $2; $$.imm = $4;}}
+           | BLTZAL reg comma nrorlabel {if(passada == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rt = 16; $$.rs = $2; $$.imm = $4;}}
+           | BLTZ reg comma nrorlabel {if(passada == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rt = 0; $$.rs = $2; $$.imm = $4;}}
+           | BNE reg comma reg comma nrorlabel {if(passada == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rt = $4; $$.rs = $2; $$.imm = $6;}}
            | LB reg comma nro ABRE_PAR reg FECHA_PAR {if(passada == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rt = $2; $$.rs = $6; $$.imm = $4;}}
+           | LBU reg comma nro ABRE_PAR reg FECHA_PAR {if(passada == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rt = $2; $$.rs = $6; $$.imm = $4;}}
+           | LH reg comma nro ABRE_PAR reg FECHA_PAR {if(passada == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rt = $2; $$.rs = $6; $$.imm = $4;}}
+           | LHU reg comma nro ABRE_PAR reg FECHA_PAR {if(passada == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rt = $2; $$.rs = $6; $$.imm = $4;}}
+           | LW reg comma nro ABRE_PAR reg FECHA_PAR {if(passada == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rt = $2; $$.rs = $6; $$.imm = $4;}}
+           | LWL reg comma nro ABRE_PAR reg FECHA_PAR {if(passada == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rt = $2; $$.rs = $6; $$.imm = $4;}}
+           | LWR reg comma nro ABRE_PAR reg FECHA_PAR {if(passada == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rt = $2; $$.rs = $6; $$.imm = $4;}}
+           | SB reg comma nro ABRE_PAR reg FECHA_PAR {if(passada == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rt = $2; $$.rs = $6; $$.imm = $4;}}
+           | SH reg comma nro ABRE_PAR reg FECHA_PAR {if(passada == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rt = $2; $$.rs = $6; $$.imm = $4;}}
+           | SW reg comma nro ABRE_PAR reg FECHA_PAR {if(passada == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rt = $2; $$.rs = $6; $$.imm = $4;}}
+           | SWL reg comma nro ABRE_PAR reg FECHA_PAR {if(passada == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rt = $2; $$.rs = $6; $$.imm = $4;}}
+           | SWR reg comma nro ABRE_PAR reg FECHA_PAR {if(passada == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rt = $2; $$.rs = $6; $$.imm = $4;}}
 
 reg: REG_S {$$ = $1;}
    | REG_AT {$$ = $1;}

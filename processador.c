@@ -67,7 +67,13 @@ void PIPELINE_issue(){
       /*EMISSÃO*/
       estacoes_Reserva[i].BusyBit = get_ciclos(instr->opcode);
       if(instr->type == TYPE_R){ /*Caso seja do tipo R*/
-        estacoes_Reserva[i].Op = get_abstract_opcode(instr->opcode, instr->instruction.instruction_R.func);
+        estacoes_Reserva[i].Op = get_abstract_opcode(instr->opcode, (instr->opcode == 1 ? instr->rt : instr->instruction.instruction_R.func)); /*Instruções de opcode 1 têm o function no rt*/
+        if(instr->opcode == 1){ /*Branches que são tratados como tipo R*/
+          /*Offset está no shift e no function, é preciso concatená-los*/
+          int offset = instr->shift; offset = offset << 6;
+          offset = offset | instr->function;
+
+        }
         //TODO:
       }else if(instr->type == TYPE_I){
         estacoes_Reserva[i].Op = instr->opcode;
@@ -112,7 +118,7 @@ void PIPELINE_execute(){
   Atualiza as ER's e o Banco de Registradores*/
 void PIPELINE_write(){
    /*CDB.endereco contém o índice da Estação de Reserva que gerou o dado*/
-   
+
   if(CDB.endereco == FLAG_VAZIO) return; /*Indica que nada foi escrito no CDB ainda (nada foi executado)*/
   int i;
   for(i=0; i<QUANTIDADE_ESTACOES_RESERVA; i++){ /*Verifica as Estações de Reserva que estão agurdando o dado*/

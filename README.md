@@ -16,5 +16,6 @@ Trabalho Arquitetura II
   - [ ] Implementar fila para o CDB
 - [ ] Implementar ULA
 - [ ] Implementar despacho de instruções
+- [ ] Reconhecer números negativos
 
 # Dúvidas
