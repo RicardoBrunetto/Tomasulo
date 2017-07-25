@@ -1,11 +1,13 @@
 #include "assembler.util.h"
 
-int binaryToInteger(char * binary){
-  int size = strlen(binary), i, integer = 0;
-  for(i=0; i<size; i++){
-    integer += (potencias[i] * (binary[size-1-i]-'0'));
+int manter_negativo(int val){
+  int msb = val; msb = msb >> 31;
+  if(msb == 1){
+    msb = msb << 15;
+    val = val << 16; val = val >> 16;
+    val = val | msb;
   }
-  return integer;
+  return val;
 }
 
 int getNumber(char *str){
@@ -19,61 +21,44 @@ int getNumber(char *str){
   return atoi(str+i);
 }
 
-char * integerToBinary(int integer, int strSize, char * str){
-  unsigned int u_i = 0;
-  int i            = 0;
-  str = malloc(sizeof(char)*strSize+1);
-
-  u_i = (unsigned int)integer;
-  for(i=0; i<strSize; ++i) {
-     int shifted = (u_i >> i);
-     str[(strSize-1)-i] = (shifted&1)?'1':'0';
+void insertNop(int offset_Atual){
+  int i, instr = 0, lines = (DATA_AMOUNT/WORD_SIZE);
+  for(i=(offset_Atual + WORD_SIZE - 1); i<lines; i++){
+    fwrite(&instr, WORD_SIZE, 1, output);
   }
-
-  str[strSize] = (char)'\0';
-  return str;
 }
 
-void insertNop(int quantidade){
-  printf("\n00000000000000000000000000000000\n");
-}
-
-void setInstruction_R(int opcode, int rs, int rt, int rd, int shift, int func){
+void setInstruction_R(int opcode, int rs, int rt, int rd, int shift, int func, int offset){
   int instr = opcode; instr = instr << 26;
   rs = rs << 21; instr = instr | rs;
   rt = rt << 16; instr = instr | rt;
   rd = rd << 11; instr = instr | rd;
   shift = shift << 6; instr = instr | shift;
   instr = instr | func;
-  printf("\nInstrução tipo R:\tInteiro: %i\n", instr);
+  fwrite(&instr, WORD_SIZE, 1, output);
 }
 
-void setInstruction_I(int opcode, int rs, int rt, int imm){
-  printf("\nop: %d\trs: %d\trt: %d\timm: %d\n", opcode, rs, rt, imm);
+void setInstruction_I(int opcode, int rs, int rt, int imm, int offset){
   int instr = opcode; instr = instr << 26;
   rs = rs << 21; instr = instr | rs;
   rt = rt << 16; instr = instr | rt;
   imm = imm << 16; imm = imm >> 16; instr = instr | imm;
-  printf("\nInstrução tipo I:\tInteiro: %i\n", instr);
+  fwrite(&instr, WORD_SIZE, 1, output);
 }
 
-void setInstruction_J(int opcode, int targetAddress){
+void setInstruction_J(int opcode, int targetAddress, int offset){
   int instr = opcode; instr = instr << 26;
   targetAddress = targetAddress  << 6; targetAddress = targetAddress >> 6;
   instr = instr | targetAddress;
-  printf("\nInstrução tipo J:\tInteiro: %i\n", instr);
+  fwrite(&instr, WORD_SIZE, 1, output);
 }
 
 int hex_to_dec(char * hexstring){
   return ((int)strtol(hexstring, NULL, 16));
 }
 
-
 void setData(int offset, int * numeros, int qtdNum){
-  int i;
-  for(i=0; i<qtdNum; i++){
-    printf("\n%d, %d, %d\n", offset, qtdNum, numeros[i]);
-  }
+  fwrite(numeros, (qtdNum * WORD_SIZE), 1, output);
 }
 
 int getOffset(LinkedList * lista, char * lbl){

@@ -1,6 +1,24 @@
 #include <stdio.h>
 #include <stdlib.h>
 /*
+int manter_negativo(int val){
+  if(val < 0){
+    msb = 1; msb = msb << 15;
+    printf("\nmsb = %d\n", msb);
+    val = ~val; printf("\nval = %d\n", val);
+
+    val = val | msb;
+    printf("\nmsb = %d\n", val);
+  }
+  return val;
+}
+
+int main(){
+  int x = -2;
+  int val16bits = manter_negativo(x);
+  printf("x: %d\n", val16bits);
+}*/
+/*
 int main(){
   unsigned int x = 2773842605;
   // 41
@@ -46,5 +64,14 @@ rs: >> 21 | & 31
 rt: >> 16 | & 31
 imm: << 16 | >> 16
 
+
+Byte w1, w2, w3, w4;
+Word wpiece;
+wpiece = w >> 24;w1 = wpiece;
+wpiece = w << 8; wpiece = wpiece >> 16; w2 = wpiece;
+wpiece = w << 16; wpiece = wpiece >> 8;
+w3 = wpiece; printf("w3: %d\t", w3);
+wpiece = w << 24; wpiece = wpiece >> 24;
+w4 = wpiece; printf("w4: %d\n", w4);
 
 */

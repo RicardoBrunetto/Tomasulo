@@ -67,11 +67,11 @@ void PIPELINE_issue(){
       /*EMISSÃO*/
       estacoes_Reserva[i].BusyBit = get_ciclos(instr->opcode);
       if(instr->type == TYPE_R){ /*Caso seja do tipo R*/
-        estacoes_Reserva[i].Op = get_abstract_opcode(instr->opcode, (instr->opcode == 1 ? instr->rt : instr->instruction.instruction_R.func)); /*Instruções de opcode 1 têm o function no rt*/
+        estacoes_Reserva[i].Op = get_abstract_opcode(instr->opcode, (instr->opcode == 1 ? instr->instruction.instruction_R.rt : instr->instruction.instruction_R.func)); /*Instruções de opcode 1 têm o function no rt*/
         if(instr->opcode == 1){ /*Branches que são tratados como tipo R*/
           /*Offset está no shift e no function, é preciso concatená-los*/
-          int offset = instr->shift; offset = offset << 6;
-          offset = offset | instr->function;
+          int offset = instr->instruction.instruction_R.shift; offset = offset << 6;
+          offset = offset | instr->instruction.instruction_R.func;
 
         }
         //TODO:

@@ -1,5 +1,6 @@
 .data
 x: .int 500, 100, 0xe
+y: .int 152, 15
 .text
 
 LABEL:

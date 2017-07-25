@@ -10,4 +10,4 @@ flex_part: bison_part
 	@flex scanner.l
 
 comp: flex_part
-	@cc -w -c parser.tab.c lex.yy.c ../../include/lib/LinkedList.c lib/assembler.util.c ../../util.c ../../definitions.c -lfl
+	@cc -w -c parser.tab.c lex.yy.c ../../LinkedList.c lib/assembler.util.c ../../util.c ../../definitions.c -lfl

@@ -5,6 +5,9 @@
 #include "LinkedList.h"
 
 #define WORD_SIZE 4 /*Tamanho de uma palavra (em bytes)*/
+#define START_ADDRESS_DATA 100
+//#define START_ADDRESS_DATA 0x4000000
+#define DATA_AMOUNT    400
 
 #define FLAG_VAZIO -1
 #define FLAG_READ   0

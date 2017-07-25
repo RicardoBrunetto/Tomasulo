@@ -5,13 +5,21 @@
 #include "include/gsim.h"
 
 void loadToMemory(FILE *f){
-  int address = 0;
-  int * val = malloc(sizeof(int));
-  while(fread(val, sizeof(int), 1, f) > 0){
-    mem_write(*val, address);
-    address = address + sizeof(int);
+  int address = START_ADDRESS_DATA;
+
+  /*Data loading*/
+  int i, instr = 0, lines = (DATA_AMOUNT/WORD_SIZE), val;
+  for(i=0; i<lines; i++){
+    fread(&val, WORD_SIZE, 1, f);
+    mem_write(val, address);
+    address = address + WORD_SIZE;
   }
-  mem_print();
+  /*Text loading*/
+  address = 0;
+  while(fread(&val, WORD_SIZE, 1, f) > 0){
+    mem_write(val, address);
+    address = address + WORD_SIZE;
+  }
 }
 
 void printHelpMenu(){
@@ -56,7 +64,6 @@ void waiting(){
 
 int main(int argc, char **argv){
   run_definitions();
-  show_config();
   switch (argc){
     case 2:
       if(!strcmp(argv[1], "-h") || !strcmp(argv[1], "-help")){
@@ -67,6 +74,8 @@ int main(int argc, char **argv){
       if(!strcmp(argv[1], "load")){
         FILE *f = fopen(argv[2], "r");
         call_tradutor(f);
+        f = fopen("output/output", "r");
+        loadToMemory(f);
       }else if(!strcmp(argv[1], "load-b")){
         FILE *f;
         f = fopen(argv[2], "r");

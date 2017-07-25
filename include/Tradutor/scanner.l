@@ -98,6 +98,7 @@ int state;
 "mthi" { if(state == FLAG_ASSEMBLER){ mnemonico = strdup(yytext); return MTHI; }else{ yylval.str = strdup(yytext); return IDENTIFICADOR;} }
 "mtlo" { if(state == FLAG_ASSEMBLER){ mnemonico = strdup(yytext); return MTLO; }else{ yylval.str = strdup(yytext); return IDENTIFICADOR;} }
 "movz" { if(state == FLAG_ASSEMBLER){ mnemonico = strdup(yytext); return MOVZ; }else{ yylval.str = strdup(yytext); return IDENTIFICADOR;} }
+"movn" { if(state == FLAG_ASSEMBLER){ mnemonico = strdup(yytext); return MOVN; }else{ yylval.str = strdup(yytext); return IDENTIFICADOR;} }
 "movf" { if(state == FLAG_ASSEMBLER){ mnemonico = strdup(yytext); return MOVF; }else{ yylval.str = strdup(yytext); return IDENTIFICADOR;} }
 "movt" { if(state == FLAG_ASSEMBLER){ mnemonico = strdup(yytext); return MOVT; }else{ yylval.str = strdup(yytext); return IDENTIFICADOR;} }
 "eret" { if(state == FLAG_ASSEMBLER){ mnemonico = strdup(yytext); return ERET; }else{ yylval.str = strdup(yytext); return IDENTIFICADOR;} }

@@ -1,4 +1,4 @@
-#include "../LinkedList.h"
+#include "include/LinkedList.h"
 
 void inicializarLista(LinkedList *list){
     list->inicio = NULL;
