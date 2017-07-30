@@ -16,7 +16,7 @@ Trabalho Arquitetura II
 - [x] Implementar ULA
   - [x] Integrar com a Estação de Reserva
 - [x] Implementar despacho de instruções
-- [ ] Vetores sendo inseridos ao inverso
+- [x] Vetores sendo inseridos ao inverso
 - [x] Reconhecer números negativos
   - *Não testado com o processador*
 

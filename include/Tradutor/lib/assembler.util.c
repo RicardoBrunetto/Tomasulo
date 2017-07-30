@@ -50,7 +50,10 @@ int hex_to_dec(char * hexstring){
 }
 
 void setData(int offset, int * numeros, int qtdNum){
-  fwrite(numeros, (qtdNum * WORD_SIZE), 1, output);
+  int i;
+  for(i = qtdNum - 1; i>=0; i--){
+    fwrite(numeros+i, WORD_SIZE, 1, output);
+  }
 }
 
 int getOffset(LinkedList * lista, char * lbl){
