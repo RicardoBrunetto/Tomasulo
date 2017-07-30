@@ -15,7 +15,7 @@ Trabalho Arquitetura II
   - [x] Implementar fila para o CDB
 - [x] Implementar ULA
   - [x] Integrar com a Estação de Reserva
-- [ ] Implementar despacho de instruções
+- [x] Implementar despacho de instruções
 - [ ] Vetores sendo inseridos ao inverso
 - [x] Reconhecer números negativos
   - *Não testado com o processador*
