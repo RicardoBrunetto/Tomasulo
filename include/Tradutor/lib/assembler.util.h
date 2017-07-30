@@ -32,4 +32,6 @@ int getOffset(LinkedList * lista, char * lbl);
 
 void print_lista_labels(LinkedList * lista);
 
+int get_indice_reg(int classe, int val);
+
 #endif

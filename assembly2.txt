@@ -1,0 +1,22 @@
+.data
+x: .int 500, 100, 0xe
+
+.text
+addi $a1, $zero, 24
+addi $a2, $zero, 3140
+# lui $a0, 0
+# sll $a2, $a2, 16
+
+addi $a3, $a0, 1
+movn $a0, $a1, $a2
+syscall
+
+# jalr $a1
+# j LABEL2
+
+# LABEL:
+# addi $a0, $zero, 150
+
+# LABEL2:
+# swr $a2, x
+# ori $t7, $t9, 1921

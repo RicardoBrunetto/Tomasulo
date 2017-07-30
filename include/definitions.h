@@ -9,11 +9,17 @@
 //#define START_ADDRESS_DATA 0x4000000
 #define DATA_AMOUNT    400
 
-#define FLAG_VAZIO -1
-#define FLAG_READ   0
-#define FLAG_WRITE  1
-#define FLAG_BUSY   2
-#define FLAG_READY  3
+#define FLAG_READY      -3
+#define FLAG_BUSY       -2
+#define FLAG_VAZIO      -1
+#define FLAG_READ        0
+#define FLAG_WRITE       1
+#define FLAG_DISPONIVEL -1
+/*Fixa as posições dos registradores RA, HI e LO*/
+#define REG_PS 29 /*SP*/
+#define REG_RA 31
+#define REG_HI 32
+#define REG_LO 33
 
 /*Definições de enum para controle das instruções*/
 typedef enum { TYPE_R, TYPE_J, TYPE_I } Tipo_Instrucao;
@@ -26,7 +32,7 @@ extern int QUANTIDADE_ESTACOES_RESERVA;
 /*Estrutura de definição*/
 typedef struct{
   char * mnemonic;
-  int opcode, function, ciclos, abstract_opcode;
+  int opcode, function, ciclos, abstract_opcode, cessa_emissao;
   Tipo_Instrucao formato;
   Tipo_ER_UF tipo_uf;
 }Def;
@@ -45,7 +51,10 @@ typedef struct{
 
 /*Estrutura de Barramento*/
 typedef struct{
-    int dados, endereco, controle;
+    int dado, endereco, controle;
+}Dado_Barramento;
+typedef struct{
+    int status;
     Fila * fila_barramento;
 }Barramento;
 
@@ -75,5 +84,10 @@ typedef struct{
 /*Lista de definições*/
 extern LinkedList lista_definicoes;
 
+int EMISSAO_CESSADA;
+int BUSCA_DECOD_CESSADA;
+
+/*Fila de Instruções a serem processadas*/
+Fila fila_Instrucoes;
 
 #endif

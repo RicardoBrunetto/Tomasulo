@@ -4,7 +4,7 @@ TRAD=$(DIR)lib/parser_def
 CFLAGS=-w
 LDFLAGS= $(TRAD)/def_parser.tab.c $(TRAD)/lex.yy.c +$(MAKE) -C $(TRAD)
 SRC= gsim.c
-SOURCES= *.c $(DIR)Tradutor/parser.tab.c $(DIR)Tradutor/lex.yy.c $(DIR)/Tradutor/lib/assembler.util.c
+SOURCES= *.c ula.s $(DIR)Tradutor/parser.tab.c $(DIR)Tradutor/lex.yy.c $(DIR)/Tradutor/lib/assembler.util.c
 # HEADERS=$(SOURCES:.c=.h)
 HEADERS=$(DIR)*.h
 OBJECTS=$(SOURCES:.c=.o)

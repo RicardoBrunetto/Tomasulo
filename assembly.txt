@@ -5,14 +5,11 @@ y: .int 152, 15
 
 LABEL:
 add $s4, $s3, $s1
-j LABEL
+j LABEL2
 add $s5, $s6, $s7
 
 LABEL2:
 add $s0, $s0, $s0
-j LABEL2
-j LABEL
-addi $s0, $s0, 128
-
-j LABEL2
+addi $t7, $s0, 128
 lb $s0, 4($t7)
+j LABEL2

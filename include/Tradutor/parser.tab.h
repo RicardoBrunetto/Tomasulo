@@ -60,7 +60,7 @@ extern int yydebug;
     REG_GP = 270,
     REG_SP = 271,
     REG_FP = 272,
-    REG_RA = 273,
+    REG_R = 273,
     REG_ZERO = 274,
     ADD = 275,
     ADDU = 276,

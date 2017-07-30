@@ -6,100 +6,98 @@
 
 # typedef enum { TYPE_R, TYPE_J, TYPE_I } Tipo_Instrucao;
 # typedef enum { ADD_UF, MUL_UF, LOAD_UF, STORE_UF } Tipo_ER_UF;
-# (INSTRUCTION: OPCODE, CYCLES, Tipo_Instrucao, Tipo_ER_UF, FUNCTION (caso haja), ABSTRACT_OPCODE (caso haja function))
+# (INSTRUCTION: OPCODE, CYCLES, Tipo_Instrucao, Tipo_ER_UF, FUNCTION (caso haja, 0), ABSTRACT_OPCODE (caso haja function, 0), Cessa_emissao)
 
 # ADDs e SUBs
-(add: 0, 2, TYPE_R, ADD_UF, 32, 252)
-(addu: 0, 2, TYPE_R, ADD_UF, 33, 253)
-(addi: 8, 2, TYPE_I, ADD_UF)
-(addiu: 9, 2, TYPE_I, ADD_UF)
-(sub: 0, 2, TYPE_R, ADD_UF, 34, 274)
-(subu: 0, 2, TYPE_R, ADD_UF, 35, 275)
+(add: 0, 2, TYPE_R, ADD_UF, 32, 252, 0)
+(addu: 0, 2, TYPE_R, ADD_UF, 33, 253, 0)
+(addi: 8, 2, TYPE_I, ADD_UF, 0)
+(addiu: 9, 2, TYPE_I, ADD_UF, 0)
+(sub: 0, 2, TYPE_R, ADD_UF, 34, 274, 0)
+(subu: 0, 2, TYPE_R, ADD_UF, 35, 275, 0)
 
 # LOGICAS
-(and: 0, 1, TYPE_R, ADD_UF, 36, 254)
-(andi: 12, 1, TYPE_I, ADD_UF)
-(nor: 0, 1, TYPE_R, ADD_UF, 39, 266)
-(or: 0, 1, TYPE_R, ADD_UF, 37, 267)
-(ori: 13, 1, TYPE_I, ADD_UF)
-(xor: 0, 1, TYPE_R, ADD_UF, 38, 276)
-(xori: 14, 1, TYPE_I, ADD_UF)
+(and: 0, 1, TYPE_R, ADD_UF, 36, 254, 0)
+(andi: 12, 1, TYPE_I, ADD_UF, 0)
+(nor: 0, 1, TYPE_R, ADD_UF, 39, 266, 0)
+(or: 0, 1, TYPE_R, ADD_UF, 37, 267, 0)
+(ori: 13, 1, TYPE_I, ADD_UF, 0)
+(xor: 0, 1, TYPE_R, ADD_UF, 38, 276, 0)
+(xori: 14, 1, TYPE_I, ADD_UF, 0)
 
 # BIT-SHIFT
-(sll: 0, 1, TYPE_R, ADD_UF, 0, 268)
-(sllv: 0, 1, TYPE_R, ADD_UF, 4, 269)
-(sra: 0, 1, TYPE_R, ADD_UF, 3, 270)
-(srav: 0, 1, TYPE_R, ADD_UF, 7, 271)
-(srl: 0, 1, TYPE_R, ADD_UF, 2, 272)
-(srlv: 0, 1, TYPE_R, ADD_UF, 6, 273)
+(sll: 0, 1, TYPE_R, ADD_UF, 45, 268, 0)
+(sllv: 0, 1, TYPE_R, ADD_UF, 4, 269, 0)
+(sra: 0, 1, TYPE_R, ADD_UF, 3, 270, 0)
+(srav: 0, 1, TYPE_R, ADD_UF, 7, 271, 0)
+(srl: 0, 1, TYPE_R, ADD_UF, 2, 272, 0)
+(srlv: 0, 1, TYPE_R, ADD_UF, 6, 273, 0)
 
 # CLOs
-(clo: 28, 2, TYPE_R, ADD_UF, 33, 255)
-(clz: 28, 2, TYPE_R, ADD_UF, 32, 256)
+(clo: 28, 2, TYPE_R, ADD_UF, 33, 255, 0)
+(clz: 28, 2, TYPE_R, ADD_UF, 32, 256, 0)
 
 # DIVs
-(div: 0, 5, TYPE_R, MUL_UF, 26, 257)
-(divu: 0, 5, TYPE_R, MUL_UF, 27, 258)
+(div: 0, 5, TYPE_R, MUL_UF, 26, 257, 1)
+(divu: 0, 5, TYPE_R, MUL_UF, 27, 258, 1)
 
 # MULs
-(mult: 0, 5, TYPE_R, MUL_UF, 24, 259)
-(multu: 0, 5, TYPE_R, MUL_UF, 25, 260)
-(mul: 28, 5, TYPE_R, MUL_UF, 2, 261)
-(madd: 28, 5, TYPE_R, MUL_UF, 0, 262)
-(maddu: 28, 5, TYPE_R, MUL_UF, 1, 263)
-(msub: 28, 5, TYPE_R, MUL_UF, 4, 264)
-(msubu: 28, 5, TYPE_R, MUL_UF, 5, 265)
-
-
-(imul: 21, 9, TYPE_I, MUL_UF)
+(mult: 0, 5, TYPE_R, MUL_UF, 24, 259, 1)
+(multu: 0, 5, TYPE_R, MUL_UF, 25, 260, 1)
+(mul: 28, 5, TYPE_R, MUL_UF, 2, 261, 0)
+# (madd: 28, 5, TYPE_R, MUL_UF, 0, 262, 0)
+# (maddu: 28, 5, TYPE_R, MUL_UF, 1, 263, 0)
+# (msub: 28, 5, TYPE_R, MUL_UF, 4, 264, 0)
+# (msubu: 28, 5, TYPE_R, MUL_UF, 5, 265, 0)
 
 # Conditional
-(slt: 0, 2, TYPE_R, ADD_UF, 42, 277)
-(sltu: 0, 2, TYPE_R, ADD_UF, 43, 278)
-(slti: 10, 2, TYPE_I, ADD_UF)
-(sltiu: 11, 2, TYPE_I, ADD_UF)
-(movn: 0, 2, TYPE_R, ADD_UF, 11, 288)
-(movz: 0, 2, TYPE_R, ADD_UF, 10, 289)
+(slt: 0, 2, TYPE_R, ADD_UF, 42, 277, 0)
+(sltu: 0, 2, TYPE_R, ADD_UF, 43, 278, 0)
+(slti: 10, 2, TYPE_I, ADD_UF, 0)
+(sltiu: 11, 2, TYPE_I, ADD_UF, 0)
+(movn: 0, 2, TYPE_R, ADD_UF, 11, 289, 0)
+(movz: 0, 2, TYPE_R, ADD_UF, 10, 290, 0)
 
 
 # Branches
-(beq: 4, 2, TYPE_I, ADD_UF)
-(bgez: 1, 2, TYPE_I, ADD_UF, 1, 278)
-(bgezal: 1, 2, TYPE_I, ADD_UF, 17, 279)
-(bgtz: 7, 2, TYPE_I, ADD_UF)
-(blez: 6, 2, TYPE_I, ADD_UF)
-(bltzal: 1, 2, TYPE_I, ADD_UF, 16, 280)
-(bltz: 1, 2, TYPE_I, ADD_UF, 0, 281)
-(bne: 5, 2, TYPE_I, ADD_UF)
+(beq: 4, 2, TYPE_I, ADD_UF, 1)
+(bgez: 1, 2, TYPE_I, ADD_UF, 1, 279, 1)
+(bgezal: 1, 2, TYPE_I, ADD_UF, 17, 280, 1)
+(bgtz: 7, 2, TYPE_I, ADD_UF, 1)
+(blez: 6, 2, TYPE_I, ADD_UF, 1)
+(bltzal: 1, 2, TYPE_I, ADD_UF, 16, 281, 1)
+(bltz: 1, 2, TYPE_I, ADD_UF, 0, 282, 1)
+(bne: 5, 2, TYPE_I, ADD_UF, 1)
 
 # Jumps
-(j: 2, 2, TYPE_J, ADD_UF)
-(jal: 3, 2, TYPE_J, ADD_UF)
-(jalr: 0, 2, TYPE_R, ADD_UF, 9, 282)
-(jr: 0, 2, TYPE_R, ADD_UF, 8, 283)
+(j: 2, 2, TYPE_J, ADD_UF, 0)
+(jal: 3, 2, TYPE_J, ADD_UF, 0)
+(jalr: 0, 2, TYPE_R, ADD_UF, 9, 283, 1)
+(jr: 0, 2, TYPE_R, ADD_UF, 8, 284, 1)
 
 # Loads
-(lui: 15, 2, TYPE_I, LOAD_UF)
-(lb: 32, 4, TYPE_I, LOAD_UF)
-(lbu: 36, 4, TYPE_I, LOAD_UF)
-(lh: 33, 4, TYPE_I, LOAD_UF)
-(lhu: 37, 4, TYPE_I, LOAD_UF)
-(lw: 35, 4, TYPE_I, LOAD_UF)
-(lwl: 34, 4, TYPE_I, LOAD_UF)
-(lwr: 38, 4, TYPE_I, LOAD_UF)
+(lui: 15, 2, TYPE_I, ADD_UF, 0)
+(lb: 32, 4, TYPE_I, LOAD_UF, 0)
+(lbu: 36, 4, TYPE_I, LOAD_UF, 0)
+(lh: 33, 4, TYPE_I, LOAD_UF, 0)
+(lhu: 37, 4, TYPE_I, LOAD_UF, 0)
+(lw: 35, 4, TYPE_I, LOAD_UF, 0)
+(lwl: 34, 4, TYPE_I, LOAD_UF, 0)
+(lwr: 38, 4, TYPE_I, LOAD_UF, 0)
 
 # Store
-(sb: 40, 4, TYPE_I, STORE_UF)
-(sh: 41, 4, TYPE_I, STORE_UF)
-(swl: 42, 4, TYPE_I, STORE_UF)
-(swr: 26, 4, TYPE_I, STORE_UF)
+(sb: 40, 4, TYPE_I, STORE_UF, 0)
+(sh: 41, 4, TYPE_I, STORE_UF, 0)
+(sw: 43, 4, TYPE_I, STORE_UF, 0)
+(swl: 42, 4, TYPE_I, STORE_UF, 0)
+(swr: 46, 4, TYPE_I, STORE_UF, 0)
 
 # Moves
-(mfhi: 0, 1, TYPE_R, ADD_UF, 16, 284)
-(mflo: 0, 1, TYPE_R, ADD_UF, 18, 285)
-(mthi: 0, 1, TYPE_R, ADD_UF, 17, 286)
-(mtlo: 0, 1, TYPE_R, ADD_UF, 19, 287)
+(mfhi: 0, 1, TYPE_R, ADD_UF, 16, 285, 0)
+(mflo: 0, 1, TYPE_R, ADD_UF, 18, 286, 0)
+(mthi: 0, 1, TYPE_R, ADD_UF, 17, 287, 0)
+(mtlo: 0, 1, TYPE_R, ADD_UF, 19, 288, 0)
 
 # Others
-(syscall: 0, 1, TYPE_R, ADD_UF, 12, 290)
-(nop: 0, 1, TYPE_R, ADD_UF, 0, 291)
+(syscall: 0, 1, TYPE_R, ADD_UF, 12, 291, 0)
+(nop: 0, 1, TYPE_R, ADD_UF, 0, 292, 0)

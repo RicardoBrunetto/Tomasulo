@@ -71,6 +71,19 @@ int destroyLinkedList(LinkedList *list){
 }
 
 void insertLinkedList(LinkedList *list, TIPOCHAVE ch){
+  NO * new_node;
+  new_node = malloc(sizeof(NO));
+
+  new_node->ponteiro_estr = ch;
+  new_node->prox = list->inicio;
+
+  list->inicio = new_node;
+  resetProximoLinkedList(list);
+}
+
+
+/*
+void insertLinkedList(LinkedList *list, TIPOCHAVE ch){
     NO* ant;
     NO* novoNo = buscaLinkedList(*list, ch, &ant);
     if(novoNo) return;
@@ -85,4 +98,4 @@ void insertLinkedList(LinkedList *list, TIPOCHAVE ch){
         ant->prox = novoNo;
     }
     resetProximoLinkedList(list);
-}
+}*/

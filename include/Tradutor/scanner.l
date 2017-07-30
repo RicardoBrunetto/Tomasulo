@@ -117,7 +117,7 @@ int state;
 "$sp" { return REG_SP; }
 "$fp" { return REG_FP; }
 "$gp" { return REG_GP; }
-"$ra" { return REG_RA; }
+"$ra" { return REG_R; }
 "$zero" { return REG_ZERO; }
 
 [0-9]+ { yylval.valor = atoi(yytext); return NUMBER; }

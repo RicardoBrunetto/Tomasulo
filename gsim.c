@@ -20,6 +20,8 @@ void loadToMemory(FILE *f){
     mem_write(val, address);
     address = address + WORD_SIZE;
   }
+
+  printf("\n-> Binario carregado na memoria. Digite run para inciar o processamento.\n");
 }
 
 void printHelpMenu(){
@@ -42,8 +44,7 @@ void waiting(){
     }else if(!strcmp(input, "help")){
       printHelpMenu();
     }else if(!strcmp(input, "run")){
-      processador_start();
-      //clock_start();
+      clock_start();
     }else if(!strcmp(input, "clear")){
       system("clear");
     }else if(!strcmp(input, "show config")){
@@ -54,7 +55,8 @@ void waiting(){
       show_instruction_details(input);
     }else if(!strcmp(input, "")){
       //next_step();
-      printf("\nenter\n");
+      //printf("\nenter\n");
+      call_clock();
     }else if(!strcmp(input, "--continue")){
 
     }
@@ -64,6 +66,7 @@ void waiting(){
 
 int main(int argc, char **argv){
   run_definitions();
+  mem_init();
   switch (argc){
     case 2:
       if(!strcmp(argv[1], "-h") || !strcmp(argv[1], "-help")){

@@ -5,10 +5,11 @@
 #include <stdlib.h>
 #include "definitions.h"
 
-#define REGISTRADOR_DISPONIVEL -1
+/*Banco com os 32 registradores + HI e LO*/
+Registrador banco_Registradores[34];
 
-/*Banco com os 32 registradores*/
-Registrador banco_Registradores[32];
+/*Program Counter, Instruction Register e Next Program Counter*/
+Registrador PC, IR, NPC;
 
 void inicializar_registradores();
 

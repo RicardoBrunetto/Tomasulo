@@ -1,6 +1,7 @@
 #ifndef CACHE_H
 #define CACHE_H
 
+#include "barramentos.h"
 #include "memoria.h"
 
 #define CACHE_LINE_COUNT 2048 /*São 2K linhas*/
@@ -19,5 +20,6 @@ typedef struct{
 void inicializar_cache();
 void cache_print();
 void cache_next();
+void cache_controller_next();
 
 #endif

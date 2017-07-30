@@ -8,5 +8,10 @@ Barramento CMB; /*Cache <-> Memory Bus*/
 Barramento PCB; /*Processor <-> Cache Bus*/
 
 void inicializar_barramentos();
+void inserir_no_barramento(Barramento b, int dado, int endereco, int controle);
+void alterar_topo_barramento(Barramento b, int dado, int endereco, int controle);
+void inserir_Dado_no_barramento(Barramento b, Dado_Barramento * d);
+Dado_Barramento * get_topo_barramento(Barramento b);
+Dado_Barramento * topo_barramento(Barramento b);
 
 #endif

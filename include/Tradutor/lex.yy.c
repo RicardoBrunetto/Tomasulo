@@ -1408,7 +1408,7 @@ YY_RULE_SETUP
 case 105:
 YY_RULE_SETUP
 #line 120 "scanner.l"
-{ return REG_RA; }
+{ return REG_R; }
 	YY_BREAK
 case 106:
 YY_RULE_SETUP

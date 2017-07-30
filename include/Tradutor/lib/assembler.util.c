@@ -1,29 +1,21 @@
 #include "assembler.util.h"
 
 int manter_negativo(int val){
-  int msb = val; msb = msb >> 31;
-  if(msb == 1){
-    msb = msb << 15;
-    val = val << 16; val = val >> 16;
-    val = val | msb;
-  }
   return val;
 }
 
 int getNumber(char *str){
   int len = strlen(str), i;
-
   for(i=0; i<len; i++){
     if(str[i] >= 48 && str[i] <= 57)
       break;
   }
-
   return atoi(str+i);
 }
 
 void insertNop(int offset_Atual){
   int i, instr = 0, lines = (DATA_AMOUNT/WORD_SIZE);
-  for(i=(offset_Atual + WORD_SIZE - 1); i<lines; i++){
+  for(i=(offset_Atual*WORD_SIZE - 1); i<lines; i++){
     fwrite(&instr, WORD_SIZE, 1, output);
   }
 }
@@ -72,6 +64,35 @@ int getOffset(LinkedList * lista, char * lbl){
   resetProximoLinkedList(lista);
 }
 
+
+int get_indice_reg(int classe, int val){
+  if(classe == 0){ /*S*/
+      if(val == 0) return 16;
+      if(val == 1) return 17;
+      if(val == 2) return 18;
+      if(val == 3) return 19;
+      if(val == 4) return 20;
+      if(val == 5) return 21;
+      if(val == 6) return 22;
+      if(val == 7) return 23;
+  }else if(classe == 1){ /*T*/
+      if(val == 0) return 8;
+      if(val == 1) return 9;
+      if(val == 2) return 10;
+      if(val == 3) return 11;
+      if(val == 4) return 12;
+      if(val == 5) return 13;
+      if(val == 6) return 14;
+      if(val == 7) return 15;
+      if(val == 8) return 24;
+      if(val == 9) return 25;
+  }else if(classe == 2){ /*A*/
+      if(val == 0) return 4;
+      if(val == 1) return 5;
+      if(val == 2) return 6;
+      if(val == 3) return 7;
+  }
+}
 
 /*Exibe a lista de Labels*/
 void print_lista_labels(LinkedList * lista){

@@ -7,7 +7,7 @@
 #include "barramentos.h"
 
 //#define MEM_SIZE 536870912 /*512M*/
-#define MEM_SIZE 512 /*120 B*/
+#define MEM_SIZE 1024 /*120 B*/
 
 typedef unsigned char Byte;
 typedef unsigned int Word;
@@ -19,5 +19,7 @@ typedef struct{
 Word mem_read(int address);
 int mem_write(Word w, int address);
 void mem_print();
+void mem_next();
+void mem_init();
 
 #endif

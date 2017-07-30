@@ -1,6 +1,57 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "include/DQueue.h"
+
 /*
+int main(){
+  int val = -1;
+  if(val > 0) printf("\noi\n");
+}
+int main(){
+  Fila f;
+  inicializar_fila(&f);
+  inserir_fila(&f, 0);
+  printf("Topo: %d\n", get_topo_fila(&f));
+  mostrar_fila(&f);
+  printf("Removed: %d\n", remover_fila(&f));
+  inserir_fila(&f, 2);
+  mostrar_fila(&f);
+  inserir_fila(&f, 1);
+  mostrar_fila(&f);
+  inserir_fila(&f, 50);
+  mostrar_fila(&f);
+
+}
+*/
+/*
+int main(){
+  int k = 10;
+
+  switch(k){
+    case 1:
+    break;
+    case 2:
+    case 14:
+    printf("\n2~14\n");
+    break;
+    case 12:
+    printf("\n12\n");
+    break;
+  }
+
+}*/
+/*
+int main(){
+  int imm = 32753;
+  int msb = imm >> 15;
+  if(msb)
+    imm = imm | 4294901760;
+  printf("%d\n", imm);
+}*/
+/*
+1111111111110001
+
+
 int manter_negativo(int val){
   if(val < 0){
     msb = 1; msb = msb << 15;
