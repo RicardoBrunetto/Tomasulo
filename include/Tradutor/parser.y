@@ -11,8 +11,8 @@ int address = 0, secondPass = 0, dados_offset = START_ADDRESS_DATA, data_Bytes =
 char * error_msg = "Instrução não definida\n";
 
 FILE* yyin;
-char * mnemonico;
-int state;
+char * mnemonico, *start_label;
+int state, hasinserted = 0;
 
 typedef struct{
   int numeros[10];
@@ -47,7 +47,7 @@ NumStruct nstruct;
 %token <instruction_R> ADD ADDU AND CLO CLZ DIV DIVU MULT MULTU MUL MADD MOVN MADDU MSUB MSUBU NOR OR SLL SLLV SRA SRAV SRL SRLV SUB SUBU XOR SLT SLTU TEQ TNE TGE TGEU TLT TLTU MFHI MFLO MTHI MTLO MOVZ MOVF MOVT ERET SYSCALL BREAK NOP
 %token <instruction_I> ADDI ADDIU ANDI ORI XORI LUI SLTI SLTIU BEQ BGEZ BGEZAL BGTZ BLEZ BLTZAL BLTZ BNE TEQI TNEQ TGEI TGEIU TLTI TLTIU LB LBU LH LHU LW LWL LWR LL SB SH SW SWR SWL SC
 %token <instruction_J> J JAL JALR JR
-%token DATA TEXT SECTION DPTS INT EOL COMMA
+%token DATA TEXT SECTION DPTS INT EOL COMMA GLOBL
 %token <str> HEX_VAL
 
 %type <valor> nro
@@ -107,7 +107,10 @@ data_section:
             | DATA eol variaveis {if(secondPass == 1) insertNop(data_Bytes);}
 
 text_section:
-            | TEXT eol lista_instrucoes
+            | TEXT eol global_def eol lista_instrucoes
+
+global_def:
+          | GLOBL IDENTIFICADOR {start_label = strdup($2);}
 
 variaveis:
          | variaveis variavel eol
@@ -144,9 +147,9 @@ label_decl:
                                       insertLinkedList(&lista, label_found);
                                     }}
 
-instrucao: instrucao_R {if(secondPass == 1){ setInstruction_R($1.opcode, $1.rs, $1.rt, $1.rd, $1.shift, $1.func, address+=WORD_SIZE); }else{ address += WORD_SIZE; }}
-         | instrucao_I {if(secondPass == 1){ setInstruction_I($1.opcode, $1.rs, $1.rt, $1.imm, address+=WORD_SIZE); }else{ address += WORD_SIZE; }}
-         | instrucao_J {if(secondPass == 1){ setInstruction_J($1.opcode, $1.target, address+=WORD_SIZE); }else{ address += WORD_SIZE; }}
+instrucao: instrucao_R {if(secondPass == 1){ if(!hasinserted)setmain(); setInstruction_R($1.opcode, $1.rs, $1.rt, $1.rd, $1.shift, $1.func, address+=WORD_SIZE); }else{ address += WORD_SIZE; }}
+         | instrucao_I {if(secondPass == 1){ if(!hasinserted)setmain(); setInstruction_I($1.opcode, $1.rs, $1.rt, $1.imm, address+=WORD_SIZE); }else{ address += WORD_SIZE; }}
+         | instrucao_J {if(secondPass == 1){ if(!hasinserted)setmain(); setInstruction_J($1.opcode, $1.target, address+=WORD_SIZE); }else{ address += WORD_SIZE; }}
 
 instrucao_R: ADD reg comma reg comma reg {if(secondPass == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rd = $2; $$.rs = $4; $$.rt = $6; $$.shift = 0; $$.func = d->function;}}
            | ADDU reg comma reg comma reg {if(secondPass == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rd = $2; $$.rs = $4; $$.rt = $6; $$.shift = 0; $$.func = d->function;}}
@@ -242,6 +245,15 @@ reg: REG_S { $$ = get_indice_reg(0, $1); }
    | REG_ZERO {$$ = 0;}
 %%
 
+void setmain(){
+  Def * d = get_def_mnemonico("j");
+  if(d==NULL) yyerror(error_msg);
+  int opcode = d->opcode; int target = getOffset(&lista, start_label);
+  if(target != 0)
+    setInstruction_J(opcode, target, address+=WORD_SIZE);
+  hasinserted = 1;
+}
+
 void call_tradutor(FILE *f){
   state = FLAG_ASSEMBLER;
   nstruct.qtdNum = 0;
@@ -255,7 +267,7 @@ void call_tradutor(FILE *f){
   yyrestart(f);
   yyparse();
 
-  /*print_lista_labels(&lista);*/
+  print_lista_labels(&lista);
 
   secondPass = 1;
   system("mkdir -p output/");
@@ -304,5 +316,5 @@ int run_definitions(){
 
 int yyerror(char *s) {
   fprintf(stderr, "\nerror: %s\n", s);
-  return 0;
+  exit(0);
 }

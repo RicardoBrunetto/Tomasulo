@@ -6,7 +6,6 @@ int get_ciclos(int opcode){
   while((d = (Def *)getProximoLinkedList(&lista_definicoes)) != NULL){
     if(d->abstract_opcode == opcode){
       resetProximoLinkedList(&lista_definicoes);
-      printf("\nFOUND for %d!\n", opcode);
       return d->ciclos;
     }
   }

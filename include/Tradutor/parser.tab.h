@@ -154,7 +154,8 @@ extern int yydebug;
     INT = 364,
     EOL = 365,
     COMMA = 366,
-    HEX_VAL = 367
+    GLOBL = 367,
+    HEX_VAL = 368
   };
 #endif
 
@@ -177,7 +178,7 @@ union YYSTYPE
   int valor;
   char *str;
 
-#line 181 "parser.tab.h" /* yacc.c:1909  */
+#line 182 "parser.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

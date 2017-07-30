@@ -252,9 +252,11 @@ void er_despachar(int indice_ER){
     	break;
 
     case 291:		/*syscall*/
-      printf("\n[Syscall]\tprintf: %d\n", estacoes_Reserva[indice_ER].Vk);
       estacoes_Reserva[indice_ER].BusyBit = FLAG_DISPONIVEL;
-      clock_finish();
+      if(ula(OP_AeqB, estacoes_Reserva[indice_ER].Vj, FLAG_EXIT))
+        clock_finish();
+      else
+        printf("\n[Syscall]\tprintf: %d\n", estacoes_Reserva[indice_ER].Vk);
     	break;
 
     case 292:		/*nop*/

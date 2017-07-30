@@ -156,8 +156,8 @@ void PIPELINE_execute(){
                   enviar_para_CDB(i); /*Escreve *no CDB*/
                   estacoes_Reserva[i].BusyBit = FLAG_DISPONIVEL;
                   /*Torna PCB disponível*/
+                  PCB.status = FLAG_READY;
                   alterar_topo_barramento(PCB, FLAG_VAZIO, FLAG_VAZIO, FLAG_READY);
-                  PCB.status == FLAG_READY;
                 }else if(PCB.status == FLAG_READY){ /*controle = READY e status = READY => PCB está disponível*/
                   er_despachar(i); /*Despacha o Load ou o Store*/
                 }
@@ -176,8 +176,9 @@ void PIPELINE_execute(){
             }
           }else if(estacoes_Reserva[i].BusyBit == 0){/*Último ciclo de clock da instrução*/
             if(is_escrever_hi_lo(estacoes_Reserva[i].Op)) estacoes_Reserva[i].A = REG_LO; /*Informa para escrever em LO no segundo ciclo*/
-            /*Segura syscall até o fim da execução*/
-            if(estacoes_Reserva[i].Op != 291) er_despachar(i); /*Despacha para execução (é instantânea) e escreve no CDB - Load/Store já foi despachado*/
+            /*Segura syscall com exit até o fim da execução*/
+            if(!(estacoes_Reserva[i].Op == 291 && estacoes_Reserva[i].Vj == FLAG_EXIT))
+              er_despachar(i); /*Despacha para execução (é instantânea) e escreve no CDB - Load/Store já foi despachado*/
           }
         }
       }
@@ -185,9 +186,13 @@ void PIPELINE_execute(){
       aval++;
     }
   }
+  /*Despacha a exit*/
   if(aval == QUANTIDADE_ESTACOES_RESERVA - 1){
     for(i = 0; i<QUANTIDADE_ESTACOES_RESERVA; i++){
-      if(estacoes_Reserva[i].Op == 291) er_despachar(i);
+      if(estacoes_Reserva[i].Op == 291){
+        if(estacoes_Reserva[i].Vj == FLAG_EXIT)
+        er_despachar(i);
+      }
     }
   }
 }
@@ -249,6 +254,7 @@ void processador_start(){
   inicializar_registradores();
   inicializar_estacoes_reserva();
   reg_write(MEM_SIZE, REG_PS);
+  reg_write(START_ADDRESS_DATA, REG_PG);
   PC.valor = 0;
   IR.valor = FLAG_VAZIO;
   EMISSAO_CESSADA = 0;

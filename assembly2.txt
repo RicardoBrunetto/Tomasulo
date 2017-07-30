@@ -1,22 +1,52 @@
 .data
-x: .int 500, 100, 0xe
+frame_size: .int 32
+print:      .int 0
+exit:       .int 17
 
 .text
-addi $a1, $zero, 24
-addi $a2, $zero, 3140
-# lui $a0, 0
-# sll $a2, $a2, 16
+.globl main
 
-addi $a3, $a0, 1
-movn $a0, $a1, $a2
-syscall
+main:
+  lw $a0, frame_size
+  subu $sp, $sp, $a0
+  sw $ra, 20($sp)
+  sw $fp, 16($sp)
+  addiu $fp, $sp, 28
 
-# jalr $a1
-# j LABEL2
+  addi $a0, $zero, 10
+  jal fact
 
-# LABEL:
-# addi $a0, $zero, 150
+  movz $a0, $v0, $zero
+  lw $v0, print
+  syscall
 
-# LABEL2:
-# swr $a2, x
-# ori $t7, $t9, 1921
+  lw $v0, exit
+  syscall
+
+fact:
+  lw $a1, frame_size
+  subu $sp, $sp, $a1
+  sw $ra, 20($sp)
+  sw $fp, 16($sp)
+  addiu $fp, $sp, 28
+  sw $a0, 0($fp)
+
+  lw  $v0, 0($fp)
+  bgtz $v0, pt2
+  addi $v0, $zero, 1
+  j pt1
+
+pt2:
+  lw $v1, 0($fp)
+  addi $a2, $zero, 1
+  subu $v0, $v1, $a2
+  movz $a0, $v0, $zero
+  jal fact
+  lw $v1, 0($fp)
+  mul $v0, $v0, $v1
+
+pt1:
+  lw $ra, 20($sp)
+  lw $fp, 16($sp)
+  addiu $sp, $sp, 32
+  jr $ra

@@ -19,6 +19,7 @@ int state;
 ".section" { return SECTION; }
 ".data" { return DATA; }
 ".text" { return TEXT; }
+".globl" { return GLOBL; }
 ".int" { return INT; }
 
 "add" { if(state == FLAG_ASSEMBLER){ mnemonico = strdup(yytext); return ADD; }else{ yylval.str = strdup(yytext); return IDENTIFICADOR;} }

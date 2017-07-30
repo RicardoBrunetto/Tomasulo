@@ -14,10 +14,9 @@ int getNumber(char *str){
 }
 
 void insertNop(int offset_Atual){
-  int i, instr = 0, lines = (DATA_AMOUNT/WORD_SIZE);
-  for(i=(offset_Atual*WORD_SIZE - 1); i<lines; i++){
+  int i, instr = 0;
+  while(ftell(output) < DATA_AMOUNT)
     fwrite(&instr, WORD_SIZE, 1, output);
-  }
 }
 
 void setInstruction_R(int opcode, int rs, int rt, int rd, int shift, int func, int offset){

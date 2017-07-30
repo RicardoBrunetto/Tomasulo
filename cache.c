@@ -38,7 +38,7 @@ void cache_controller_next(){
         alterar_topo_barramento(PCB, db->dado, db->endereco, db->controle);
         /*Torna CMB disponível*/
         alterar_topo_barramento(CMB, FLAG_VAZIO, FLAG_VAZIO, FLAG_READY);
-        CMB.status == FLAG_READY;
+        CMB.status = FLAG_READY;
       }else{ /*CMB disponível*/
         /*Envia requisição ao CMB*/
         alterar_topo_barramento(CMB, d_pcb->dado, d_pcb->endereco, d_pcb->controle);
