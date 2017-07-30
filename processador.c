@@ -5,7 +5,6 @@ void PIPELINE_fetch(){
   //printf("\n\t\t->>>\tOnFetch!\n");
   if(BUSCA_DECOD_CESSADA) return;
   IR.valor = mem_read(PC.valor); /*Insere a instrução não-decodificada no IR*/
-  //printf("IR: %d\n", IR.valor);
   PC.valor = ula(OP_ADD, PC.valor, 4); /*Incrementa PC*/
 }
 
@@ -91,6 +90,7 @@ void PIPELINE_issue(){
     /*Antes da emissão, de fato, ocorre a verificação, se aquela ER possui uma Unidade Funcional capaz de processá-la*/
     if(is_uf_compativel(aux, estacoes_Reserva[i].uf.type)){ /*Se aquela Unidade Funcional puder processar a instrução*/
       /*EMISSÃO*/
+      printar_instr(instr);
       estacoes_Reserva[i].BusyBit = get_ciclos(aux);
       estacoes_Reserva[i].Op = aux;
       //printf("\nToremove\n");
@@ -167,7 +167,7 @@ void PIPELINE_execute(){
           }
         /*Caso não for um load/store*/
         }else{
-          //printf("\nNot load nem store\n");
+          if(!(estacoes_Reserva[i].Op == 291 && (estacoes_Reserva[i].Qj == FLAG_DISPONIVEL && estacoes_Reserva[i].Vj == FLAG_EXIT)))
           estacoes_Reserva[i].BusyBit = estacoes_Reserva[i].BusyBit - 1; /*decrementa a quantidade de ciclos restantes*/
           if(estacoes_Reserva[i].BusyBit == 1){
             if(is_escrever_hi_lo(estacoes_Reserva[i].Op)){
@@ -177,7 +177,7 @@ void PIPELINE_execute(){
           }else if(estacoes_Reserva[i].BusyBit == 0){/*Último ciclo de clock da instrução*/
             if(is_escrever_hi_lo(estacoes_Reserva[i].Op)) estacoes_Reserva[i].A = REG_LO; /*Informa para escrever em LO no segundo ciclo*/
             /*Segura syscall com exit até o fim da execução*/
-            if(!(estacoes_Reserva[i].Op == 291 && estacoes_Reserva[i].Vj == FLAG_EXIT))
+            if(!(estacoes_Reserva[i].Op == 291 && (estacoes_Reserva[i].Qj == FLAG_DISPONIVEL && estacoes_Reserva[i].Vj == FLAG_EXIT)))
               er_despachar(i); /*Despacha para execução (é instantânea) e escreve no CDB - Load/Store já foi despachado*/
           }
         }
@@ -186,12 +186,12 @@ void PIPELINE_execute(){
       aval++;
     }
   }
-  /*Despacha a exit*/
   if(aval == QUANTIDADE_ESTACOES_RESERVA - 1){
     for(i = 0; i<QUANTIDADE_ESTACOES_RESERVA; i++){
-      if(estacoes_Reserva[i].Op == 291){
-        if(estacoes_Reserva[i].Vj == FLAG_EXIT)
-        er_despachar(i);
+      if(estacoes_Reserva[i].BusyBit > 0){
+        if(estacoes_Reserva[i].Op == 291 && (estacoes_Reserva[i].Qj == FLAG_DISPONIVEL && estacoes_Reserva[i].Vj == FLAG_EXIT)){
+          er_despachar(i);
+        }
       }
     }
   }
@@ -205,6 +205,7 @@ void PIPELINE_write(){
   Dado_Barramento * conteudo;
   if((conteudo = get_topo_barramento(CDB)) == NULL) return; /*Indica que nada foi escrito no CDB ainda (nada foi executado)*/
   /*Se a instrução manipula HI/LO, então eles são escritos*/
+  /*printf("[CDB] status = %d\tdado = %d\tctrl = %d\taddr = %d\n", CDB.status, conteudo->dado, conteudo->controle, conteudo->endereco);*/
   if(conteudo->controle == REG_RA){ reg_write(conteudo->dado, REG_RA); return; }
   if(conteudo->controle == REG_HI){ reg_write(conteudo->dado, REG_HI); return; }
   if(conteudo->controle == REG_LO){ reg_write(conteudo->dado, REG_LO); BUSCA_DECOD_CESSADA = 0; estacoes_Reserva[conteudo->endereco].BusyBit = FLAG_DISPONIVEL;  estacoes_Reserva[conteudo->endereco].A = FLAG_VAZIO;/*Permite a busca e decodificação*/ return; }

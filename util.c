@@ -201,6 +201,7 @@ int is_rt_destino(int absopcode){
     case 35:  /*lw*/
     case 34:  /*lwl*/
     case 38:  /*lwr*/
+    case 59: /*li*/
       return 1;
   }
   return 0;

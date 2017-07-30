@@ -9,6 +9,8 @@
 #include "registradores.h"
 #include "memoria.h"
 
+int RETURN_VAL;
+
 /*start do clock*/
 void clock_start();
 void clock_finish();

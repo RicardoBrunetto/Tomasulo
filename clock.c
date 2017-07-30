@@ -25,6 +25,7 @@ void clock_finish(){
 }
 
 void clock_start(){
+  RETURN_VAL = 0;
   clk_finished = 0;
   total_ciclos = 0;
   processador_start();
@@ -32,4 +33,5 @@ void clock_start(){
 
   clock();
   printf("\nTOTAL: %d ciclos", total_ciclos);
+  printf("\n[Syscall]\tprintf: %d\n", RETURN_VAL);
 }

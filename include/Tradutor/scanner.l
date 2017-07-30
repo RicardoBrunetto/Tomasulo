@@ -80,6 +80,7 @@ int state;
 "tltu" { if(state == FLAG_ASSEMBLER){ mnemonico = strdup(yytext); return TLTU; }else{ yylval.str = strdup(yytext); return IDENTIFICADOR;} }
 "tlti" { if(state == FLAG_ASSEMBLER){ mnemonico = strdup(yytext); return TLTI; }else{ yylval.str = strdup(yytext); return IDENTIFICADOR;} }
 "tltiu" { if(state == FLAG_ASSEMBLER){ mnemonico = strdup(yytext); return TLTIU; }else{ yylval.str = strdup(yytext); return IDENTIFICADOR;} }
+"li" { if(state == FLAG_ASSEMBLER){ mnemonico = strdup(yytext); return LI; }else{ yylval.str = strdup(yytext); return IDENTIFICADOR;} }
 "lb" { if(state == FLAG_ASSEMBLER){ mnemonico = strdup(yytext); return LB; }else{ yylval.str = strdup(yytext); return IDENTIFICADOR;} }
 "lbu" { if(state == FLAG_ASSEMBLER){ mnemonico = strdup(yytext); return LBU; }else{ yylval.str = strdup(yytext); return IDENTIFICADOR;} }
 "lh" { if(state == FLAG_ASSEMBLER){ mnemonico = strdup(yytext); return LH; }else{ yylval.str = strdup(yytext); return IDENTIFICADOR;} }
@@ -100,9 +101,7 @@ int state;
 "mtlo" { if(state == FLAG_ASSEMBLER){ mnemonico = strdup(yytext); return MTLO; }else{ yylval.str = strdup(yytext); return IDENTIFICADOR;} }
 "movz" { if(state == FLAG_ASSEMBLER){ mnemonico = strdup(yytext); return MOVZ; }else{ yylval.str = strdup(yytext); return IDENTIFICADOR;} }
 "movn" { if(state == FLAG_ASSEMBLER){ mnemonico = strdup(yytext); return MOVN; }else{ yylval.str = strdup(yytext); return IDENTIFICADOR;} }
-"movf" { if(state == FLAG_ASSEMBLER){ mnemonico = strdup(yytext); return MOVF; }else{ yylval.str = strdup(yytext); return IDENTIFICADOR;} }
-"movt" { if(state == FLAG_ASSEMBLER){ mnemonico = strdup(yytext); return MOVT; }else{ yylval.str = strdup(yytext); return IDENTIFICADOR;} }
-"eret" { if(state == FLAG_ASSEMBLER){ mnemonico = strdup(yytext); return ERET; }else{ yylval.str = strdup(yytext); return IDENTIFICADOR;} }
+"move" { if(state == FLAG_ASSEMBLER){ mnemonico = strdup(yytext); return MOVE; }else{ yylval.str = strdup(yytext); return IDENTIFICADOR;} }
 "syscall" { if(state == FLAG_ASSEMBLER){ mnemonico = strdup(yytext); return SYSCALL; }else{ yylval.str = strdup(yytext); return IDENTIFICADOR;} }
 "break" { if(state == FLAG_ASSEMBLER){ mnemonico = strdup(yytext); return BREAK; }else{ yylval.str = strdup(yytext); return IDENTIFICADOR;} }
 "nop" { if(state == FLAG_ASSEMBLER){ mnemonico = strdup(yytext); return NOP; }else{ yylval.str = strdup(yytext); return IDENTIFICADOR;} }

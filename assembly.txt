@@ -1,15 +1,39 @@
+# .data
+# x: .int 500, 100, 0xe
+# y: .int 152, 15
+# .text
+# .globl LABEL
+
+# LABEL:
+# li $a0, 15
+
+# move $v1, $a0
+# li $v0, 0
+# syscall
+
+# li $v0, 17
+# syscall
+
 .data
-x: .int 500, 100, 0xe
-y: .int 152, 15
+
 .text
+.globl main
+main:
+  addi $a0, $zero, -90
+  addiu $a1, $zero, -3
+  jal compare
+  li $v0, 17
+  syscall
 
-LABEL:
-add $s4, $s3, $s1
-j LABEL2
-add $s5, $s6, $s7
+  compare:
+  	sub $t0, $a1, $a0
+  	bltz $t0, a0_maior
 
-LABEL2:
-add $s0, $s0, $s0
-addi $t7, $s0, 128
-lb $s0, 4($t7)
-j LABEL2
+  	add $v0, $zero, $a1
+  	j _end
+
+  	a0_maior:
+  		add $v0, $zero, $a0
+
+  	_end:
+  		jr $ra

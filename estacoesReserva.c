@@ -20,6 +20,15 @@ void inicializar_estacoes_reserva(){
   }
 }
 
+void clear_station(int i){
+  estacoes_Reserva[i].Qj = FLAG_DISPONIVEL;
+  estacoes_Reserva[i].Vj = FLAG_DISPONIVEL;
+  estacoes_Reserva[i].Qk = FLAG_DISPONIVEL;
+  estacoes_Reserva[i].Vk = FLAG_DISPONIVEL;
+  estacoes_Reserva[i].A = FLAG_DISPONIVEL;
+  estacoes_Reserva[i].BusyBit = FLAG_DISPONIVEL;
+}
+
 void enviar_para_CDB(int indice_ER){
   Dado_Barramento * d = (Dado_Barramento *) malloc(sizeof(Dado_Barramento));
   d->endereco = indice_ER;
@@ -51,6 +60,7 @@ void enviar_para_CDB(int indice_ER){
 
 /*Procedimento que envia a instrução para a Unidade Funcional*/
 void er_despachar(int indice_ER){
+  /*printf("\nDESPACHANDO DE %d => OP = %d\n", indice_ER, estacoes_Reserva[indice_ER].Op);*/
   /*Apenas para tornar o código mais legível*/
   int Vk = estacoes_Reserva[indice_ER].Vk;
   int Vj = estacoes_Reserva[indice_ER].Vj;
@@ -215,6 +225,14 @@ void er_despachar(int indice_ER){
       estacoes_Reserva[indice_ER].uf.ALUOutput = ula(OP_SLL, A, 16);
     	break;
 
+    case 59:   /*li*/
+      estacoes_Reserva[indice_ER].uf.ALUOutput = A;
+      break;
+
+    case 52:   /*move*/
+      estacoes_Reserva[indice_ER].uf.ALUOutput = Vj;
+      break;
+
     case 32:		/*lb*/
     case 36:		/*lbu*/
     case 33:		/*lh*/
@@ -252,11 +270,12 @@ void er_despachar(int indice_ER){
     	break;
 
     case 291:		/*syscall*/
-      estacoes_Reserva[indice_ER].BusyBit = FLAG_DISPONIVEL;
-      if(ula(OP_AeqB, estacoes_Reserva[indice_ER].Vj, FLAG_EXIT))
+      if(ula(OP_AeqB, Vj, FLAG_EXIT))
         clock_finish();
-      else
-        printf("\n[Syscall]\tprintf: %d\n", estacoes_Reserva[indice_ER].Vk);
+      else{
+        estacoes_Reserva[indice_ER].BusyBit = FLAG_DISPONIVEL;
+        RETURN_VAL = Vk;
+      }
     	break;
 
     case 292:		/*nop*/
