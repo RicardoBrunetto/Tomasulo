@@ -15,8 +15,11 @@ void call_clock(){
   printf("\n------------------------------------------------- CICLO %d ----------------------------------------------------------\n", total_ciclos);
   printf("\nIR: %d\tPC: %d\n", IR.valor, PC.valor);
   processador_next();
-  processador_print();
   cache_next();
+  if(MODULE == FLAG_VERBOSE){
+    processador_print();
+    cache_print();
+  }
   mem_next();
 }
 

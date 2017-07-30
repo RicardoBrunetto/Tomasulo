@@ -9,6 +9,9 @@
 //#define START_ADDRESS_DATA 0x4000000
 #define DATA_AMOUNT    400
 
+#define FLAG_VERBOSE    1
+#define FLAG_NORMAL     0
+
 #define FLAG_EXIT       17
 #define FLAG_READY      -3
 #define FLAG_BUSY       -2

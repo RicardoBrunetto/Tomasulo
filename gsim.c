@@ -43,6 +43,9 @@ void waiting(){
       cache_print();
     }else if(!strcmp(input, "help")){
       printHelpMenu();
+    }else if(!strcmp(input, "run -d")){
+      MODULE = FLAG_VERBOSE;
+      clock_start();
     }else if(!strcmp(input, "run")){
       clock_start();
     }else if(!strcmp(input, "clear")){
