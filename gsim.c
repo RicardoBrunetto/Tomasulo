@@ -69,7 +69,7 @@ void waiting(){
 
 int main(int argc, char **argv){
   run_definitions();
-  mem_init();
+  //mem_init();
   switch (argc){
     case 2:
       if(!strcmp(argv[1], "-h") || !strcmp(argv[1], "-help")){

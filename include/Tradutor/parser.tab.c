@@ -72,7 +72,7 @@
 
 LinkedList lista;
 
-int address = 0, secondPass = 0, dados_offset = START_ADDRESS_DATA, data_Bytes = 0;
+int address = 0, secondPass = 0, dados_offset = 0, data_Bytes = 0;
 char * error_msg = "Instrução não definida\n";
 
 FILE* yyin;

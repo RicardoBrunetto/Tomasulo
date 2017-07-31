@@ -1,0 +1,76 @@
+#include <stdlib.h>
+#include "include/memoria.h"
+
+/*A memória*/
+/*A definição é interna pois nenhum componente tem acesso direto*/
+Memoria m;
+
+int mem_write(Word w, int address){
+  unsigned char * ptr = (unsigned char *) &w;
+  int k, i = 0;
+  for(k=address; k<address+WORD_SIZE; k++)
+    m.vetor[k] = ptr[i++];
+  return address+WORD_SIZE;
+}
+
+Word mem_read(int address){
+  Word * ptr = malloc(sizeof(Word));
+  ptr = (Word *) (m.vetor + address);
+  return *ptr;
+}
+
+void mem_init(){
+  int i;
+  for(i=0; i<MEM_SIZE; i = i+WORD_SIZE){
+    mem_write(FLAG_VAZIO, i);
+  }
+}
+
+
+Dado_Barramento_128 * mem_getBloco(int address){
+  Dado_Barramento_128 * dado = (Dado_Barramento_128 *) malloc(sizeof(Dado_Barramento_128));
+  dado->bits.b0_31 = mem_read(address);
+  printf("[RAM] %d\n", dado->bits.b0_31);
+  dado->bits.b32_63 = mem_read(address+WORD_SIZE);
+  printf("[RAM] %d\n", dado->bits.b32_63);
+  dado->bits.b64_95 = mem_read(address+WORD_SIZE*2);
+  printf("[RAM] %d\n", dado->bits.b64_95);
+  dado->bits.b96_127 = mem_read(address+WORD_SIZE*3);
+  printf("[RAM] %d\n", dado->bits.b96_127);
+  return dado;
+}
+
+void mem_writeBloco(Dado_Barramento_128 * dado, int address){
+  mem_write(dado->bits.b0_31, address);
+  printf("[RAM] %d\n", dado->bits.b0_31);
+  mem_write(dado->bits.b32_63, address+WORD_SIZE);
+  printf("[RAM] %d\n", dado->bits.b32_63);
+  mem_write(dado->bits.b64_95, address+WORD_SIZE*2);
+  printf("[RAM] %d\n", dado->bits.b64_95);
+  mem_write(dado->bits.b96_127 , address+WORD_SIZE*3);
+  printf("[RAM] %d\n", dado->bits.b96_127);
+}
+
+void mem_print(){
+  int i=0;
+  printf("\n\tMemoria [int]\t\n");
+  for(i=0; i<MEM_SIZE; i= i+WORD_SIZE){
+    if(i % 20 == 0) printf("\n");
+    printf("\t%13d", mem_read(i));
+  }
+  printf("\n\n");
+}
+
+void mem_next(){
+  /*CMB precisa de algo?*/
+
+  printf("\nChegou ao CMB: %d\t%d\n", CMB.controle, CMB.endereco);
+  if(CMB.controle == FLAG_READY) return;
+  printf("\nChegou ao CMB: %d\t%d\n", CMB.controle, CMB.endereco);
+  if(CMB.controle == FLAG_READ){
+    inserir_no_barramento128bits(&CMB, mem_getBloco(CMB.endereco), FLAG_VAZIO, FLAG_READY);
+  }else if(CMB.controle == FLAG_WRITE){
+    mem_writeBloco(CMB.dado, CMB.endereco);
+    inserir_no_barramento128bits(&CMB, mem_getBloco(CMB.endereco), FLAG_VAZIO, FLAG_READY);
+  }
+}

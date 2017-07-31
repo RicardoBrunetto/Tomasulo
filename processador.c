@@ -90,7 +90,6 @@ void PIPELINE_issue(){
     /*Antes da emissão, de fato, ocorre a verificação, se aquela ER possui uma Unidade Funcional capaz de processá-la*/
     if(is_uf_compativel(aux, estacoes_Reserva[i].uf.type)){ /*Se aquela Unidade Funcional puder processar a instrução*/
       /*EMISSÃO*/
-      printar_instr(instr);
       estacoes_Reserva[i].BusyBit = get_ciclos(aux);
       estacoes_Reserva[i].Op = aux;
       //printf("\nToremove\n");
@@ -116,7 +115,10 @@ void PIPELINE_issue(){
         if((estacoes_Reserva[i].Qj = reg_get_status(instr->instruction.instruction_I.rs)) == FLAG_DISPONIVEL){ /*Leitura do operando em VJ*/
           estacoes_Reserva[i].Vj = reg_read(instr->instruction.instruction_I.rs);
         }
-        estacoes_Reserva[i].A = instr->instruction.instruction_I.imm;
+        if(isLoad(estacoes_Reserva[i].Op) || isStore(estacoes_Reserva[i].Op))
+          estacoes_Reserva[i].A = instr->instruction.instruction_I.imm + START_ADDRESS_DATA;
+        else
+          estacoes_Reserva[i].A = instr->instruction.instruction_I.imm;
         /*Loads e Stores são do Tipo I e possuem emissão diferenciada*/
         if(is_rt_destino(estacoes_Reserva[i].Op)){ /*Verifica se a instrução é um load ou alguma que requeira rt como destino*/
           reg_change_status(instr->instruction.instruction_I.rt, i);
@@ -153,6 +155,7 @@ void PIPELINE_execute(){
                 if(PCB.status == i){
                   /*Escreve o dado lido no buffer da Unidade Funcional*/
                   estacoes_Reserva[i].uf.ALUOutput = filtrar_dado(estacoes_Reserva[i].Op, db->dado); /*O filtro serve para casos onde não é a palavra toda a ser carregada*/
+                  printf("\nSending to CDB: %d\n", estacoes_Reserva[i].uf.ALUOutput);
                   enviar_para_CDB(i); /*Escreve *no CDB*/
                   estacoes_Reserva[i].BusyBit = FLAG_DISPONIVEL;
                   /*Torna PCB disponível*/

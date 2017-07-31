@@ -1,0 +1,220 @@
+#include "include/cache.h"
+
+#define FLAG_HIT  1
+#define FLAG_MISS 0
+
+/*As definições são internas porque o processador não tem acesso direto*/
+Cache * cache_dados;
+Cache * cache_instrucoes;
+
+
+int HIT_COUNT = 0, MISS_COUNT = 0;
+
+int isHit(int address){
+  int tag = address << 3; tag = tag >> 18;
+  int linha = address << 17; linha = linha >> 21;
+
+  printf("[CACHE] isHit -> address: %d\tTag: %d\tLinha: %d\t\n", address, tag, linha);
+
+  if(address <= START_ADDRESS_DATA){
+    /*Procura na cache de instruções*/
+    if(cache_instrucoes->linhas[linha].tag == tag) return FLAG_HIT;
+  }else{
+    /*Procura na cache de dados*/
+    if(cache_dados->linhas[linha].tag == tag) return FLAG_HIT;
+  }
+  return FLAG_MISS;
+}
+
+/*Parte do princípio que o bloco está na cache (houve hit)*/
+int cache_read(int address){
+  int tag = address << 3; tag = tag >> 18;
+  int linha = address << 17; linha = linha >> 21;
+  int byte = address << 28; byte = byte >> 28;
+
+  printf("[CACHE] Read -> address: %d\tTag: %d\tLinha: %d\tByte: %d\n", address, tag, linha, byte);
+
+  if(address < START_ADDRESS_DATA){
+      int k = cache_instrucoes->linhas[linha].campos[byte][0];
+      return k;
+  }else{
+      int k = cache_dados->linhas[linha].campos[byte][0];
+      return k;
+  }
+
+}
+
+void set_bloco(Dado_Barramento_128 * bloco, int bloco_address, int common_address){
+  /*Pede o bloco todo que contém aquele*/
+  int linha = common_address << 17; linha = linha >> 21;
+  int k;
+  printf("\nsetando bloco: %llu\t%d\t%d\n", bloco->full_value, common_address, linha);
+  if(common_address < START_ADDRESS_DATA){
+    int dado = bloco->bits.b96_127, i = 0;
+    unsigned char * ptr = (unsigned char *) &dado;
+    for(k=0; k<WORD_SIZE; k++)
+    cache_instrucoes->linhas[linha].campos[0][k] = ptr[i++];
+    dado = bloco->bits.b64_95; i=0;
+    ptr = (unsigned char *) &dado;
+    for(k=0; k<WORD_SIZE; k++)
+    cache_instrucoes->linhas[linha].campos[1][k] = ptr[i++];
+    dado = bloco->bits.b32_63; i=0;
+    ptr = (unsigned char *) &dado;
+    for(k=0; k<WORD_SIZE; k++)
+    cache_instrucoes->linhas[linha].campos[2][k] = ptr[i++];
+    dado = bloco->bits.b0_31; i=0;
+    ptr = (unsigned char *) &dado;
+    for(k=0; k<WORD_SIZE; k++)
+    cache_instrucoes->linhas[linha].campos[3][k] = ptr[i++];
+    cache_instrucoes->linhas[linha].update = BIT_UPDATE_UNSET;
+  }else{
+    int dado = bloco->bits.b96_127, i = 0;
+    printf("\nDado: %d\t", dado);
+    unsigned char * ptr = (unsigned char *) &dado;
+    for(k=0; k<WORD_SIZE; k++)
+    cache_dados->linhas[linha].campos[0][k] = ptr[i++];
+    //printf("\n------> %d", cache_dados->linhas[linha].campos[0][0]);
+    dado = bloco->bits.b64_95; i=0;
+    printf("Dado: %d\t", dado);
+    ptr = (unsigned char *) &dado;
+    for(k=0; k<WORD_SIZE; k++)
+    cache_dados->linhas[linha].campos[1][k] = ptr[i++];
+    dado = bloco->bits.b32_63; i=0;
+    printf("Dado: %d\t", dado);
+    ptr = (unsigned char *) &dado;
+    for(k=0; k<WORD_SIZE; k++)
+    cache_dados->linhas[linha].campos[2][k] = ptr[i++];
+    dado = bloco->bits.b0_31; i=0;
+    printf("Dado: %d\t", dado);
+    ptr = (unsigned char *) &dado;
+    for(k=0; k<WORD_SIZE; k++)
+    cache_dados->linhas[linha].campos[3][k] = ptr[i++];
+    cache_dados->linhas[linha].update = BIT_UPDATE_UNSET;
+  }
+}
+
+int get_endereco_bloco(int address){
+  int tag = address << 3; tag = tag >> 18;
+  int linha = address << 17; linha = linha >> 21;
+  //tag = tag << 11; tag = tag | linha;
+  int V32K = 32768;
+  return (tag * V32K + linha * 16);
+}
+
+
+/*Parte do princípio que o bloco está na cache (houve hit)*/
+int cache_write(int address, int dado){
+  int tag = address << 3; tag = tag >> 18;
+  int linha = address << 17; linha = linha >> 21;
+  int byte = address << 28; byte = byte >> 28;
+
+  printf("[CACHE] Write -> address: %d\tTag: %d\tLinha: %d\tByte: %d\n", address, tag, linha, byte);
+
+  unsigned char * ptr = (unsigned char *) &dado;
+  int k, i = 0;
+
+  if(address <= START_ADDRESS_DATA){
+    /*Procura na cache de instruções*/
+    for(k=byte; k<byte+WORD_SIZE; k++)
+      cache_instrucoes->linhas[linha].campos[byte][k] = ptr[i++];
+    cache_dados->linhas[linha].update = BIT_UPDATE_SET;
+  }else{
+    /*Procura na cache de dados*/
+    for(k=byte; k<byte+WORD_SIZE; k++)
+      cache_dados->linhas[linha].campos[byte][k] = ptr[i++];
+    cache_dados->linhas[linha].update = BIT_UPDATE_SET;
+  }
+}
+
+void cache_controller_next(){
+  /*PCB precisa de algo?*/
+  Dado_Barramento * d_pcb = topo_barramento(PCB);
+  if(d_pcb->controle == FLAG_READY) return;
+
+  printf("\nPCB: %d %d %d %d\n", d_pcb->dado, d_pcb->endereco, d_pcb->controle, PCB.status);
+
+  if(!isHit(d_pcb->endereco)){ /*Houve MISS na cache*/
+    if(MODULE == FLAG_VERBOSE){
+      printf("\n[CACHE] Miss\n");
+      MISS_COUNT++;
+    }
+    /*Verifica se houve resposta da RAM pelo CMB*/
+    if(CMB.controle == FLAG_READY){
+      if(CMB.status != FLAG_READY){ /*Status tem o indice da ER que precisa do dado (indica que o dado está no barramento)*/
+        /*Escreve o dado recebido no PCB para devolver ao processador*/
+        //printf("\nNO CMB: %llu\n", CMB.dado->full_value);
+        set_bloco(CMB.dado, CMB.endereco, d_pcb->endereco);
+        int val = cache_read(d_pcb->endereco);
+        printf("\nVAL: %d\n", val);
+        alterar_topo_barramento(PCB, val, d_pcb->endereco, FLAG_READY);
+        printf("\nPCB alterado!\n");
+        /*Torna CMB disponível*/
+        inserir_no_barramento128bits(&CMB, NULL, FLAG_VAZIO, FLAG_READY);
+        CMB.status = FLAG_READY;
+      }else{ /*CMB disponível*/
+        /*Envia requisição ao CMB do bloco inteiro*/
+        Dado_Barramento_128 * dado = (Dado_Barramento_128 *) malloc(sizeof(Dado_Barramento_128));
+        dado->full_value = d_pcb->dado;
+        inserir_no_barramento128bits(&CMB, dado, get_endereco_bloco(d_pcb->endereco), d_pcb->controle);
+        alterar_topo_barramento(PCB, FLAG_VAZIO, d_pcb->endereco,  FLAG_BUSY);
+        printf("\nsolicitando ao CMB\n");
+        CMB.status = PCB.status;
+      }
+    }
+
+    // Dado_Barramento * db = topo_barramento(CMB);
+    // if(db->controle == FLAG_READY){
+    //   if(CMB.status != FLAG_READY){ /*Status tem o indice da ER que precisa do dado (indica que o dado está no barramento)*/
+    //     /*Escreve o dado recebido no PCB para devolver ao processador*/
+    //     alterar_topo_barramento(PCB, filtrar_dado(db->dado), db->endereco, db->controle);
+    //     /*Torna CMB disponível*/
+    //     alterar_topo_barramento(CMB, FLAG_VAZIO, FLAG_VAZIO, FLAG_READY);
+    //     CMB.status = FLAG_READY;
+    //   }else{ /*CMB disponível*/
+    //     /*Envia requisição ao CMB*/
+    //     alterar_topo_barramento(CMB, d_pcb->dado, d_pcb->endereco, d_pcb->controle);
+    //     CMB.status = PCB.status;
+    //   }
+    // }
+  }else{
+    if(MODULE == FLAG_VERBOSE){
+      printf("\n[CACHE] Hit\n");
+      HIT_COUNT++;
+    }
+    int op = d_pcb->controle;
+    if (op == FLAG_READ){
+      alterar_topo_barramento(PCB, cache_read(d_pcb->endereco), d_pcb->endereco, FLAG_READY);
+    }else if(op == FLAG_WRITE){
+      alterar_topo_barramento(PCB, cache_write(d_pcb->endereco, d_pcb->dado), FLAG_VAZIO, FLAG_READY);
+    }
+    /*Escreve no PCB / Não altera o CMB*/
+  }
+}
+
+  // if(PCB.controle == FLAG_READ){
+  //   PCB.controle = FLAG_BUSY; /*Define o barramento como ocupado*/
+  //   PCB.dados = cache_read(PCB.endereco); /*Escreve o dado lido da cache no endereço*/
+  // }else if(PCB.controle == FLAG_WRITE){
+  //   PCB.controle = FLAG_BUSY; /*Define o barramento como ocupado*/
+  //   cache_write(PCB.endereco, PCB.dados); /*Escreve o dado lido da cache no endereço*/
+  // }
+
+void inicializar_cache(){
+  int i;
+  cache_dados = (Cache *)malloc(sizeof(Cache));
+  cache_instrucoes = (Cache *)malloc(sizeof(Cache));
+  for(i=0; i<CACHE_LINE_COUNT; i++){
+    cache_dados->linhas[i].update = BIT_UPDATE_UNSET;
+    cache_dados->linhas[i].tag = FLAG_VAZIO;
+    cache_instrucoes->linhas[i].update = BIT_UPDATE_UNSET;
+    cache_instrucoes->linhas[i].tag = FLAG_VAZIO;
+  }
+}
+
+void cache_print(){
+
+}
+
+void cache_next(){
+  cache_controller_next();
+}

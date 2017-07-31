@@ -5,8 +5,8 @@
 #include "LinkedList.h"
 
 #define WORD_SIZE 4 /*Tamanho de uma palavra (em bytes)*/
-#define START_ADDRESS_DATA 500
-//#define START_ADDRESS_DATA 0x4000000
+//#define START_ADDRESS_DATA 100
+#define START_ADDRESS_DATA 0x4000000
 #define DATA_AMOUNT    400
 
 #define FLAG_VERBOSE    1
@@ -63,6 +63,22 @@ typedef struct{
     Fila * fila_barramento;
 }Barramento;
 
+/*Barramento RAM-Cache*/
+struct decomposicao {
+    unsigned long long int b0_31   : 32;
+    unsigned long long int b32_63  : 32;
+    unsigned long long int b64_95  : 32;
+    unsigned long long int b96_127 : 32;
+};
+typedef union{
+    struct decomposicao bits;
+    unsigned long long int full_value;
+}Dado_Barramento_128;
+typedef struct{
+  Dado_Barramento_128 * dado;
+  int endereco, controle, status;
+}Barramento128bits;
+
 /*Estrutura de Registrador*/
 typedef struct{
   int Qi, valor;
@@ -94,5 +110,6 @@ int BUSCA_DECOD_CESSADA;
 
 /*Fila de Instruções a serem processadas*/
 Fila fila_Instrucoes;
+int MODULE;
 
 #endif

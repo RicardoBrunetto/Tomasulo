@@ -4,10 +4,11 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "definitions.h"
 #include "barramentos.h"
 
-//#define MEM_SIZE 536870912 /*512M*/
-#define MEM_SIZE 1024 /*120 B*/
+#define MEM_SIZE 536870912 /*512M*/
+//#define MEM_SIZE 1024 /*120 B*/
 
 typedef unsigned char Byte;
 typedef unsigned int Word;

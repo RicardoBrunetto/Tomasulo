@@ -11,8 +11,6 @@
 
 int RETURN_VAL;
 
-int MODULE;
-
 /*start do clock*/
 void clock_start();
 void clock_finish();

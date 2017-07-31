@@ -2,10 +2,17 @@
 #include <stdlib.h>
 #include "include/DQueue.h"
 
+
+
 /*
 int main(){
-  int val = -1;
-  if(val > 0) printf("\noi\n");
+
+
+  union uni val;
+  val.full_value = 855541614752;
+
+  printf("\n%d\t%d\t%d\t%d\n", val.dec.b0_31, val.dec.b32_63, val.dec.b64_95, val.dec.b96_127);
+
 }
 int main(){
   Fila f;
