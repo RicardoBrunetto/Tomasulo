@@ -1,48 +1,33 @@
 .data
-x: .int 500, 100, 0xe
-y: .int 152, 15
+zero:   .int    0
+um:     .int    1
+
 .text
-.globl LABEL
+.globl main
+main:
+lw $t0, zero
+lw $t1, um
+addi $t7, $0, 0      # scan
 
-LABEL:
-#li $a0, 15
-lw $t7, x
-lw $t9, x
+addi $v0, $0, 5
+syscall                 # scan
 
-sw $a0, x
-nop
-nop
-nop
-nop
-nop
-nop
-lw $a1, x
+movz $s0, $v0, $t0
+blez $s0, fim
 
-move $v1, $a0
-li $v0, 0
-syscall
+loop:
+movz $a0, $t0, $0
+addi $v0, $0, 1
+syscall                 # mostra t0
 
-li $v0, 17
-syscall
+movz $s1, $t1, $0
+add $t1, $t0, $t1
+movz $t0, $s1, $0
 
-#.text
-#.globl main
-#main:
-  #addi $a0, $zero, -90
-  #addiu $a1, $zero, -3
-  #jal compare
-  #li $v0, 17
-  #syscall
+addi $t7, $t7, 1     # T7++
+beq $t7, $s0, fim   # Se T7 == S0 -> fim
+j loop
 
-  #compare:
-  	#sub $t0, $a1, $a0
-  	#bltz $t0, a0_maior
-
-  	#add $v0, $zero, $a1
-  	#j _end
-
-  	#a0_maior:
-  		#add $v0, $zero, $a0
-
-  	#_end:
-  		#jr $ra
+fim:
+addi $v0, $0, 10
+syscall                 # exit
