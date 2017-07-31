@@ -77,9 +77,6 @@ void PIPELINE_issue(){
   }
   if(is_cessar_busca_decode(instr)) /*branches*/ BUSCA_DECOD_CESSADA = 1; /*Cessa a busca e a decodificação - para manter NPC*/
     /*mostrar_fila(&fila_Instrucoes);*/
-
-  printf("\nEmitindo: ");
-  printar_instr(instr);
   for(i = 0; i<QUANTIDADE_ESTACOES_RESERVA; i++){
     //printf("\nAnalisando ER %i\n", i);
     if(estacoes_Reserva[i].BusyBit != FLAG_DISPONIVEL){ /*printf("Nao serve\n");*/ continue; }/*Pula se a Estação de Reserva estiver ocupada*/
@@ -243,6 +240,7 @@ void PIPELINE_write(){
       reg_write(conteudo->dado, i); /*Escreve o dado no registrador*/
     }
   }
+  if(is_cessar_busca_decode(estacoes_Reserva[i].Op)) BUSCA_DECOD_CESSADA = 0;
   estacoes_Reserva[conteudo->endereco].BusyBit = FLAG_DISPONIVEL;
 }
 

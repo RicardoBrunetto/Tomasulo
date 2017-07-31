@@ -131,7 +131,6 @@ int is_cessar_emissao(int opcode){
   Def * d;
   while((d = (Def *)getProximoLinkedList(&lista_definicoes)) != NULL){
     if(d->abstract_opcode == opcode){
-      printf("\n%d - %s - %d\n", d->abstract_opcode, d->mnemonic, d->cessa_emissao);
       resetProximoLinkedList(&lista_definicoes);
       return d->cessa_emissao;
     }

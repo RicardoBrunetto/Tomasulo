@@ -8,6 +8,7 @@ void clock(){
   while(!clk_finished){
     call_clock();
   }
+  clock_finish();
 }
 
 void call_clock(){
@@ -28,6 +29,8 @@ void call_clock(){
 
 void clock_finish(){
   clk_finished = 1;
+  printf("\nTOTAL: %d ciclos", total_ciclos);
+  printf("\n[Syscall]\tprintf: %d\n", RETURN_VAL);
 }
 
 void clock_start(){
@@ -36,8 +39,4 @@ void clock_start(){
   total_ciclos = 0;
   processador_start();
   inicializar_cache();
-
-  clock();
-  printf("\nTOTAL: %d ciclos", total_ciclos);
-  printf("\n[Syscall]\tprintf: %d\n", RETURN_VAL);
 }

@@ -29,7 +29,7 @@ TIPO_INFO * get_topo_fila(Fila *f){
 void mostrar_fila(Fila *f){
     struct node *temp;
     temp = f->cabeca;
-    printf("\tFila de instrucoes\n", f);
+    printf("\n\n\tFila de instrucoes\n");
     while (temp != NULL){
         printar_instr(temp->data);
         temp = temp->next;

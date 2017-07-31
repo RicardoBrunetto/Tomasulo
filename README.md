@@ -18,6 +18,5 @@ Trabalho Arquitetura II
 - [x] Implementar despacho de instruções
 - [x] Vetores sendo inseridos ao inverso
 - [x] Reconhecer números negativos
-  - *Não testado com o processador*
 
 # Dúvidas
