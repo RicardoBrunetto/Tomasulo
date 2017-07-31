@@ -45,7 +45,7 @@ NumStruct nstruct;
 %token <str> ADDRESS IDENTIFICADOR
 %token <valor> REG_S REG_AT REG_T REG_A REG_V REG_K REG_GP REG_SP REG_FP REG_R REG_ZERO
 %token <instruction_R> ADD ADDU AND CLO CLZ DIV DIVU MULT MULTU MUL MADD MOVN MADDU MSUB MSUBU NOR OR SLL SLLV SRA SRAV SRL SRLV SUB SUBU XOR SLT SLTU TEQ TNE TGE TGEU TLT TLTU MFHI MFLO MTHI MTLO MOVZ MOVF MOVT ERET SYSCALL BREAK NOP MOVE
-%token <instruction_I> ADDI ADDIU ANDI ORI XORI LUI SLTI SLTIU BEQ BGEZ BGEZAL BGTZ BLEZ BLTZAL BLTZ BNE TEQI TNEQ TGEI TGEIU TLTI TLTIU LB LBU LH LHU LW LWL LWR LL SB SH SW SWR SWL SC LI
+%token <instruction_I> ADDI ADDIU ANDI ORI XORI LUI SLTI SLTIU BEQ BGEZ BGEZAL BGTZ BLEZ BLTZAL BLTZ BNE TEQI TNEQ TGEI TGEIU TLTI TLTIU LB LBU LH LHU LW LWL LWR LL SB SH SW SWR SWL SC LI LA
 %token <instruction_J> J JAL JALR JR
 %token DATA TEXT SECTION DPTS INT EOL COMMA GLOBL
 %token <str> HEX_VAL
@@ -210,7 +210,8 @@ instrucao_I: ADDI reg comma reg comma nro {if(secondPass == 1){ Def * d = get_de
            | BNE reg comma reg comma nrorlabel {if(secondPass == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rt = $4; $$.rs = $2; $$.imm = $6;}}
            | LB reg comma nrorlabel ABRE_PAR reg FECHA_PAR {if(secondPass == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rt = $2; $$.rs = $6; $$.imm = $4;}}
            | LB reg comma nrorlabel {if(secondPass == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rt = $2; $$.rs = 0; $$.imm = $4;}}
-           | LI reg comma nrorlabel {if(secondPass == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rt = $2; $$.rs = 0; $$.imm = $4;}}
+           | LI reg comma nro {if(secondPass == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rt = $2; $$.rs = 0; $$.imm = $4;}}
+           | LA reg comma nrorlabel {if(secondPass == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rt = $2; $$.rs = 0; $$.imm = $4;}}
            | LBU reg comma nrorlabel ABRE_PAR reg FECHA_PAR {if(secondPass == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rt = $2; $$.rs = $6; $$.imm = $4;}}
            | LBU reg comma nrorlabel {if(secondPass == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rt = $2; $$.rs = 0; $$.imm = $4;}}
            | LH reg comma nrorlabel ABRE_PAR reg FECHA_PAR {if(secondPass == 1){ Def * d = get_def_mnemonico(mnemonico); if(d==NULL) yyerror(error_msg); $$.opcode = d->opcode; $$.rt = $2; $$.rs = $6; $$.imm = $4;}}
@@ -268,8 +269,6 @@ void call_tradutor(FILE *f){
 
   yyrestart(f);
   yyparse();
-
-  print_lista_labels(&lista);
 
   secondPass = 1;
   system("mkdir -p output/");

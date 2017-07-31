@@ -20,6 +20,7 @@ Word mem_read(int address){
 }
 
 void mem_init(){
+  printf("\nInicializando Memoria\n");
   int i;
   for(i=0; i<MEM_SIZE; i = i+WORD_SIZE){
     mem_write(FLAG_VAZIO, i);

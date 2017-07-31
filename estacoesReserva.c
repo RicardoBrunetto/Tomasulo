@@ -225,7 +225,9 @@ void er_despachar(int indice_ER){
       estacoes_Reserva[indice_ER].uf.ALUOutput = ula(OP_SLL, A, 16);
     	break;
 
-    case 59:   /*li*/
+    case 59:    /*li*/
+    case 60:   /*la*/
+      printf("\nLA!");
       estacoes_Reserva[indice_ER].uf.ALUOutput = A;
       break;
 

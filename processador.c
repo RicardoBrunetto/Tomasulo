@@ -3,7 +3,7 @@
 /*Função que simula a estágio de Busca do Pipeline*/
 void PIPELINE_fetch(){
   //printf("\n\t\t->>>\tOnFetch!\n");
-  if(BUSCA_DECOD_CESSADA) return;
+  if(BUSCA_DECOD_CESSADA){ IR.valor = FLAG_VAZIO; return; }
   IR.valor = mem_read(PC.valor); /*Insere a instrução não-decodificada no IR*/
   PC.valor = ula(OP_ADD, PC.valor, 4); /*Incrementa PC*/
 }
@@ -55,29 +55,31 @@ void PIPELINE_decode(){
       instrucao->instruction.instruction_I.imm = imm;
       break;
   }
-
+  inserir_fila(&fila_Instrucoes, instrucao); /*Insere a instrução na Fila de Instruções*/
   /*Fim da Decodificação da Instrução*/
-  if(instrucao->type == TYPE_J){ /*Caso for uma instrução de desvio incondicional (todas do tipo J são)*/
-    if(instrucao->opcode == 3) /*jal*/
-      inserir_no_barramento(CDB, PC.valor, FLAG_VAZIO, REG_RA); /*Escreve PC atual (incrementado após decodificar o jump)*/
-    PC.valor = instrucao->instruction.instruction_J.target; /*PC recebe o endereço alvo da instrução*/
-    limpar_fila_instrucoes();
-    IR.valor = FLAG_VAZIO;
-  }else{
-    if(is_cessar_busca_decode(instrucao)) /*branches*/ BUSCA_DECOD_CESSADA = 1; /*Cessa a busca e a decodificação - para manter NPC*/
-    inserir_fila(&fila_Instrucoes, instrucao); /*Insere a instrução na Fila de Instruções*/
-    /*mostrar_fila(&fila_Instrucoes);*/
-  }
 }
 
 void PIPELINE_issue(){
   //printf("\n\t\t->>>\tOnIssue\n");
-  if(EMISSAO_CESSADA) return; /*Não emite*/
+  if(EMISSAO_CESSADA > 0) return; /*Não emite*/
   int i, aux;
   Instrucao * instr = (Instrucao *) get_topo_fila(&fila_Instrucoes); /*Pega uma instrução da fila (mas não a remove de lá)*/
   if(instr == NULL) return; /*Não há mais instruções na fila*/
-  /*printf("\nEmitindo: ");
-  printar_instr(instr);*/
+
+  if(instr->type == TYPE_J){ /*Caso for uma instrução de desvio incondicional (todas do tipo J são)*/
+    if(instr->opcode == 3) /*jal*/
+      inserir_no_barramento(CDB, PC.valor, FLAG_VAZIO, REG_RA); /*Escreve PC atual (incrementado após decodificar o jump)*/
+    PC.valor = instr->instruction.instruction_J.target; /*PC recebe o endereço alvo da instrução*/
+    limpar_fila_instrucoes();
+    mostrar_fila(&fila_Instrucoes);
+    IR.valor = FLAG_VAZIO;
+    return;
+  }
+  if(is_cessar_busca_decode(instr)) /*branches*/ BUSCA_DECOD_CESSADA = 1; /*Cessa a busca e a decodificação - para manter NPC*/
+    /*mostrar_fila(&fila_Instrucoes);*/
+
+  printf("\nEmitindo: ");
+  printar_instr(instr);
   for(i = 0; i<QUANTIDADE_ESTACOES_RESERVA; i++){
     //printf("\nAnalisando ER %i\n", i);
     if(estacoes_Reserva[i].BusyBit != FLAG_DISPONIVEL){ /*printf("Nao serve\n");*/ continue; }/*Pula se a Estação de Reserva estiver ocupada*/
@@ -115,7 +117,7 @@ void PIPELINE_issue(){
         if((estacoes_Reserva[i].Qj = reg_get_status(instr->instruction.instruction_I.rs)) == FLAG_DISPONIVEL){ /*Leitura do operando em VJ*/
           estacoes_Reserva[i].Vj = reg_read(instr->instruction.instruction_I.rs);
         }
-        if(isLoad(estacoes_Reserva[i].Op) || isStore(estacoes_Reserva[i].Op))
+        if(isLoad(estacoes_Reserva[i].Op) || isStore(estacoes_Reserva[i].Op) || estacoes_Reserva[i].Op == 60)
           estacoes_Reserva[i].A = instr->instruction.instruction_I.imm + START_ADDRESS_DATA;
         else
           estacoes_Reserva[i].A = instr->instruction.instruction_I.imm;
@@ -143,8 +145,10 @@ void PIPELINE_execute(){
   //printf("\n\t\t->>>\tOnExec!\n");
   int i, aval = 0;
   for(i = 0; i<QUANTIDADE_ESTACOES_RESERVA; i++){
-    if(estacoes_Reserva[i].BusyBit > 0){  /*Se a ER estiver ocupada*/
+    if(estacoes_Reserva[i].BusyBit != FLAG_DISPONIVEL){
       if(is_cessar_emissao(estacoes_Reserva[i].Op)) EMISSAO_CESSADA++; /*Garante que a emissão continua cessada enquanto a instrução está no Pipeline*/
+    }
+    if(estacoes_Reserva[i].BusyBit > 0){  /*Se a ER estiver ocupada*/
       if(estacoes_Reserva[i].Qj == FLAG_DISPONIVEL && estacoes_Reserva[i].Qk == FLAG_DISPONIVEL){ /*verifica operadores: já estiverem prontos, os ciclos contam*/
         //printf("\n\t\tOp disponiveis");
         /*Caso for um Load ou um Store*/
@@ -155,7 +159,6 @@ void PIPELINE_execute(){
                 if(PCB.status == i){
                   /*Escreve o dado lido no buffer da Unidade Funcional*/
                   estacoes_Reserva[i].uf.ALUOutput = filtrar_dado(estacoes_Reserva[i].Op, db->dado); /*O filtro serve para casos onde não é a palavra toda a ser carregada*/
-                  printf("\nSending to CDB: %d\n", estacoes_Reserva[i].uf.ALUOutput);
                   enviar_para_CDB(i); /*Escreve *no CDB*/
                   estacoes_Reserva[i].BusyBit = FLAG_DISPONIVEL;
                   /*Torna PCB disponível*/
@@ -208,7 +211,6 @@ void PIPELINE_write(){
   Dado_Barramento * conteudo;
   if((conteudo = get_topo_barramento(CDB)) == NULL) return; /*Indica que nada foi escrito no CDB ainda (nada foi executado)*/
   /*Se a instrução manipula HI/LO, então eles são escritos*/
-  /*printf("[CDB] status = %d\tdado = %d\tctrl = %d\taddr = %d\n", CDB.status, conteudo->dado, conteudo->controle, conteudo->endereco);*/
   if(conteudo->controle == REG_RA){ reg_write(conteudo->dado, REG_RA); return; }
   if(conteudo->controle == REG_HI){ reg_write(conteudo->dado, REG_HI); return; }
   if(conteudo->controle == REG_LO){ reg_write(conteudo->dado, REG_LO); BUSCA_DECOD_CESSADA = 0; estacoes_Reserva[conteudo->endereco].BusyBit = FLAG_DISPONIVEL;  estacoes_Reserva[conteudo->endereco].A = FLAG_VAZIO;/*Permite a busca e decodificação*/ return; }

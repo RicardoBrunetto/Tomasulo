@@ -81,6 +81,7 @@ int state;
 "tlti" { if(state == FLAG_ASSEMBLER){ mnemonico = strdup(yytext); return TLTI; }else{ yylval.str = strdup(yytext); return IDENTIFICADOR;} }
 "tltiu" { if(state == FLAG_ASSEMBLER){ mnemonico = strdup(yytext); return TLTIU; }else{ yylval.str = strdup(yytext); return IDENTIFICADOR;} }
 "li" { if(state == FLAG_ASSEMBLER){ mnemonico = strdup(yytext); return LI; }else{ yylval.str = strdup(yytext); return IDENTIFICADOR;} }
+"la" { if(state == FLAG_ASSEMBLER){ mnemonico = strdup(yytext); return LA; }else{ yylval.str = strdup(yytext); return IDENTIFICADOR;} }
 "lb" { if(state == FLAG_ASSEMBLER){ mnemonico = strdup(yytext); return LB; }else{ yylval.str = strdup(yytext); return IDENTIFICADOR;} }
 "lbu" { if(state == FLAG_ASSEMBLER){ mnemonico = strdup(yytext); return LBU; }else{ yylval.str = strdup(yytext); return IDENTIFICADOR;} }
 "lh" { if(state == FLAG_ASSEMBLER){ mnemonico = strdup(yytext); return LH; }else{ yylval.str = strdup(yytext); return IDENTIFICADOR;} }

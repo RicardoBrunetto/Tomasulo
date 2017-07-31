@@ -77,6 +77,7 @@
 
 # Loads
 (li: 59, 2, TYPE_I, ADD_UF, 0)
+(la: 60, 2, TYPE_I, ADD_UF, 0)
 (lui: 15, 2, TYPE_I, ADD_UF, 0)
 (lb: 32, 4, TYPE_I, LOAD_UF, 0)
 (lbu: 36, 4, TYPE_I, LOAD_UF, 0)

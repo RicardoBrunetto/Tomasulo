@@ -26,9 +26,6 @@
 #define REG_HI 32
 #define REG_LO 33
 
-/*Definições de enum para controle das instruções*/
-typedef enum { TYPE_R, TYPE_J, TYPE_I } Tipo_Instrucao;
-typedef enum { ADD_UF, MUL_UF, LOAD_UF, STORE_UF } Tipo_ER_UF;
 
 /*Definições das quantidades de Estações de Reserva*/
 extern int QUANTIDADE_ESTACOES_RESERVA_ADD, QUANTIDADE_ESTACOES_RESERVA_MUL, QUANTIDADE_ESTACOES_RESERVA_LOAD, QUANTIDADE_ESTACOES_RESERVA_STORE;
@@ -83,24 +80,6 @@ typedef struct{
 typedef struct{
   int Qi, valor;
 }Registrador;
-
-/*Union de Instruções.*/
-typedef struct{
-   Tipo_Instrucao type;
-   int opcode;
-
-   union union_instr{
-     struct R_t{
-       int rd, rs, rt, func, shift;
-     } instruction_R;
-     struct J_t{
-       int target;
-     } instruction_J;
-     struct I_t{
-       int rs, rt, imm;
-     } instruction_I;
-   }instruction;
-}Instrucao;
 
 /*Lista de definições*/
 extern LinkedList lista_definicoes;

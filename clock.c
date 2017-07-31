@@ -6,7 +6,6 @@ int total_ciclos;
 void clock(){
   /*Ao receber uma syscall para exit, o processador enviará um sinal para cessar os clocks*/
   while(!clk_finished){
-    if(total_ciclos > 15) clk_finished = 1;
     call_clock();
   }
 }
@@ -16,6 +15,7 @@ void call_clock(){
   if(MODULE == FLAG_VERBOSE){
     printf("\n------------------------------------------------- CICLO %d ----------------------------------------------------------\n", total_ciclos);
     printf("\nIR: %d\tPC: %d\n", IR.valor, PC.valor);
+    mostrar_fila(&fila_Instrucoes);
   }
   processador_next();
   cache_next();

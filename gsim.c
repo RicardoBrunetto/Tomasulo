@@ -34,7 +34,7 @@ void waiting(){
     printf("\n(gsim) ");
     gets(input);
     if(!strcmp(input, "lol")){
-      printf("IXTA ERRADO\n");
+
     }else if(!strcmp(input , "stats")){
       processador_print();
     }else if(!strcmp(input, "print memory")){
@@ -69,7 +69,7 @@ void waiting(){
 
 int main(int argc, char **argv){
   run_definitions();
-  //mem_init();
+  mem_init();
   switch (argc){
     case 2:
       if(!strcmp(argv[1], "-h") || !strcmp(argv[1], "-help")){

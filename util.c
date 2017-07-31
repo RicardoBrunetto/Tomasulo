@@ -131,6 +131,7 @@ int is_cessar_emissao(int opcode){
   Def * d;
   while((d = (Def *)getProximoLinkedList(&lista_definicoes)) != NULL){
     if(d->abstract_opcode == opcode){
+      printf("\n%d - %s - %d\n", d->abstract_opcode, d->mnemonic, d->cessa_emissao);
       resetProximoLinkedList(&lista_definicoes);
       return d->cessa_emissao;
     }
@@ -201,7 +202,8 @@ int is_rt_destino(int absopcode){
     case 35:  /*lw*/
     case 34:  /*lwl*/
     case 38:  /*lwr*/
-    case 59: /*li*/
+    case 59:  /*li*/
+    case 60:  /*la*/
       return 1;
   }
   return 0;
@@ -263,7 +265,6 @@ int is_conditionalMove(int absopcode){
 void limpar_fila_instrucoes(){
   limpar_fila(&fila_Instrucoes);
 }
-
 
 /*Procedimento que exibe as configurações carregadas do simulador*/
 void show_config(){
@@ -344,13 +345,4 @@ void show_instruction_details(char * mnemonic){
   printf("\t|\t");
   printf("%2d\t|\t%3d\t*\n", d->function, d->abstract_opcode);
   printf("*---------------------------------------------------------------------------------------------------------------*\n");
-}
-
-void printar_instr(Instrucao * instrucao){
-  printf("Op: %d\t", instrucao->opcode);
-  if(instrucao->type == TYPE_R){
-    printf("rs: %d\trt: %d\trd: %d\tsh: %d\tfunc: %d\tabsop: %d\n", instrucao->instruction.instruction_R.rs, instrucao->instruction.instruction_R.rt, instrucao->instruction.instruction_R.rd, instrucao->instruction.instruction_R.shift, instrucao->instruction.instruction_R.func, get_abstract_opcode(instrucao->opcode, instrucao->instruction.instruction_R.func));
-  }else if(instrucao->type == TYPE_I){
-    printf("rs: %d\trt: %d\timm: %d\n", instrucao->instruction.instruction_I.rs, instrucao->instruction.instruction_I.rt, instrucao->instruction.instruction_I.imm);
-  }
 }

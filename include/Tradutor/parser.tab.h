@@ -145,19 +145,20 @@ extern int yydebug;
     SWL = 355,
     SC = 356,
     LI = 357,
-    J = 358,
-    JAL = 359,
-    JALR = 360,
-    JR = 361,
-    DATA = 362,
-    TEXT = 363,
-    SECTION = 364,
-    DPTS = 365,
-    INT = 366,
-    EOL = 367,
-    COMMA = 368,
-    GLOBL = 369,
-    HEX_VAL = 370
+    LA = 358,
+    J = 359,
+    JAL = 360,
+    JALR = 361,
+    JR = 362,
+    DATA = 363,
+    TEXT = 364,
+    SECTION = 365,
+    DPTS = 366,
+    INT = 367,
+    EOL = 368,
+    COMMA = 369,
+    GLOBL = 370,
+    HEX_VAL = 371
   };
 #endif
 
@@ -180,7 +181,7 @@ union YYSTYPE
   int valor;
   char *str;
 
-#line 184 "parser.tab.h" /* yacc.c:1909  */
+#line 185 "parser.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

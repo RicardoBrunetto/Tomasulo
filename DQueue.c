@@ -29,12 +29,22 @@ TIPO_INFO * get_topo_fila(Fila *f){
 void mostrar_fila(Fila *f){
     struct node *temp;
     temp = f->cabeca;
-    printf("Fila (%d)\n", f);
+    printf("\tFila de instrucoes\n", f);
     while (temp != NULL){
-        printf("\t->[Ponteiro] %d\n", temp->data);
+        printar_instr(temp->data);
         temp = temp->next;
     }
-    printf("Fim\n");
+}
+
+void printar_instr(Instrucao * instrucao){
+  //printf("Op: %d", instrucao->opcode);
+  if(instrucao->type == TYPE_R){
+    printf("\t[%s] -> rs: %d\trt: %d\trd: %d\tsh: %d\tfunc: %d\tabsop: %d\n", get_mnemonico(get_abstract_opcode(instrucao->opcode, instrucao->instruction.instruction_R.func)), instrucao->instruction.instruction_R.rs, instrucao->instruction.instruction_R.rt, instrucao->instruction.instruction_R.rd, instrucao->instruction.instruction_R.shift, instrucao->instruction.instruction_R.func, get_abstract_opcode(instrucao->opcode, instrucao->instruction.instruction_R.func));
+  }else if(instrucao->type == TYPE_I){
+    printf("\t[%s] -> rs: %d\trt: %d\timm: %d\n", get_mnemonico(instrucao->opcode), instrucao->instruction.instruction_I.rs, instrucao->instruction.instruction_I.rt, instrucao->instruction.instruction_I.imm);
+  }else{
+    printf("\t[%s] -> target: %d\n", get_mnemonico(instrucao->opcode), instrucao->instruction.instruction_J.target);
+  }
 }
 
 
