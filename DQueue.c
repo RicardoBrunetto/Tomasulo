@@ -31,21 +31,21 @@ void mostrar_fila(Fila *f){
     temp = f->cabeca;
     printf("\n\n\tFila de instrucoes\n");
     while (temp != NULL){
-        printar_instr(temp->data);
+        //printar_instr(temp->data);
         temp = temp->next;
     }
 }
 
-void printar_instr(Instrucao * instrucao){
-  //printf("Op: %d", instrucao->opcode);
-  if(instrucao->type == TYPE_R){
-    printf("\t[%s] -> rs: %d\trt: %d\trd: %d\tsh: %d\tfunc: %d\tabsop: %d\n", get_mnemonico(get_abstract_opcode(instrucao->opcode, instrucao->instruction.instruction_R.func)), instrucao->instruction.instruction_R.rs, instrucao->instruction.instruction_R.rt, instrucao->instruction.instruction_R.rd, instrucao->instruction.instruction_R.shift, instrucao->instruction.instruction_R.func, get_abstract_opcode(instrucao->opcode, instrucao->instruction.instruction_R.func));
-  }else if(instrucao->type == TYPE_I){
-    printf("\t[%s] -> rs: %d\trt: %d\timm: %d\n", get_mnemonico(instrucao->opcode), instrucao->instruction.instruction_I.rs, instrucao->instruction.instruction_I.rt, instrucao->instruction.instruction_I.imm);
-  }else{
-    printf("\t[%s] -> target: %d\n", get_mnemonico(instrucao->opcode), instrucao->instruction.instruction_J.target);
-  }
-}
+// void //printar_instr(Instrucao * instrucao){
+//   //printf("Op: %d", instrucao->opcode);
+//   if(instrucao->type == TYPE_R){
+//     printf("\t[%s] -> rs: %d\trt: %d\trd: %d\tsh: %d\tfunc: %d\tabsop: %d\n", get_mnemonico(get_abstract_opcode(instrucao->opcode, instrucao->instruction.instruction_R.func)), instrucao->instruction.instruction_R.rs, instrucao->instruction.instruction_R.rt, instrucao->instruction.instruction_R.rd, instrucao->instruction.instruction_R.shift, instrucao->instruction.instruction_R.func, get_abstract_opcode(instrucao->opcode, instrucao->instruction.instruction_R.func));
+//   }else if(instrucao->type == TYPE_I){
+//     printf("\t[%s] -> rs: %d\trt: %d\timm: %d\n", get_mnemonico(instrucao->opcode), instrucao->instruction.instruction_I.rs, instrucao->instruction.instruction_I.rt, instrucao->instruction.instruction_I.imm);
+//   }else{
+//     printf("\t[%s] -> target: %d\n", get_mnemonico(instrucao->opcode), instrucao->instruction.instruction_J.target);
+//   }
+// }
 
 
 TIPO_INFO * remover_fila( Fila * s ){
