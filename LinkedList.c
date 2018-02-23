@@ -1,11 +1,11 @@
 #include "include/LinkedList.h"
 
-void inicializar(LinkedList *list){
+void inicializarLista(LinkedList *list){
     list->inicio = NULL;
     list->atual = list->inicio;
 }
 
-NO* buscar(LinkedList list, TIPOCHAVE ch, NO** ant) {
+NO* buscaLinkedList(LinkedList list, TIPOCHAVE ch, NO** ant) {
     NO* noAtual = list.inicio;
     *ant = NULL;
     while(noAtual){
@@ -33,11 +33,11 @@ int getSizeofLinkedList(LinkedList list){
     return tam;
 }
 
-void reset_contador(LinkedList * lista){
+void resetProximoLinkedList(LinkedList * lista){
   lista->atual = lista->inicio;
 }
 
-TIPOCHAVE get_proximo(LinkedList * lista){
+TIPOCHAVE getProximoLinkedList(LinkedList * lista){
   TIPOCHAVE retorno = NULL;
   if(lista->atual != NULL){
      retorno = lista->atual->ponteiro_estr;
@@ -46,8 +46,8 @@ TIPOCHAVE get_proximo(LinkedList * lista){
   return retorno;
 }
 
-int remover(LinkedList *list, TIPOCHAVE ch){
-    NO* ant; NO* noAtual = buscar(*list, ch, &ant);
+int removeLinkedList(LinkedList *list, TIPOCHAVE ch){
+    NO* ant; NO* noAtual = buscaLinkedList(*list, ch, &ant);
     if(!noAtual) return 0;
     if(!ant){
         list->inicio = noAtual->prox;
@@ -59,7 +59,18 @@ int remover(LinkedList *list, TIPOCHAVE ch){
     return 1;
 }
 
-void inserir(LinkedList *list, TIPOCHAVE ch){
+int destroyLinkedList(LinkedList *list){
+    NO* noAtual = list->inicio; NO* aux;
+    while(noAtual){
+        aux = noAtual->prox;
+        noAtual->prox = NULL;
+        free(noAtual);
+        noAtual = aux;
+    }
+    list->inicio = NULL;
+}
+
+void insertLinkedList(LinkedList *list, TIPOCHAVE ch){
   NO * new_node;
   new_node = malloc(sizeof(NO));
 
@@ -67,24 +78,5 @@ void inserir(LinkedList *list, TIPOCHAVE ch){
   new_node->prox = list->inicio;
 
   list->inicio = new_node;
-  reset(list);
+  resetProximoLinkedList(list);
 }
-
-
-/*
-void insertLinkedList(LinkedList *list, TIPOCHAVE ch){
-    NO* ant;
-    NO* novoNo = buscaLinkedList(*list, ch, &ant);
-    if(novoNo) return;
-    novoNo = (NO*) malloc(sizeof(NO));
-    novoNo->ponteiro_estr = ch;
-    //Inserção no início
-    if(!ant){
-        novoNo->prox = list->inicio;
-        list->inicio = novoNo;
-    }else{ //Caso geral
-        novoNo->prox = ant->prox;
-        ant->prox = novoNo;
-    }
-    resetProximoLinkedList(list);
-}*/
