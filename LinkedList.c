@@ -1,11 +1,11 @@
 #include "include/LinkedList.h"
 
-void inicializarLista(LinkedList *list){
+void inicializar(LinkedList *list){
     list->inicio = NULL;
     list->atual = list->inicio;
 }
 
-NO* buscaLinkedList(LinkedList list, TIPOCHAVE ch, NO** ant) {
+NO* buscar(LinkedList list, TIPOCHAVE ch, NO** ant) {
     NO* noAtual = list.inicio;
     *ant = NULL;
     while(noAtual){
@@ -33,11 +33,11 @@ int getSizeofLinkedList(LinkedList list){
     return tam;
 }
 
-void resetProximoLinkedList(LinkedList * lista){
+void reset_contador(LinkedList * lista){
   lista->atual = lista->inicio;
 }
 
-TIPOCHAVE getProximoLinkedList(LinkedList * lista){
+TIPOCHAVE get_proximo(LinkedList * lista){
   TIPOCHAVE retorno = NULL;
   if(lista->atual != NULL){
      retorno = lista->atual->ponteiro_estr;
@@ -46,8 +46,8 @@ TIPOCHAVE getProximoLinkedList(LinkedList * lista){
   return retorno;
 }
 
-int removeLinkedList(LinkedList *list, TIPOCHAVE ch){
-    NO* ant; NO* noAtual = buscaLinkedList(*list, ch, &ant);
+int remover(LinkedList *list, TIPOCHAVE ch){
+    NO* ant; NO* noAtual = buscar(*list, ch, &ant);
     if(!noAtual) return 0;
     if(!ant){
         list->inicio = noAtual->prox;
@@ -59,18 +59,7 @@ int removeLinkedList(LinkedList *list, TIPOCHAVE ch){
     return 1;
 }
 
-int destroyLinkedList(LinkedList *list){
-    NO* noAtual = list->inicio; NO* aux;
-    while(noAtual){
-        aux = noAtual->prox;
-        noAtual->prox = NULL;
-        free(noAtual);
-        noAtual = aux;
-    }
-    list->inicio = NULL;
-}
-
-void insertLinkedList(LinkedList *list, TIPOCHAVE ch){
+void inserir(LinkedList *list, TIPOCHAVE ch){
   NO * new_node;
   new_node = malloc(sizeof(NO));
 
@@ -78,7 +67,7 @@ void insertLinkedList(LinkedList *list, TIPOCHAVE ch){
   new_node->prox = list->inicio;
 
   list->inicio = new_node;
-  resetProximoLinkedList(list);
+  reset(list);
 }
 
 
