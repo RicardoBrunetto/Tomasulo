@@ -40,7 +40,8 @@ Todo o programa foi escrito em C. O `makefile` local pode ser perfeitamente util
 - [x] Reconhecer números negativos
 
 ### Limitações e Sugestões
-Não fora implementado o componente de cache. Segue como sugestões para trabalhos futuros.
+- Não fora implementado o componente de cache. Segue como sugestão para trabalhos futuros.
+- Não há um relatório com documentação formal ou análises. Segue como sugestões para trabalhos futuros.
 
 ## Licença
 Este projeto segue a licença [Creative Commons Attribution-ShareAlike (BY-SA)](https://creativecommons.org/licenses/by-sa/4.0/), que está detalhada no arquivo [`LICENSE.md`](LICENSE.md).
