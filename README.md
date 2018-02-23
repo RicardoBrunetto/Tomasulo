@@ -39,8 +39,8 @@ Todo o programa foi escrito em C. O `makefile` local pode ser perfeitamente util
 - [x] Vetores sendo inseridos ao inverso
 - [x] Reconhecer números negativos
 
-### Limitações
-Não fora implementado o componente de cache.
+### Limitações e Sugestões
+Não fora implementado o componente de cache. Segue como sugestões para trabalhos futuros.
 
 ## Licença
 Este projeto segue a licença [Creative Commons Attribution-ShareAlike (BY-SA)](https://creativecommons.org/licenses/by-sa/4.0/), que está detalhada no arquivo [`LICENSE.md`](LICENSE.md).
