@@ -45,6 +45,8 @@ Todo o programa foi escrito em C. O `makefile` local pode ser perfeitamente util
 
 ## Licença
 Este projeto segue a licença [Creative Commons Attribution-ShareAlike (BY-SA)](https://creativecommons.org/licenses/by-sa/4.0/), que está detalhada no arquivo [`LICENSE.md`](LICENSE.md).
+
+O ato de copiar este conteúdo para quaisquer fins sem seguir esta licença é passível de processo jurídico (e reprovação, caso você use para trabalho).
 <p align="center">
   <img src="https://licensebuttons.net/l/by-sa/3.0/88x31.png">
 </p>
